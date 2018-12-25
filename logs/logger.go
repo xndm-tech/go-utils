@@ -8,8 +8,8 @@ import (
 	"github.com/xndm-recommend/go-utils/errors_"
 )
 
-func LoggerSetup(configPath string) {
-	logger, err := seelog.LoggerFromConfigAsFile(configPath)
+func LoggerSetup(c string) {
+	logger, err := seelog.LoggerFromConfigAsFile(c)
 	if err != nil {
 		errors_.CheckFatalErr(err)
 		return

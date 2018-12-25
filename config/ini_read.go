@@ -12,8 +12,8 @@ type IniParser struct {
 	conf_reader *ini.File // config reader
 }
 
-func (this *IniParser) Load(config_file_name string) error {
-	conf, err := ini.Load(config_file_name)
+func (this *IniParser) Load(c string) error {
+	conf, err := ini.Load(c)
 	if err != nil {
 		this.conf_reader = nil
 		return err

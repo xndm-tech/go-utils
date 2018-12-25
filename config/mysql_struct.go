@@ -11,8 +11,8 @@ type MysqlDbData struct {
 	Time_out   int               `yaml:"time_out"`
 }
 
-func (this *ConfigEngine) GetMySqlFromConf(sectionName string) *MysqlDbData {
+func (this *ConfigEngine) GetMySqlFromConf(name string) *MysqlDbData {
 	mysqlLogin := new(MysqlDbData)
-	login := this.GetStruct(sectionName, mysqlLogin)
+	login := this.GetStruct(name, mysqlLogin)
 	return login.(*MysqlDbData)
 }
