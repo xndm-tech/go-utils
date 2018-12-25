@@ -5,13 +5,13 @@ package logs
 */
 import (
 	"github.com/cihub/seelog"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 func LoggerSetup(configPath string) {
 	logger, err := seelog.LoggerFromConfigAsFile(configPath)
 	if err != nil {
-		err_utils.CheckFatalErr(err)
+		errors.CheckFatalErr(err)
 		return
 	}
 	seelog.ReplaceLogger(logger)

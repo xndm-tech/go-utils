@@ -1,11 +1,11 @@
-package errors
+package errors_
 
 import (
 	"github.com/getsentry/raven-go"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
 )
 
-func SentryRavenInit(this *conf_utils.ConfigEngine, sectionName string) error {
+func SentryRavenInit(this *conf_read.ConfigEngine, sectionName string) error {
 	sentryDSN := this.GetString(sectionName)
 	CheckEmptyValue(sentryDSN)
 	err := raven.SetDSN(sentryDSN)

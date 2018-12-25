@@ -1,8 +1,8 @@
 package candidates
 
 import (
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
-	"github.com/zhanglanhui/go-utils/utils/mysql_utils"
+	"github.com/xndm-recommend/go-utils/errors"
+	"github.com/xndm-recommend/go-utils/mysqls"
 )
 
 const ERR_INDEX = -1
@@ -24,17 +24,17 @@ func (this *Candidate) GetCandidateId() []string {
 	return this.Ids
 }
 
-func getCandidateIds(db *mysql_utils.MysqlDbInfo, sql string) (ids []string) {
+func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []string) {
 	rows, err := db.SqlDataDb.Query(sql)
 	if err != nil {
-		err_utils.CheckCommonErr(err)
+		errors.CheckCommonErr(err)
 		return ids
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var tmpId string
 		err := rows.Scan(&tmpId)
-		err_utils.CheckCommonErr(err)
+		errors.CheckCommonErr(err)
 		if nil == err {
 			ids = append(ids, tmpId)
 		}
@@ -50,7 +50,7 @@ func getIndexId(ids []string) map[string]int {
 	return IdInd
 }
 
-func GenCandidateList(db *mysql_utils.MysqlDbInfo, sql string) *Candidate {
+func GenCandidateList(db *mysqls.MysqlDbInfo, sql string) *Candidate {
 	var can *Candidate
 	can.Ids = getCandidateIds(db, sql)
 	can.Index = getIndexId(can.Ids)

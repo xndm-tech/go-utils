@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 type mssqlDbYamlData struct {
@@ -20,7 +20,7 @@ type mssqlDbYamlData struct {
 	Time_out   int               `yaml:"time_out"`
 }
 
-func getMssqlDataFromConf(this *conf_utils.ConfigEngine, sectionName string) *mssqlDbYamlData {
+func getMssqlDataFromConf(this *conf_read.ConfigEngine, sectionName string) *mssqlDbYamlData {
 	sqlServerLogin := new(mssqlDbYamlData)
 	login := this.GetStruct(sectionName, sqlServerLogin)
 	return login.(*mssqlDbYamlData)
@@ -34,12 +34,12 @@ func getMssqlLoginStr(section *mssqlDbYamlData) string {
 
 func (this *MssqlDbInfo) createMssqlConns(login *mssqlDbYamlData) {
 	db, err := sql.Open("mssql", getMssqlLoginStr(login))
-	err_utils.CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
 	db.SetMaxIdleConns(login.Max_conns)
 	err = db.Ping()
-	err_utils.CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 	this.SqlDataDb = db
 	this.TableName = login.Table_name
 	this.MaxConns = login.Max_conns

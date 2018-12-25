@@ -1,9 +1,9 @@
-package rediss
+package redis_
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 type redisYamlData struct {
@@ -49,7 +49,7 @@ func getRedisSlots(redisClusters [][]redis.ClusterNode) func() ([]redis.ClusterS
 	}
 }
 
-func getRedisDataFromConf(this *conf_utils.ConfigEngine, sectionName string) *redisYamlData {
+func getRedisDataFromConf(this *conf_read.ConfigEngine, sectionName string) *redisYamlData {
 	login := new(redisYamlData)
 	redisLogin := this.GetStruct(sectionName, login)
 	return redisLogin.(*redisYamlData)
@@ -62,6 +62,6 @@ func createClusterClient(redisConf *redisYamlData) *redis.ClusterClient {
 		Password:     redisConf.Password,
 	})
 	_, err := redisdb.Ping().Result()
-	err_utils.CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 	return redisdb
 }

@@ -3,9 +3,9 @@ package go_utils
 import (
 	"fmt"
 
-	"github.com/zhanglanhui/go-utils/utils/string_utils"
+	"github.com/xndm-recommend/go-utils/str_tools"
 )
 
 func main() {
-	fmt.Println(string_utils.StrJoin("_", "1", "2", "3"))
+	fmt.Println(str_tools.IsEmptyStr("3"))
 }

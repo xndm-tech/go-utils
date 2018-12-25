@@ -1,8 +1,8 @@
-package rediss
+package redis_
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
 )
 
 /*
@@ -14,7 +14,7 @@ type RedisDbInfo struct {
 	DataTime    int
 }
 
-func GetRedisConnFromConf(this *conf_utils.ConfigEngine, SectionName string) *RedisDbInfo {
+func GetRedisConnFromConf(this *conf_read.ConfigEngine, SectionName string) *RedisDbInfo {
 	RedisDbInfo := new(RedisDbInfo)
 	redis_login := getRedisDataFromConf(this, SectionName)
 	RedisDbInfo.RedisDataDb = createClusterClient(redis_login)

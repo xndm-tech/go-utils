@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 type mysqlDbYamlData struct {
@@ -20,7 +20,7 @@ type mysqlDbYamlData struct {
 	Time_out   int               `yaml:"time_out"`
 }
 
-func getSqlDataFromConf(this *conf_utils.ConfigEngine, sectionName string) *mysqlDbYamlData {
+func getSqlDataFromConf(this *conf_read.ConfigEngine, sectionName string) *mysqlDbYamlData {
 	mysqlLogin := new(mysqlDbYamlData)
 	login := this.GetStruct(sectionName, mysqlLogin)
 	return login.(*mysqlDbYamlData)
@@ -45,12 +45,12 @@ func getSqlLoginStr(section *mysqlDbYamlData) string {
 
 func (this *MysqlDbInfo) createDatabaseConns(login *mysqlDbYamlData) {
 	db, err := sql.Open("mysql", getSqlLoginStr(login))
-	err_utils.CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
 	db.SetMaxIdleConns(login.Max_conns)
 	err = db.Ping()
-	err_utils.CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 	this.SqlDataDb = db
 	this.TableName = login.Table_name
 	this.MaxConns = login.Max_conns

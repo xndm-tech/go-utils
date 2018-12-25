@@ -2,12 +2,13 @@ package logs
 
 import (
 	"github.com/getsentry/raven-go"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
-func (this *conf_utils.ConfigEngine) SentryRavenInit(SectionName string) {
+func SentryRavenInit(this *conf_read.ConfigEngine, SectionName string) {
 	sentryDSN := this.GetString(SectionName)
-	CheckEmptyValue(sentryDSN)
+	errors.CheckEmptyValue(sentryDSN)
 	err := raven.SetDSN(sentryDSN)
-	CheckFatalErr(err)
+	errors.CheckFatalErr(err)
 }

@@ -1,13 +1,12 @@
 package HTTP
 
 import (
-	"errors"
 	"net/http"
 	"net/url"
 	"strconv"
 
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 type HttpInfo struct {
@@ -21,7 +20,7 @@ type HttpInfo struct {
 func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 	var url_tmp string = this.Url
 	u, err := url.Parse(url_tmp)
-	err_utils.CheckCommonErr(err)
+	errors.CheckCommonErr(err)
 	for i, val := range values {
 		sVal, err := val.(string)
 		if false == err {
@@ -29,7 +28,7 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 		}
 		q := u.Query()
 		if len(this.Para) <= i {
-			err_utils.CheckCommonErr(errors.New("Set Url Para error"))
+			errors.CheckCommonErr(errors.New("Set Url Para error"))
 		}
 		q.Set(this.Para[i], sVal)
 		u.RawQuery = q.Encode()
@@ -37,7 +36,7 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 	return u.String()
 }
 
-func GetHttpConnFromConf(this *conf_utils.ConfigEngine, SectionName string) *HttpInfo {
+func GetHttpConnFromConf(this *conf_read.ConfigEngine, SectionName string) *HttpInfo {
 	HttpInfo := new(HttpInfo)
 	sLogin := getHttpFromConf(this, SectionName)
 	createHttpConns(HttpInfo, sLogin)

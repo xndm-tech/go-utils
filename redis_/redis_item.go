@@ -1,12 +1,12 @@
-package rediss
+package redis_
 
 import (
 	"strings"
 	"time"
 
 	"github.com/go-redis/redis"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
-	"github.com/zhanglanhui/go-utils/utils/err_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/errors"
 )
 
 type RedisItem struct {
@@ -39,7 +39,7 @@ func (r *RedisItem) ItemIncr(redisClient *RedisDbInfo, items ...string) (int, er
 	p.Expire(key, r.ExpireTime)
 	p.Exec()
 	val, err := cmder.Result()
-	err_utils.CheckCommonErr(err)
+	errors.CheckCommonErr(err)
 	return int(val), err
 }
 
@@ -51,13 +51,13 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	}
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.ZAdd(key, zmembers...).Err()
-	err_utils.CheckCommonErr(err)
+	errors.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.ZRemRangeByRank(key, 0, setLen-r.Len).Err()
-		err_utils.CheckCommonErr(err)
+		errors.CheckCommonErr(err)
 	}
 	return err
 }
@@ -65,7 +65,7 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error) {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.ZRange(key, 0, -1).Result()
-	err_utils.CheckCommonErr(err)
+	errors.CheckCommonErr(err)
 	return result, err
 }
 
@@ -81,11 +81,11 @@ func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]string, 
 	return cmders, err
 }
 
-func GetRedisItemInfoFromConf(c *conf_utils.ConfigEngine, sectionName string) *RedisItem {
+func GetRedisItemInfoFromConf(c *conf_read.ConfigEngine, sectionName string) *RedisItem {
 	//interfaceMap := c.Get(name)
 	//itemMap := interfaceMap.(map[interface{}]interface{})
 	//ritem.KeyPrefix = itemMap["Prefix"].(string)
-	//errors.CheckEmptyValue(ritem.KeyPrefix)
+	//errors_.CheckEmptyValue(ritem.KeyPrefix)
 	//ExpireSeconds := itemMap["Expire"].(int)
 	//ritem.ExpireTime = time.Duration(ExpireSeconds) * time.Second
 	//length := itemMap["Len"].(int)

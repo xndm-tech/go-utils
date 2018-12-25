@@ -1,6 +1,6 @@
 package tools
 
-import "github.com/zhanglanhui/go-utils/utils/math_utils"
+import "github.com/xndm-recommend/go-utils/maths"
 
 func IsInSlice(list []string, item string) bool {
 	if 0 == len(list) {
@@ -78,7 +78,7 @@ func DifferenceAllowDup(list1, list2 []string, outLen int) (x []string) {
 	if outLen < 0 {
 		return x
 	} else if len(x) < outLen {
-		return append(x, list1[:math_utils.MinInt(outLen-len(x), len(list1))]...)
+		return append(x, list1[:maths.MinInt(outLen-len(x), len(list1))]...)
 	} else {
 		return x[:outLen]
 	}
@@ -93,7 +93,7 @@ func UnionListLen(list1, list2 []string, outLen int) (x []string) {
 	if outLen < 0 {
 		return xTmp
 	}
-	return xTmp[:math_utils.MinInt(len(xTmp), outLen)]
+	return xTmp[:maths.MinInt(len(xTmp), outLen)]
 }
 
 func UnionListAllowDup(list1, list2 []string, outLen int) (xTmp []string) {
@@ -101,5 +101,5 @@ func UnionListAllowDup(list1, list2 []string, outLen int) (xTmp []string) {
 	if outLen < 0 {
 		return xTmp
 	}
-	return xTmp[:math_utils.MinInt(len(xTmp), outLen)]
+	return xTmp[:maths.MinInt(len(xTmp), outLen)]
 }

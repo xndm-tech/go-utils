@@ -7,7 +7,7 @@ import (
 	"database/sql"
 
 	_ "github.com/denisenkom/go-mssqldb"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
 )
 
 type MssqlDbInfo struct {
@@ -17,7 +17,7 @@ type MssqlDbInfo struct {
 	DbTimeOut int
 }
 
-func GetMssqlConnFromConf(this *conf_utils.ConfigEngine, SectionName string) *MssqlDbInfo {
+func GetMssqlConnFromConf(this *conf_read.ConfigEngine, SectionName string) *MssqlDbInfo {
 	DbInfo := new(MssqlDbInfo)
 	sLogin := getMssqlDataFromConf(this, SectionName)
 	DbInfo.createMssqlConns(sLogin)

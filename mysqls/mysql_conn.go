@@ -5,9 +5,8 @@ package mysqls
 */
 import (
 	"database/sql"
-
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/zhanglanhui/go-utils/utils/conf_utils"
+	"github.com/xndm-recommend/go-utils/conf_read"
 )
 
 type MysqlDbInfo struct {
@@ -17,7 +16,7 @@ type MysqlDbInfo struct {
 	DbTimeOut int
 }
 
-func GetDbConnFromConf(this *conf_utils.ConfigEngine, sectionName string) *MysqlDbInfo {
+func GetDbConnFromConf(this *conf_read.ConfigEngine, sectionName string) *MysqlDbInfo {
 	DbInfo := new(MysqlDbInfo)
 	sLogin := getSqlDataFromConf(this, sectionName)
 	DbInfo.createDatabaseConns(sLogin)
