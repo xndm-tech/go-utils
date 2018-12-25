@@ -2,6 +2,7 @@ package candidates
 
 import (
 	"github.com/pkg/errors"
+	"github.com/xndm-recommend/go-utils/errors_"
 	"github.com/xndm-recommend/go-utils/maths"
 	"github.com/xndm-recommend/go-utils/mysqls"
 	"github.com/xndm-recommend/go-utils/tools"
@@ -15,6 +16,32 @@ type Candidate struct {
 	Cids []string
 	Len  int
 	Ind  map[string]int
+}
+
+func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []string) {
+	rows, err := db.SqlDataDb.Query(sql)
+	if err != nil {
+		errors_.CheckCommonErr(err)
+		return ids
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var tmpId string
+		err := rows.Scan(&tmpId)
+		errors_.CheckCommonErr(err)
+		if nil == err {
+			ids = append(ids, tmpId)
+		}
+	}
+	return ids
+}
+
+func getIndexId(ids []string) map[string]int {
+	IdInd := make(map[string]int, len(ids))
+	for ind, id := range ids {
+		IdInd[id] = ind
+	}
+	return IdInd
 }
 
 func (this *Candidate) GenCandidateFromdb(db *mysqls.MysqlDbInfo, sql string) {

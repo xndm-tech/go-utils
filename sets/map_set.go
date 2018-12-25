@@ -16,10 +16,6 @@ func NewSetFromSlice(s []interface{}) *HashSet {
 	return &(HashSet{Set_Hash: mapset.NewSetFromSlice(s)})
 }
 
-func (this *HashSet) SetLen() int {
-	return this.Set_Hash.IsSubset(other.Set_Hash)
-}
-
 func (this *HashSet) IsSubSet(other HashSet) bool {
 	return this.Set_Hash.IsSubset(other.Set_Hash)
 }

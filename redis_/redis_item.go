@@ -4,10 +4,29 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xndm-recommend/go-utils/config"
+
 	"github.com/go-redis/redis"
-	"github.com/xndm-recommend/go-utils/conf_read"
 	"github.com/xndm-recommend/go-utils/errors_"
 )
+
+type RedisItemMethod interface {
+	GetRedisItemFromConf(c *config.ConfigEngine, name string)
+
+	ItemSetByte(redisClient *RedisDbInfo, bytes []byte, items ...string) error
+
+	ItemSet(redisClient *RedisDbInfo, value interface{}, items ...string) error
+
+	ItemGet(redisClient *RedisDbInfo, items ...string) (string, error)
+
+	ItemIncr(redisClient *RedisDbInfo, items ...string) (int, error)
+
+	ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...string) error
+
+	ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error)
+
+	ItemPGet(redisClient *RedisDbInfo, ids []string) ([]string, error)
+}
 
 type RedisItem struct {
 	KeyPrefix  string
@@ -81,8 +100,8 @@ func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]string, 
 	return cmders, err
 }
 
-func GetRedisItemInfoFromConf(c *conf_read.ConfigEngine, sectionName string) *RedisItem {
+func (r *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string) {
 	login := new(RedisItem)
-	redisLogin := c.GetStruct(sectionName, login)
-	return redisLogin.(*RedisItem)
+	redisLogin := c.GetStruct(name, login)
+	r = redisLogin.(*RedisItem)
 }
