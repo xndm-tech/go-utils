@@ -5,6 +5,7 @@ package mysqls
 */
 import (
 	"database/sql"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/xndm-recommend/go-utils/conf_read"
 )

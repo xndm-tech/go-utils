@@ -42,4 +42,7 @@ func main() {
 	d2.Describe()
 	a.Describe() // 直接使用值类型调用②
 
+	a1 := []int{1, 2, 3}
+	fmt.Println(a1[:10])
+
 }

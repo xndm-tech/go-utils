@@ -57,10 +57,37 @@ func RightStr(text string, size int) string {
 	return buffer.String()
 }
 
+// join
 func JoinStr(sep string, str ...string) string {
 	return strings.Join(str, sep)
 }
 
 func JoinStrSlice(sep string, str []string) string {
 	return strings.Join(str, sep)
+}
+
+// buff
+func JoinStrSliceByBuf(str []string) string {
+	var buffer bytes.Buffer
+	for _, s := range str {
+		buffer.WriteString(s)
+	}
+	return buffer.String()
+}
+
+func JoinStrByBuf(str ...string) string {
+	return JoinStrSliceByBuf(str)
+}
+
+func JoinStrSliceByBufs(sep string, str []string) string {
+	var buffer bytes.Buffer
+	for _, s := range str {
+		buffer.WriteString(s)
+		buffer.WriteString(sep)
+	}
+	return buffer.String()
+}
+
+func JoinStrByBufs(sep string, str ...string) string {
+	return JoinStrSliceByBufs(sep, str)
 }

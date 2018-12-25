@@ -24,6 +24,8 @@ type CandidateMethod interface {
 
 	GetDifference(s []string) []string
 
+	GetDifferenceLen(s []string, len int) []string
+
 	GetSliceNoLoop(size, num int) ([]string, error)
 
 	GetSliceLoop(size, num int) ([]string, error)

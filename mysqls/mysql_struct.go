@@ -27,6 +27,9 @@ func getSqlDataFromConf(this *conf_read.ConfigEngine, sectionName string) *mysql
 }
 
 func getSqlLoginStr(section *mysqlDbYamlData) string {
+
+	//tools.JoinStrByBufs()
+
 	// 读取配置文件
 	var buffer bytes.Buffer
 	buffer.WriteString(section.User)

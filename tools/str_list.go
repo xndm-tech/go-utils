@@ -2,7 +2,7 @@ package tools
 
 import "github.com/xndm-recommend/go-utils/maths"
 
-func StrToInterfaces(s []string) []interface{} {
+func StrToInterface(s []string) []interface{} {
 	ifs := make([]interface{}, len(s))
 	for ind, v := range s {
 		ifs[ind] = v
@@ -10,20 +10,29 @@ func StrToInterfaces(s []string) []interface{} {
 	return ifs
 }
 
+func InterfaceToStr(s []interface{}) []string {
+	strings := make([]string, len(s))
+	for ind, v := range s {
+		strings[ind] = v.(string)
+	}
+	return strings
+}
+
 func IsInStrSlice(s []string, item string) bool {
 	if 0 == len(s) {
 		return false
 	}
-	for _, singleItem := range s {
-		if item == singleItem {
+	for _, sItem := range s {
+		if item == sItem {
 			return true
 		}
 	}
 	return false
 }
 
+// string slice自去重
 func RmDuplicateStr(s []string) []string {
-	dup := make([]string, len(s))
+	dup := make([]string, 0, len(s))
 	for _, v := range s {
 		if !IsInStrSlice(dup, v) {
 			dup = append(dup, v)
@@ -32,20 +41,16 @@ func RmDuplicateStr(s []string) []string {
 	return dup
 }
 
-func RmDuplicateStrLen(s []string, l int) []string {
-	dup := make([]string, len(s))
-	for _, v := range s {
-		if !IsInStrSlice(dup, v) {
-			dup = append(dup, v)
-		}
-		if len(dup) == l {
-			break
-		}
+func RmDuplicateStrLen(s []string, i int) []string {
+	if i <= 0 {
+		return RmDuplicateStr(s)
 	}
-	return dup
+	return RmDuplicateStr(s)[:i]
 }
 
-func DifferenceStr(s1, s2 []string) (x []string) {
+// s1对s2做差
+func DifferenceStr(s1, s2 []string) []string {
+	dup := make([]string, 0, len(s1))
 	for _, i := range s1 {
 		sign := true
 		for _, v := range s2 {
@@ -55,61 +60,33 @@ func DifferenceStr(s1, s2 []string) (x []string) {
 			}
 		}
 		if true == sign {
-			x = append(x, i)
+			dup = append(dup, i)
 		}
 	}
-	return x
+	return dup
 }
 
-func DifferenceStrLen(l1, l2 []string, outLen int) (x []string) {
-	if outLen < 0 {
-		return DifferenceStr(l1, l2)
+func DifferenceStrLen(s1, s2 []string, i int) []string {
+	strings := DifferenceStr(s1, s2)
+	if i < 0 {
+		return strings
 	}
-	for _, i := range l1 {
-		sign := true
-		for _, v := range l2 {
-			if i == v {
-				sign = false
-				break
-			}
-		}
-		if true == sign {
-			x = append(x, i)
-			if outLen == len(x) {
-				return x
-			}
-		}
-	}
-	return x
+	return strings[:maths.MinInt(len(strings), i)]
 }
 
-func DifferenceAllowDup(list1, list2 []string, outLen int) (x []string) {
-	x = DifferenceStrLen(list1, list2, outLen)
-	if outLen < 0 {
-		return x
-	} else if len(x) < outLen {
-		return append(x, list1[:maths.MinInt(outLen-len(x), len(list1))]...)
-	} else {
-		return x[:outLen]
-	}
+// string list union
+func UnionStrList(s1, s2 []string) []string {
+	return append(s1, s2...)
 }
 
-func UnionList(list1, list2 []string) (x []string) {
-	return RmDuplicateStr(append(list1, list2...))
+func UnionStrListDup(s1, s2 []string) []string {
+	return RmDuplicateStr(append(s1, s2...))
 }
 
-func UnionListLen(list1, list2 []string, outLen int) (x []string) {
-	xTmp := UnionList(list1, list2)
-	if outLen < 0 {
-		return xTmp
-	}
-	return xTmp[:maths.MinInt(len(xTmp), outLen)]
-}
-
-func UnionListAllowDup(list1, list2 []string, outLen int) (u []string) {
-	u = append(list1, list2...)
-	if outLen < 0 {
+func UnionStrListLen(s1, s2 []string, i int) []string {
+	u := UnionStrList(s1, s2)
+	if i < 0 {
 		return u
 	}
-	return u[:maths.MinInt(len(u), outLen)]
+	return u[:maths.MinInt(len(u), i)]
 }

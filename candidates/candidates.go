@@ -61,6 +61,10 @@ func (this *Candidate) GetDifference(s []string) []string {
 	return tools.DifferenceStr(this.Cids, s)
 }
 
+func (this *Candidate) GetDifferenceLen(s []string, len int) []string {
+	return tools.DifferenceStrLen(this.Cids, s, len)
+}
+
 func (this *Candidate) GetSliceNoLoop(size, num int) ([]string, error) {
 	if num <= 0 || size <= 0 {
 		return []string{}, errors.New("Input paras error")
