@@ -1,49 +1,23 @@
 package mysqls
 
 import (
-	"bytes"
 	"database/sql"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/tools"
+
 	"github.com/xndm-recommend/go-utils/errors_"
+	//"github.com/xndm-recommend/go-utils/conf_read"
 )
 
-type mysqlDbYamlData struct {
-	User       string            `yaml:"user"`
-	Password   string            `yaml:"password"`
-	Host       string            `yaml:"host"`
-	Port       string            `yaml:"port"`
-	Db_name    string            `yaml:"db_name"`
-	Table_name map[string]string `yaml:"table_name"`
-	Max_conns  int               `yaml:"max_conns"`
-	Time_out   int               `yaml:"time_out"`
-}
-
-func getSqlDataFromConf(this *conf_read.ConfigEngine, sectionName string) *mysqlDbYamlData {
-	mysqlLogin := new(mysqlDbYamlData)
-	login := this.GetStruct(sectionName, mysqlLogin)
-	return login.(*mysqlDbYamlData)
-}
-
-func getSqlLoginStr(section *mysqlDbYamlData) string {
-
-	//tools.JoinStrByBufs()
-
-	// 读取配置文件
-	var buffer bytes.Buffer
-	buffer.WriteString(section.User)
-	buffer.WriteString(":")
-	buffer.WriteString(section.Password)
-	buffer.WriteString("@tcp(")
-	buffer.WriteString(section.Host)
-	buffer.WriteString(":")
-	buffer.WriteString(section.Port)
-	buffer.WriteString(")/")
-	buffer.WriteString(section.Db_name)
-	buffer.WriteString("?charset=utf8")
-
-	return buffer.String()
+func GetMySqlLoginStr(data *MysqlDbYamlData) (string, map[string]string, int, int) {
+	section := this.getSqlDataFromConf(sectionName)
+	return tools.JoinStrByBuf(section.User, ":",
+			section.Password, "@tcp(", section.Host, ":",
+			section.Port, ")/", section.Db_name, "?charset=utf8"),
+		section.Table_name,
+		section.Max_conns,
+		section.Time_out
 }
 
 func (this *MysqlDbInfo) createDatabaseConns(login *mysqlDbYamlData) {

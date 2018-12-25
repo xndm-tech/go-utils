@@ -1,4 +1,4 @@
-package conf_read
+package config
 
 /*
 有关ini配置文件的封装

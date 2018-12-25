@@ -1,4 +1,4 @@
-package conf_read
+package config
 
 import (
 	"errors"

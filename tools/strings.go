@@ -88,6 +88,6 @@ func JoinStrSliceByBufs(sep string, str []string) string {
 	return buffer.String()
 }
 
-func JoinStrByBufs(sep string, str ...string) string {
+func JoinStrByBufSep(sep string, str ...string) string {
 	return JoinStrSliceByBufs(sep, str)
 }
