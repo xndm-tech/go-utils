@@ -1,4 +1,4 @@
-package tool_utils
+package tools
 
 import "github.com/zhanglanhui/go-utils/utils/math_utils"
 

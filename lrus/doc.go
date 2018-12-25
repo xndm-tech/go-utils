@@ -1,4 +1,4 @@
-// Package lru provides three different LRU caches of varying sophistication.
+// Package lrus provides three different LRU caches of varying sophistication.
 //
 // Cache is a simple LRU cache. It is based on the
 // LRU implementation in groupcache:
@@ -18,4 +18,4 @@
 //
 // All caches in this package take locks while operating, and are therefore
 // thread-safe for consumers.
-package lru
+package lrus

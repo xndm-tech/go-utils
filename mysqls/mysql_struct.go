@@ -1,15 +1,15 @@
-package mssql_utils
+package mysqls
 
 import (
+	"bytes"
 	"database/sql"
-	"fmt"
 	"time"
 
 	"github.com/zhanglanhui/go-utils/utils/conf_utils"
 	"github.com/zhanglanhui/go-utils/utils/err_utils"
 )
 
-type mssqlDbYamlData struct {
+type mysqlDbYamlData struct {
 	User       string            `yaml:"user"`
 	Password   string            `yaml:"password"`
 	Host       string            `yaml:"host"`
@@ -20,20 +20,31 @@ type mssqlDbYamlData struct {
 	Time_out   int               `yaml:"time_out"`
 }
 
-func getMssqlDataFromConf(this *conf_utils.ConfigEngine, sectionName string) *mssqlDbYamlData {
-	sqlServerLogin := new(mssqlDbYamlData)
-	login := this.GetStruct(sectionName, sqlServerLogin)
-	return login.(*mssqlDbYamlData)
+func getSqlDataFromConf(this *conf_utils.ConfigEngine, sectionName string) *mysqlDbYamlData {
+	mysqlLogin := new(mysqlDbYamlData)
+	login := this.GetStruct(sectionName, mysqlLogin)
+	return login.(*mysqlDbYamlData)
 }
 
-func getMssqlLoginStr(section *mssqlDbYamlData) string {
-	//连接字符串
-	return fmt.Sprintf("server=%s;port%d;database=%s;user id=%s;password=%s",
-		section.Host, section.Port, section.Db_name, section.User, section.Password)
+func getSqlLoginStr(section *mysqlDbYamlData) string {
+	// 读取配置文件
+	var buffer bytes.Buffer
+	buffer.WriteString(section.User)
+	buffer.WriteString(":")
+	buffer.WriteString(section.Password)
+	buffer.WriteString("@tcp(")
+	buffer.WriteString(section.Host)
+	buffer.WriteString(":")
+	buffer.WriteString(section.Port)
+	buffer.WriteString(")/")
+	buffer.WriteString(section.Db_name)
+	buffer.WriteString("?charset=utf8")
+
+	return buffer.String()
 }
 
-func (this *MssqlDbInfo) createMssqlConns(login *mssqlDbYamlData) {
-	db, err := sql.Open("mssql", getMssqlLoginStr(login))
+func (this *MysqlDbInfo) createDatabaseConns(login *mysqlDbYamlData) {
+	db, err := sql.Open("mysql", getSqlLoginStr(login))
 	err_utils.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)

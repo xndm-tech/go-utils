@@ -1,4 +1,4 @@
-package mssql_utils
+package mssqls
 
 /*
 有关sqlServer数据库连接的封装

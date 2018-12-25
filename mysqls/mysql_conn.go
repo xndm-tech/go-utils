@@ -1,4 +1,4 @@
-package mysql_utils
+package mysqls
 
 /*
 有关mysql数据库连接的封装

@@ -1,4 +1,4 @@
-package http_utils
+package HTTP
 
 /*
 有关Http协议GET和POST请求的封装
