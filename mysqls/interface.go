@@ -25,13 +25,13 @@ type MysqlDbInfo struct {
 	DbTimeOut int
 }
 
-func getMySqlLoginStr(data *config.MysqlDbYamlData) string {
+func getMySqlLoginStr(data *config.MysqlDbData) string {
 	return tools.JoinStrByBuf(data.User, ":",
 		data.Password, "@tcp(", data.Host, ":",
 		data.Port, ")/", data.Db_name, "?charset=utf8")
 }
 
-func (this *MysqlDbInfo) createDatabaseConns(login *config.MysqlDbYamlData) {
+func (this *MysqlDbInfo) createDatabaseConns(login *config.MysqlDbData) {
 	db, err := sql.Open("mysql", getMySqlLoginStr(login))
 	errors_.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)

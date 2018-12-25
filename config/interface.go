@@ -22,4 +22,8 @@ type ConfRead interface {
 	GetMySqlFromConf(name string) *MysqlDbData
 
 	GetMssqlDataFromConf(name string) *MssqlDbData
+
+	GetHttpFromConf(name string) *HttpData
+
+	GetRedisDataFromConf(name string) *RedisData
 }

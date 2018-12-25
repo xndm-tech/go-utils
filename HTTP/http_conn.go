@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 
 	"github.com/xndm-recommend/go-utils/conf_read"
 	"github.com/xndm-recommend/go-utils/errors_"
@@ -15,6 +16,18 @@ type HttpInfo struct {
 	Url        string
 	Para       []string
 	TimeOut    int
+}
+
+func createHttpConns(this *HttpInfo, sLogin *config.HttpYamklData) {
+	if 0 == sLogin.Time_out {
+		errors_.CheckFatalErr(errors.New("can't read http post timeout"))
+	}
+	this.HttpClient = &http.Client{Timeout: time.Duration(sLogin.Time_out) * time.Millisecond}
+	this.Url = sLogin.Url
+	for _, param := range sLogin.Para {
+		this.Para = append(this.Para, param)
+	}
+	this.TimeOut = sLogin.Time_out
 }
 
 // 线上设置url参数

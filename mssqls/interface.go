@@ -11,8 +11,12 @@ import (
 	"github.com/xndm-recommend/go-utils/errors_"
 
 	_ "github.com/denisenkom/go-mssqldb"
-	"github.com/xndm-recommend/go-utils/conf_read"
+	"github.com/xndm-recommend/go-utils/config"
 )
+
+type MssqlMethod interface {
+	GetMssqlConnFromConf(c *config.ConfigEngine, name string)
+}
 
 type MssqlDbInfo struct {
 	SqlDataDb *sql.DB
@@ -21,13 +25,13 @@ type MssqlDbInfo struct {
 	DbTimeOut int
 }
 
-func getMssqlLoginStr(section *config.MssqlDbYamlData) string {
+func getMssqlLoginStr(section *config.MssqlDbData) string {
 	//连接字符串
 	return fmt.Sprintf("server=%s;port%d;database=%s;user id=%s;password=%s",
 		section.Host, section.Port, section.Db_name, section.User, section.Password)
 }
 
-func (this *MssqlDbInfo) createMssqlConns(login *config.MssqlDbYamlData) {
+func (this *MssqlDbInfo) createMssqlConns(login *config.MssqlDbData) {
 	db, err := sql.Open("mssql", getMssqlLoginStr(login))
 	errors_.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
@@ -41,9 +45,6 @@ func (this *MssqlDbInfo) createMssqlConns(login *config.MssqlDbYamlData) {
 	this.DbTimeOut = login.Time_out
 }
 
-func GetMssqlConnFromConf(this *conf_read.ConfigEngine, sectionName string) *MssqlDbInfo {
-	DbInfo := new(MssqlDbInfo)
-	sLogin := getMssqlDataFromConf(this, sectionName)
-	DbInfo.createMssqlConns(sLogin)
-	return DbInfo
+func (this *MssqlDbInfo) GetMssqlConnFromConf(c *config.ConfigEngine, name string) {
+	this.createMssqlConns(c.GetMssqlDataFromConf(name))
 }
