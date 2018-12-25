@@ -1,4 +1,4 @@
-package strings_
+package str_tools
 
 import (
 	"bytes"

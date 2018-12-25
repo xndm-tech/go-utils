@@ -1,4 +1,4 @@
-package types
+package type_convert
 
 import "strconv"
 
