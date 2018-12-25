@@ -19,5 +19,7 @@ type ConfRead interface {
 
 	GetStruct(name string, s interface{}) interface{}
 
-	GetMySqlFromConf(sectionName string) *MysqlDbYamlData
+	GetMySqlFromConf(name string) *MysqlDbData
+
+	GetMssqlDataFromConf(name string) *MssqlDbData
 }

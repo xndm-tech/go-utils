@@ -1,6 +1,6 @@
 package config
 
-type MysqlDbData struct {
+type MssqlDbData struct {
 	User       string            `yaml:"user"`
 	Password   string            `yaml:"password"`
 	Host       string            `yaml:"host"`
@@ -11,8 +11,8 @@ type MysqlDbData struct {
 	Time_out   int               `yaml:"time_out"`
 }
 
-func (this *ConfigEngine) GetMySqlFromConf(sectionName string) *MysqlDbData {
-	mysqlLogin := new(MysqlDbData)
-	login := this.GetStruct(sectionName, mysqlLogin)
-	return login.(*MysqlDbData)
+func (this *ConfigEngine) GetMssqlDataFromConf(name string) *MssqlDbData {
+	sql := new(MssqlDbData)
+	login := this.GetStruct(name, sql)
+	return login.(*MssqlDbData)
 }
