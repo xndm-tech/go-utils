@@ -1,12 +1,13 @@
 package HTTP
 
 import (
+	"errors"
 	"net/http"
 	"net/url"
 	"strconv"
 
 	"github.com/xndm-recommend/go-utils/conf_read"
-	"github.com/xndm-recommend/go-utils/errors"
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 type HttpInfo struct {
@@ -20,7 +21,7 @@ type HttpInfo struct {
 func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 	var url_tmp string = this.Url
 	u, err := url.Parse(url_tmp)
-	errors.CheckCommonErr(err)
+	errors_.CheckCommonErr(err)
 	for i, val := range values {
 		sVal, err := val.(string)
 		if false == err {
@@ -28,7 +29,7 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 		}
 		q := u.Query()
 		if len(this.Para) <= i {
-			errors.CheckCommonErr(errors.New("Set Url Para error"))
+			errors_.CheckCommonErr(errors.New("Set Url Para error"))
 		}
 		q.Set(this.Para[i], sVal)
 		u.RawQuery = q.Encode()

@@ -17,9 +17,9 @@ type MssqlDbInfo struct {
 	DbTimeOut int
 }
 
-func GetMssqlConnFromConf(this *conf_read.ConfigEngine, SectionName string) *MssqlDbInfo {
+func GetMssqlConnFromConf(this *conf_read.ConfigEngine, sectionName string) *MssqlDbInfo {
 	DbInfo := new(MssqlDbInfo)
-	sLogin := getMssqlDataFromConf(this, SectionName)
+	sLogin := getMssqlDataFromConf(this, sectionName)
 	DbInfo.createMssqlConns(sLogin)
 	return DbInfo
 }

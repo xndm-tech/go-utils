@@ -2,11 +2,19 @@ package tools
 
 import "github.com/xndm-recommend/go-utils/maths"
 
-func IsInSlice(list []string, item string) bool {
-	if 0 == len(list) {
+func StrToInterfaces(s []string) []interface{} {
+	ifs := make([]interface{}, len(s))
+	for ind, v := range s {
+		ifs[ind] = v
+	}
+	return ifs
+}
+
+func IsInStrSlice(s []string, item string) bool {
+	if 0 == len(s) {
 		return false
 	}
-	for _, singleItem := range list {
+	for _, singleItem := range s {
 		if item == singleItem {
 			return true
 		}
@@ -14,31 +22,33 @@ func IsInSlice(list []string, item string) bool {
 	return false
 }
 
-func RmDuplicate(list []string) (out []string) {
-	for _, v := range list {
-		if !IsInSlice(out, v) {
-			out = append(out, v)
+func RmDuplicateStr(s []string) []string {
+	dup := make([]string, len(s))
+	for _, v := range s {
+		if !IsInStrSlice(dup, v) {
+			dup = append(dup, v)
 		}
 	}
-	return out
+	return dup
 }
 
-func RmDuplicateLen(list []string, outLen int) (out []string) {
-	for _, v := range list {
-		if !IsInSlice(out, v) {
-			out = append(out, v)
+func RmDuplicateStrLen(s []string, l int) []string {
+	dup := make([]string, len(s))
+	for _, v := range s {
+		if !IsInStrSlice(dup, v) {
+			dup = append(dup, v)
 		}
-		if outLen == len(out) {
+		if len(dup) == l {
 			break
 		}
 	}
-	return out
+	return dup
 }
 
-func Difference(l1, l2 []string) (x []string) {
-	for _, i := range l1 {
+func DifferenceStr(s1, s2 []string) (x []string) {
+	for _, i := range s1 {
 		sign := true
-		for _, v := range l2 {
+		for _, v := range s2 {
 			if i == v {
 				sign = false
 				break
@@ -51,9 +61,9 @@ func Difference(l1, l2 []string) (x []string) {
 	return x
 }
 
-func DifferenceLen(l1, l2 []string, outLen int) (x []string) {
+func DifferenceStrLen(l1, l2 []string, outLen int) (x []string) {
 	if outLen < 0 {
-		return Difference(l1, l2)
+		return DifferenceStr(l1, l2)
 	}
 	for _, i := range l1 {
 		sign := true
@@ -74,7 +84,7 @@ func DifferenceLen(l1, l2 []string, outLen int) (x []string) {
 }
 
 func DifferenceAllowDup(list1, list2 []string, outLen int) (x []string) {
-	x = DifferenceLen(list1, list2, outLen)
+	x = DifferenceStrLen(list1, list2, outLen)
 	if outLen < 0 {
 		return x
 	} else if len(x) < outLen {
@@ -85,7 +95,7 @@ func DifferenceAllowDup(list1, list2 []string, outLen int) (x []string) {
 }
 
 func UnionList(list1, list2 []string) (x []string) {
-	return RmDuplicate(append(list1, list2...))
+	return RmDuplicateStr(append(list1, list2...))
 }
 
 func UnionListLen(list1, list2 []string, outLen int) (x []string) {
@@ -96,10 +106,10 @@ func UnionListLen(list1, list2 []string, outLen int) (x []string) {
 	return xTmp[:maths.MinInt(len(xTmp), outLen)]
 }
 
-func UnionListAllowDup(list1, list2 []string, outLen int) (xTmp []string) {
-	xTmp = append(list1, list2...)
+func UnionListAllowDup(list1, list2 []string, outLen int) (u []string) {
+	u = append(list1, list2...)
 	if outLen < 0 {
-		return xTmp
+		return u
 	}
-	return xTmp[:maths.MinInt(len(xTmp), outLen)]
+	return u[:maths.MinInt(len(u), outLen)]
 }

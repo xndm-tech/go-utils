@@ -19,5 +19,5 @@ func StrToInt64(a string) (int64, error) {
 }
 
 func FloatToStr(a float64) string {
-	return strconv.FormatFloat(a, 10)
+	return strconv.FormatFloat(a, 'f', -1, 64)
 }

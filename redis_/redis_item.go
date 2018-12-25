@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/xndm-recommend/go-utils/conf_read"
-	"github.com/xndm-recommend/go-utils/errors"
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 type RedisItem struct {
@@ -39,7 +39,7 @@ func (r *RedisItem) ItemIncr(redisClient *RedisDbInfo, items ...string) (int, er
 	p.Expire(key, r.ExpireTime)
 	p.Exec()
 	val, err := cmder.Result()
-	errors.CheckCommonErr(err)
+	errors_.CheckCommonErr(err)
 	return int(val), err
 }
 
@@ -51,13 +51,13 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	}
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.ZAdd(key, zmembers...).Err()
-	errors.CheckCommonErr(err)
+	errors_.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.ZRemRangeByRank(key, 0, setLen-r.Len).Err()
-		errors.CheckCommonErr(err)
+		errors_.CheckCommonErr(err)
 	}
 	return err
 }
@@ -65,7 +65,7 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error) {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.ZRange(key, 0, -1).Result()
-	errors.CheckCommonErr(err)
+	errors_.CheckCommonErr(err)
 	return result, err
 }
 
@@ -82,15 +82,6 @@ func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]string, 
 }
 
 func GetRedisItemInfoFromConf(c *conf_read.ConfigEngine, sectionName string) *RedisItem {
-	//interfaceMap := c.Get(name)
-	//itemMap := interfaceMap.(map[interface{}]interface{})
-	//ritem.KeyPrefix = itemMap["Prefix"].(string)
-	//errors_.CheckEmptyValue(ritem.KeyPrefix)
-	//ExpireSeconds := itemMap["Expire"].(int)
-	//ritem.ExpireTime = time.Duration(ExpireSeconds) * time.Second
-	//length := itemMap["Len"].(int)
-	//ritem.Len = int64(length)
-	//return ritem
 	login := new(RedisItem)
 	redisLogin := c.GetStruct(sectionName, login)
 	return redisLogin.(*RedisItem)

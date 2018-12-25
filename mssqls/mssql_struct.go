@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/xndm-recommend/go-utils/conf_read"
-	"github.com/xndm-recommend/go-utils/errors"
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 type mssqlDbYamlData struct {
@@ -34,12 +34,12 @@ func getMssqlLoginStr(section *mssqlDbYamlData) string {
 
 func (this *MssqlDbInfo) createMssqlConns(login *mssqlDbYamlData) {
 	db, err := sql.Open("mssql", getMssqlLoginStr(login))
-	errors.CheckFatalErr(err)
+	errors_.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
 	db.SetMaxIdleConns(login.Max_conns)
 	err = db.Ping()
-	errors.CheckFatalErr(err)
+	errors_.CheckFatalErr(err)
 	this.SqlDataDb = db
 	this.TableName = login.Table_name
 	this.MaxConns = login.Max_conns

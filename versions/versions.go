@@ -7,5 +7,3 @@ type Version struct {
 	Name string `json:"name"` // Affects YAML field names too.
 	Age  int    `json:"age"`
 }
-
-

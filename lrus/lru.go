@@ -3,7 +3,7 @@ package lrus
 import (
 	"sync"
 
-	"github.com/hashicorp/golang-lru/simplelru"
+	"github.com/xndm-recommend/go-utils/lrus/simplelru"
 )
 
 // Cache is a thread-safe fixed size LRU cache.
