@@ -96,7 +96,7 @@ func (this *Candidate) GetSliceNoLoop(size, num int) ([]string, error) {
 	if num <= 0 || size <= 0 {
 		return []string{}, errors.New("Input paras error")
 	}
-	return this.Cids[size*(num-1) : maths.MinInt(num*size, this.Len)], nil
+	return this.Cids[maths.MinInt(size*(num-1), this.Len):maths.MinInt(num*size, this.Len)], nil
 }
 
 func (this *Candidate) GetSliceLoop(size, num int) ([]string, error) {
