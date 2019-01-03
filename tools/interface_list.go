@@ -1,5 +1,7 @@
 package tools
 
+import "github.com/xndm-recommend/go-utils/maths"
+
 // s1对s2做差
 func DiffInterface(s1, s2 []interface{}) []interface{} {
 	dup := make([]interface{}, 0, len(s1))
@@ -16,4 +18,12 @@ func DiffInterface(s1, s2 []interface{}) []interface{} {
 		}
 	}
 	return dup
+}
+
+func DiffInterfaceLen(s1, s2 []interface{}, i int) []interface{} {
+	strings := DiffInterface(s1, s2)
+	if i < 0 {
+		return strings
+	}
+	return strings[:maths.MinInt(len(strings), i)]
 }
