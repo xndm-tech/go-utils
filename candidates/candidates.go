@@ -26,7 +26,7 @@ func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []interface{}) {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var tmpId interface{}
+		var tmpId string
 		err := rows.Scan(&tmpId)
 		errors_.CheckCommonErr(err)
 		if nil == err {

@@ -1,35 +1,36 @@
-package candidates_test
+package candidates
 
 import (
-	"math/rand"
+	"fmt"
 	"testing"
+
+	"github.com/xndm-recommend/go-utils/candidates"
+	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/mysqls"
 )
 
-func Benchmark2Q_Rand(b *testing.B) {
-	l, err := New2Q(8192)
-	if err != nil {
-		b.Fatalf("err: %v", err)
-	}
+const (
+	Config_path = "../config/test.yaml"
+)
 
-	trace := make([]int64, b.N*2)
-	for i := 0; i < b.N*2; i++ {
-		trace[i] = rand.Int63() % 32768
-	}
+func TestCandidate(b *testing.T) {
+	c := config.ConfigEngine{}
+	err := c.Load(Config_path)
+	errors_.CheckCommonErr(err)
+	dbinfo := mysqls.MysqlDbInfo{}
+	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 
-	b.ResetTimer()
+	can := candidates.Candidate{}
+	can.GenCandidateFromdb(&dbinfo, "select settled_rate from cartoon limit 1")
+	b.Log(can)
 
-	var hit, miss int
-	for i := 0; i < 2*b.N; i++ {
-		if i%2 == 0 {
-			l.Add(trace[i], trace[i])
-		} else {
-			_, ok := l.Get(trace[i])
-			if ok {
-				hit++
-			} else {
-				miss++
-			}
-		}
-	}
-	b.Logf("hit: %d miss: %d ratio: %f", hit, miss, float64(hit)/float64(miss))
+	//b.Logf("hit: %d miss: %d ratio: %f", hit, miss, float64(hit)/float64(miss))
+}
+
+func TestCandidate_test(b *testing.T) {
+	a := "asfdsa"
+	var tmp interface{}
+	tmp = a
+	fmt.Println(tmp)
 }
