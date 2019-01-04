@@ -96,3 +96,7 @@ func JoinStrByBufSep(sep string, str ...string) string {
 func SplitStrSep(str string, sep1, sep2 string) string {
 	return strings.Split(strings.Split(str, sep1)[1], sep2)[0]
 }
+
+func ContainStrNum(str string, sep string) int {
+	return len(strings.Split(str, sep)) - 1
+}
