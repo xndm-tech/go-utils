@@ -91,3 +91,8 @@ func JoinStrSliceByBufs(sep string, str []string) string {
 func JoinStrByBufSep(sep string, str ...string) string {
 	return JoinStrSliceByBufs(sep, str)
 }
+
+// split
+func SplitStrSep(str string, sep1, sep2 string) string {
+	return strings.Split(strings.Split(str, sep1)[1], sep2)[0]
+}
