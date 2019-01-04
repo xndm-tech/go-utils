@@ -34,7 +34,7 @@ func (this *MysqlDbInfo) QueryIdList(sql string) (ids []interface{}) {
 	return
 }
 
-func (this *MysqlDbInfo) QueryStruct(sql string, out ...*interface{}) {
+func (this *MysqlDbInfo) QueryStruct(sql string, out ...*string) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
 		errors_.CheckCommonErr(err)
@@ -42,13 +42,7 @@ func (this *MysqlDbInfo) QueryStruct(sql string, out ...*interface{}) {
 	}
 	defer rows.Close()
 	rows.Next()
-	for _, o := range out {
-		var tmp string
-		err = rows.Scan(&tmp)
-		errors_.CheckCommonErr(err)
-		if nil == err {
-			*o = tmp
-		}
-	}
+	err = rows.Scan(out)
+	errors_.CheckCommonErr(err)
 	return
 }

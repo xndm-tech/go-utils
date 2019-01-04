@@ -41,7 +41,7 @@ func TestMysqlDbInfo_QueryStruct(t *testing.T) {
 	dbinfo := mysqls.MysqlDbInfo{}
 	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 
-	var cartoon_id1, cartoon_id2 interface{}
+	var cartoon_id1, cartoon_id2 string
 	dbinfo.QueryStruct("select cartoon_id,cartoon_id from cartoon limit 1", &cartoon_id1, &cartoon_id2)
 	t.Log(cartoon_id1, cartoon_id2)
 }
