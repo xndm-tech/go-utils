@@ -1,7 +1,11 @@
 package mysqls
 
 import (
+	"fmt"
+	"strings"
 	"testing"
+
+	"github.com/xndm-recommend/go-utils/tools"
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
@@ -19,8 +23,24 @@ func TestMysqlDbInfo_QueryIdList(b *testing.T) {
 	dbinfo := mysqls.MysqlDbInfo{}
 	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 
-	ids := dbinfo.QueryIdList("select cartoon_id,settled_rate from cartoon limit 1")
+	ids := dbinfo.QueryIdList("select cartoon_id from cartoon limit 1")
 	b.Log(ids)
 
-	//b.Logf("hit: %d miss: %d ratio: %f", hit, miss, float64(hit)/float64(miss))
+	sql := "Select cartoon_id From cartoon limit 1"
+	a := strings.ToLower(sql)
+
+	a = tools.SplitStrSep(a, "select", "from")
+	fmt.Println(tools.ContainStrNum(a, ","))
+	//fmt.Println(strings.Contains(a, ","))
+}
+
+func TestMysqlDbInfo_QueryStruct(t *testing.T) {
+	c := config.ConfigEngine{}
+	err := c.Load(Config_path)
+	errors_.CheckCommonErr(err)
+	dbinfo := mysqls.MysqlDbInfo{}
+	dbinfo.GetDbConnFromConf(&c, "Comic_data")
+
+	dbinfo.QueryStruct("select cartoon_id,cartoon_id from cartoon limit 1")
+	t.Log(ids)
 }
