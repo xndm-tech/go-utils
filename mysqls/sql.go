@@ -41,6 +41,7 @@ func (this *MysqlDbInfo) QueryStruct(sql string, out ...*interface{}) {
 		return
 	}
 	defer rows.Close()
+	rows.Next()
 	for _, o := range out {
 		var tmp string
 		err = rows.Scan(&tmp)
