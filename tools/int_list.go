@@ -121,3 +121,15 @@ func GetIntListLoop(s []int, size, num int) ([]int, error) {
 	end := (num * size) % len(s)
 	return s[start:end], nil
 }
+
+// split list
+func GetIntListSplit(s []int) (s1, s2 []int) {
+	for i := 0; i < len(s); i++ {
+		if i%2 == 0 {
+			s1 = append(s1, s[i])
+		} else {
+			s2 = append(s2, s[i])
+		}
+	}
+	return
+}
