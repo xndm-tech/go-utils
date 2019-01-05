@@ -16,6 +16,10 @@ import (
 
 type MssqlMethod interface {
 	GetMssqlConnFromConf(c *config.ConfigEngine, name string)
+	QueryIdList(sql string)
+	QueryIdListLen(sql string, len int)
+	QueryStruct(sql string, pars ...interface{})
+	QueryIdMap(sql string)
 }
 
 type MssqlDbInfo struct {
