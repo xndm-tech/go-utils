@@ -4,8 +4,11 @@ package errors_
 有关报错打印的封装
 */
 import (
+	"errors"
 	"reflect"
 	"runtime"
+
+	"github.com/xndm-recommend/go-utils/errors_"
 
 	"github.com/cihub/seelog"
 )
@@ -57,4 +60,16 @@ func CheckEmptyValue(val interface{}) {
 			panic(`this value shouldn't be empty map`)
 		}
 	}
+}
+
+func CheckValueStat(v, min, max int) int {
+	if v > max {
+		errors_.CheckCommonErr(errors.New("input value is too large!!!"))
+		return max
+	}
+	if v < min {
+		errors_.CheckCommonErr(errors.New("input value is too small!!!"))
+		return min
+	}
+	return v
 }
