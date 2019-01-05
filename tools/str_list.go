@@ -1,6 +1,10 @@
 package tools
 
-import "github.com/xndm-recommend/go-utils/maths"
+import (
+	"errors"
+
+	"github.com/xndm-recommend/go-utils/maths"
+)
 
 func StrToInterface(s []string) []interface{} {
 	ifs := make([]interface{}, len(s))
@@ -89,4 +93,21 @@ func UnionStrListLen(s1, s2 []string, i int) []string {
 		return u
 	}
 	return u[:maths.MinInt(len(u), i)]
+}
+
+// string list
+func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
+	if num <= 0 || size <= 0 {
+		return []string{}, errors.New("Input paras error")
+	}
+	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
+}
+
+func GetStrListLoop(s []string, size, num int) ([]string, error) {
+	if num <= 0 || size <= 0 {
+		return []string{}, errors.New("Input parameter error!!!")
+	}
+	start := (size * (num - 1)) % len(s)
+	end := (num * size) % len(s)
+	return s[start:end], nil
 }
