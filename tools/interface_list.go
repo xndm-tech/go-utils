@@ -32,7 +32,7 @@ func DiffInterfaceLen(s1, s2 []interface{}, i int) []interface{} {
 	return strings[:maths.MinInt(len(strings), i)]
 }
 
-func ShuffleList(s []interface{}) {
+func ShuffleList(s ...interface{}) {
 	rand.Shuffle(len(s), func(i, j int) {
 		s[i], s[j] = s[j], s[i]
 	})

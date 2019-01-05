@@ -4,6 +4,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xndm-recommend/go-utils/redis_"
+	"github.com/zhanglanhui/go-utils/utils"
+
 	"github.com/xndm-recommend/go-utils/config"
 
 	"github.com/go-redis/redis"
@@ -34,25 +37,27 @@ type RedisItem struct {
 	Len        int64
 }
 
-func (r *RedisItem) GetKey(items ...string) string {
+func (r *RedisItem) getKey(items ...string) string {
 	return r.KeyPrefix + "_" + strings.Join(items, "_")
 }
 
+// map
 func (r *RedisItem) ItemSetByte(redisClient *RedisDbInfo, bytes []byte, items ...string) error {
-	return redisClient.RedisDataDb.Set(r.GetKey(items...), bytes, r.ExpireTime).Err()
+	return redisClient.RedisDataDb.Set(r.getKey(items...), bytes, r.ExpireTime).Err()
 }
 
 func (r *RedisItem) ItemSet(redisClient *RedisDbInfo, value interface{}, items ...string) error {
-	return redisClient.RedisDataDb.Set(r.GetKey(items...), value, r.ExpireTime).Err()
+	return redisClient.RedisDataDb.Set(r.getKey(items...), value, r.ExpireTime).Err()
 }
 
 func (r *RedisItem) ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.StringCmd, error) {
-	stringCmd := redisClient.RedisDataDb.Get(r.GetKey(items...))
+	stringCmd := redisClient.RedisDataDb.Get(r.getKey(items...))
 	return stringCmd, stringCmd.Err()
 }
 
+// Incr
 func (r *RedisItem) ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (int, error) {
-	key := r.GetKey(items...)
+	key := r.getKey(items...)
 	p := redisClient.RedisDataDb.Pipeline()
 	cmder := p.Incr(key)
 	p.Expire(key, r.ExpireTime)
@@ -62,8 +67,21 @@ func (r *RedisItem) ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (i
 	return int(val), err
 }
 
+func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]*redis.StringCmd, error) {
+	var cmders []*redis.StringCmd
+	p := redisClient.RedisDataDb.Pipeline()
+	for _, id := range ids {
+		key := r.getKey(id)
+		cmd := p.Get(key)
+		cmders = append(cmders, cmd)
+	}
+	_, err := p.Exec()
+	return cmders, err
+}
+
+// ZAdd
 func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...string) error {
-	key := r.GetKey(items...)
+	key := r.getKey(items...)
 	zmembers := make([]redis.Z, 0, len(ids))
 	for _, id := range ids {
 		zmembers = append(zmembers, redis.Z{Score: float64(time.Now().UnixNano()), Member: id})
@@ -81,25 +99,37 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	return err
 }
 
-func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error) {
-	key := r.GetKey(items...)
+func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) []string {
+	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.ZRange(key, 0, -1).Result()
 	errors_.CheckCommonErr(err)
-	return result, err
+	return result
 }
 
-func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]*redis.StringCmd, error) {
-	var cmders []*redis.StringCmd
+// SAdd
+func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ...string) {
+	key := r.getKey(items...)
 	p := redisClient.RedisDataDb.Pipeline()
-	for _, id := range ids {
-		key := r.GetKey(id)
-		cmd := p.Get(key)
-		cmders = append(cmders, cmd)
+	err := p.SAdd(key, ids).Err()
+	errors_.CheckCommonErr(err)
+	p.Expire(key, time.Duration(r.ExpireTime)*time.Second)
+	cmdSetLen := p.SCard(key)
+	p.Exec()
+	setLen := cmdSetLen.Val()
+	if setLen > r.Len {
+		err := redisClient.RedisDataDb.SPopN(key, setLen-r.Len).Err()
+		utils.CheckCommonErr(err)
 	}
-	_, err := p.Exec()
-	return cmders, err
 }
 
+func (r *RedisItem) ItemGetSAdd(redisClient *redis_.RedisDbInfo, items ...string) []string {
+	key := r.getKey(items...)
+	result, err := redisClient.RedisDataDb.SMembers(key).Result()
+	errors_.CheckCommonErr(err)
+	return result
+}
+
+// connection
 func (r *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string) {
 	login := new(RedisItem)
 	redisLogin := c.GetStruct(name, login)
