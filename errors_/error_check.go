@@ -13,6 +13,11 @@ import (
 	"github.com/cihub/seelog"
 )
 
+const (
+	GENDER_MALE_STR   = "0"
+	GENDER_FEMALE_STR = "1"
+)
+
 //错误处理函数
 func CheckCommonErr(err error) {
 	if err != nil {
@@ -72,4 +77,12 @@ func CheckValueStat(v, min, max int) int {
 		return min
 	}
 	return v
+}
+
+func CheckGenderStat(g string) string {
+	if g == GENDER_FEMALE_STR {
+		return GENDER_FEMALE_STR
+	} else {
+		return GENDER_MALE_STR
+	}
 }
