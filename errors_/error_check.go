@@ -8,8 +8,6 @@ import (
 	"reflect"
 	"runtime"
 
-	"github.com/xndm-recommend/go-utils/errors_"
-
 	"github.com/cihub/seelog"
 )
 
@@ -69,11 +67,11 @@ func CheckEmptyValue(val interface{}) {
 
 func CheckValueStat(v, min, max int) int {
 	if v > max {
-		errors_.CheckCommonErr(errors.New("input value is too large!!!"))
+		CheckCommonErr(errors.New("input value is too large!!!"))
 		return max
 	}
 	if v < min {
-		errors_.CheckCommonErr(errors.New("input value is too small!!!"))
+		CheckCommonErr(errors.New("input value is too small!!!"))
 		return min
 	}
 	return v
