@@ -108,13 +108,13 @@ func UnionIntListLen(s1, s2 []int, i int) []int {
 // string list
 func GetIntListNoLoop(s []int, size, num int) ([]int, error) {
 	if num <= 0 || size <= 0 {
-		return []int{}, errors.New("Input paras error")
+		return []int{}, errors.New("Input paras error!!!")
 	}
 	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
 }
 
 func GetIntListLoop(s []int, size, num int) ([]int, error) {
-	if num <= 0 || size <= 0 {
+	if num <= 0 || size <= 0 || size >= len(s) {
 		return []int{}, errors.New("Input parameter error!!!")
 	}
 	start := (size * (num - 1)) % len(s)
@@ -122,9 +122,9 @@ func GetIntListLoop(s []int, size, num int) ([]int, error) {
 	if start < end {
 		return s[start:end:end], nil
 	} else {
-		var out []int
-		out = append(out, s[start:]...)
-		out = append(out, s[:end]...)
+		out := make([]int, 0, size)
+		out = append(out, s[start:len(s):len(s)]...)
+		out = append(out, s[:end:end]...)
 		return out, nil
 	}
 }
@@ -139,4 +139,10 @@ func SplitIntList(s []int) (s1, s2 []int) {
 		}
 	}
 	return
+}
+
+func ShuffleIntList(s []int) {
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
+	})
 }

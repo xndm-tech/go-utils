@@ -2,6 +2,7 @@ package tools
 
 import (
 	"errors"
+	"math/rand"
 
 	"github.com/xndm-recommend/go-utils/maths"
 )
@@ -104,7 +105,7 @@ func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
 }
 
 func GetStrListLoop(s []string, size, num int) ([]string, error) {
-	if num <= 0 || size <= 0 {
+	if num <= 0 || size <= 0 || size >= len(s) {
 		return []string{}, errors.New("Input parameter error!!!")
 	}
 	start := (size * (num - 1)) % len(s)
@@ -112,7 +113,7 @@ func GetStrListLoop(s []string, size, num int) ([]string, error) {
 	if start < end {
 		return s[start:end:end], nil
 	} else {
-		var out []string
+		out := make([]string, 0, size)
 		out = append(out, s[start:len(s):len(s)]...)
 		out = append(out, s[:end:end]...)
 		return out, nil
@@ -129,4 +130,10 @@ func SplitStrList(s []string) (s1, s2 []string) {
 		}
 	}
 	return
+}
+
+func ShuffleStrList(s []string) {
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
+	})
 }
