@@ -113,8 +113,8 @@ func GetStrListLoop(s []string, size, num int) ([]string, error) {
 		return s[start:end:end], nil
 	} else {
 		var out []string
-		out = append(out, s[start:]...)
-		out = append(out, s[:end]...)
+		out = append(out, s[start:len(s):len(s)]...)
+		out = append(out, s[:end:end]...)
 		return out, nil
 	}
 }
