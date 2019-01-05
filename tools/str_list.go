@@ -109,13 +109,20 @@ func GetStrListLoop(s []string, size, num int) ([]string, error) {
 	}
 	start := (size * (num - 1)) % len(s)
 	end := (num * size) % len(s)
-	return s[start:end], nil
+	if start < end {
+		return s[start:end:end], nil
+	} else {
+		var out []string
+		out = append(out, s[start:]...)
+		out = append(out, s[:end]...)
+		return out, nil
+	}
 }
 
 // split list
 func SplitStrList(s []string) (s1, s2 []string) {
 	for i := 0; i < len(s); i++ {
-		if i%2 == 0 {
+		if 0 == i%2 {
 			s1 = append(s1, s[i])
 		} else {
 			s2 = append(s2, s[i])
