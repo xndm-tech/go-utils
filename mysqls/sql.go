@@ -13,7 +13,7 @@ func checkNumSql(sql string) int {
 	return tools.ContainStrNum(tools.SplitStrSep(sql_low, "select", "from"), ",")
 }
 
-func (this *MysqlDbInfo) QueryIdList(sql string) (ids []interface{}) {
+func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
 	if checkNumSql(sql) != 0 {
 		return
 	}
@@ -34,6 +34,25 @@ func (this *MysqlDbInfo) QueryIdList(sql string) (ids []interface{}) {
 	return
 }
 
+func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
+	if checkNumSql(sql) != 0 {
+		return
+	}
+	stmt, err := this.SqlDataDb.Prepare(sql + " LIMIT ?")
+	defer stmt.Close()
+	errors_.CheckCommonErr(err)
+	row, err := stmt.Query(len)
+	defer row.Close()
+	errors_.CheckCommonErr(err)
+	for row.Next() {
+		var tmpId string
+		err = row.Scan(&tmpId)
+		errors_.CheckCommonErr(err)
+		ids = append(ids, tmpId)
+	}
+	return
+}
+
 func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
@@ -44,5 +63,22 @@ func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 	rows.Next()
 	err = rows.Scan(pars...)
 	errors_.CheckCommonErr(err)
+	return
+}
+
+func (this *MysqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err error) {
+	if checkNumSql(sql) != 1 {
+		return
+	}
+	// 查询数据
+	var key, val string
+	row, err := this.SqlDataDb.Query(sql)
+	defer row.Close()
+	errors_.CheckCommonErr(err)
+	for row.Next() {
+		err = row.Scan(&key, &val)
+		errors_.CheckCommonErr(err)
+		mOut[key] = val
+	}
 	return
 }
