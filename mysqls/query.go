@@ -34,6 +34,27 @@ func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
 	return
 }
 
+func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int) {
+	if checkNumSql(sql) != 0 {
+		return
+	}
+	rows, err := this.SqlDataDb.Query(sql)
+	if err != nil {
+		errors_.CheckCommonErr(err)
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var tmpId int
+		err := rows.Scan(&tmpId)
+		errors_.CheckCommonErr(err)
+		if nil == err {
+			ids = append(ids, tmpId)
+		}
+	}
+	return
+}
+
 func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
 	if checkNumSql(sql) != 0 {
 		return
