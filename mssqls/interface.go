@@ -8,10 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/errors_"
-
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 type MssqlMethod interface {

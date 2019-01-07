@@ -4,13 +4,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/redis_"
-	"github.com/zhanglanhui/go-utils/utils"
-
-	"github.com/xndm-recommend/go-utils/config"
-
 	"github.com/go-redis/redis"
+	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/zhanglanhui/go-utils/utils"
 )
 
 type RedisItemMethod interface {
@@ -122,7 +119,7 @@ func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ..
 	}
 }
 
-func (r *RedisItem) ItemGetSAdd(redisClient *redis_.RedisDbInfo, items ...string) []string {
+func (r *RedisItem) ItemGetSAdd(redisClient *RedisDbInfo, items ...string) []string {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.SMembers(key).Result()
 	errors_.CheckCommonErr(err)

@@ -5,8 +5,7 @@ import (
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
-
-	"go-utils/mysqls"
+	"github.com/xndm-recommend/go-utils/mysqls"
 )
 
 const (
