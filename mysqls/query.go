@@ -67,6 +67,7 @@ func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 }
 
 func (this *MysqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err error) {
+	mOut = make(map[string]string, 0)
 	if checkNumSql(sql) != 1 {
 		return
 	}
