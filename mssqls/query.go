@@ -13,14 +13,15 @@ func checkNumSql(sql string) int {
 	return tools.ContainStrNum(tools.SplitStrSep(sql_low, "select", "from"), ",")
 }
 
-func (this *MssqlDbInfo) QueryIdList(sql string) (ids []string) {
-	if checkNumSql(sql) != 0 {
-		return
-	}
+func (this *MssqlDbInfo) QueryIdList(sql string) (ids []string, err error) {
+
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
-		return
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -34,14 +35,38 @@ func (this *MssqlDbInfo) QueryIdList(sql string) (ids []string) {
 	return
 }
 
-func (this *MssqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
-	if checkNumSql(sql) != 0 {
-		return
+func (this *MssqlDbInfo) QueryIdIntList(sql string) (ids []int, err error) {
+	rows, err := this.SqlDataDb.Query(sql)
+	if err != nil {
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
+	defer rows.Close()
+	for rows.Next() {
+		var tmpId int
+		err := rows.Scan(&tmpId)
+		errors_.CheckCommonErr(err)
+		if nil == err {
+			ids = append(ids, tmpId)
+		}
+	}
+	return
+}
+func (this *MssqlDbInfo) QueryIdListLen(sql string, len int) (ids []string, err error) {
 	stmt, err := this.SqlDataDb.Prepare(sql + " LIMIT ?")
 	defer stmt.Close()
 	errors_.CheckCommonErr(err)
 	row, err := stmt.Query(len)
+	if err != nil {
+		row, err = stmt.Query(len)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
+	}
 	defer row.Close()
 	errors_.CheckCommonErr(err)
 	for row.Next() {
@@ -53,11 +78,14 @@ func (this *MssqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
 	return
 }
 
-func (this *MssqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
+func (this *MssqlDbInfo) QueryStruct(sql string, pars ...interface{}) (err error) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
-		return
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
 	defer rows.Close()
 	rows.Next()
@@ -66,19 +94,24 @@ func (this *MssqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 	return
 }
 
-func (this *MssqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err error) {
-	if checkNumSql(sql) != 1 {
-		return
-	}
+func (this *MssqlDbInfo) QueryIdMap(sql string) (out map[string]string, err error) {
+	out = make(map[string]string, 0)
 	// 查询数据
 	var key, val string
 	row, err := this.SqlDataDb.Query(sql)
+	if err != nil {
+		row, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
+	}
 	defer row.Close()
 	errors_.CheckCommonErr(err)
 	for row.Next() {
 		err = row.Scan(&key, &val)
 		errors_.CheckCommonErr(err)
-		mOut[key] = val
+		out[key] = val
 	}
 	return
 }
