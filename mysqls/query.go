@@ -13,7 +13,7 @@ func checkNumSql(sql string) int {
 	return tools.ContainStrNum(tools.SplitStrSep(sql_low, "select", "from"), ",")
 }
 
-func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
+func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string, err error) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
 		rows, err = this.SqlDataDb.Query(sql)
@@ -34,7 +34,7 @@ func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int) {
+func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int, err error) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
 		rows, err = this.SqlDataDb.Query(sql)
@@ -55,7 +55,7 @@ func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int) {
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
+func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string, err error) {
 	stmt, err := this.SqlDataDb.Prepare(sql + " LIMIT ?")
 	defer stmt.Close()
 	errors_.CheckCommonErr(err)
@@ -78,7 +78,7 @@ func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
 	return
 }
 
-func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
+func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) (err error) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
 		rows, err = this.SqlDataDb.Query(sql)
