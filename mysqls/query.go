@@ -14,13 +14,13 @@ func checkNumSql(sql string) int {
 }
 
 func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
-	if checkNumSql(sql) != 0 {
-		return
-	}
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
-		return
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -35,13 +35,13 @@ func (this *MysqlDbInfo) QueryIdList(sql string) (ids []string) {
 }
 
 func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int) {
-	if checkNumSql(sql) != 0 {
-		return
-	}
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
-		return
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -56,13 +56,17 @@ func (this *MysqlDbInfo) QueryIdIntList(sql string) (ids []int) {
 }
 
 func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
-	if checkNumSql(sql) != 0 {
-		return
-	}
 	stmt, err := this.SqlDataDb.Prepare(sql + " LIMIT ?")
 	defer stmt.Close()
 	errors_.CheckCommonErr(err)
 	row, err := stmt.Query(len)
+	if err != nil {
+		row, err = stmt.Query(len)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
+	}
 	defer row.Close()
 	errors_.CheckCommonErr(err)
 	for row.Next() {
@@ -77,8 +81,11 @@ func (this *MysqlDbInfo) QueryIdListLen(sql string, len int) (ids []string) {
 func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 	rows, err := this.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
-		return
+		rows, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
 	}
 	defer rows.Close()
 	rows.Next()
@@ -89,12 +96,16 @@ func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) {
 
 func (this *MysqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err error) {
 	mOut = make(map[string]string, 0)
-	if checkNumSql(sql) != 1 {
-		return
-	}
 	// 查询数据
 	var key, val string
 	row, err := this.SqlDataDb.Query(sql)
+	if err != nil {
+		row, err = this.SqlDataDb.Query(sql)
+		if err != nil {
+			errors_.CheckCommonErr(err)
+			return
+		}
+	}
 	defer row.Close()
 	errors_.CheckCommonErr(err)
 	for row.Next() {
