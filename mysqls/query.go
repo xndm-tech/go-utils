@@ -94,8 +94,8 @@ func (this *MysqlDbInfo) QueryStruct(sql string, pars ...interface{}) (err error
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err error) {
-	mOut = make(map[string]string, 0)
+func (this *MysqlDbInfo) QueryIdMap(sql string) (result map[string]string, err error) {
+	result = make(map[string]string, 0)
 	// 查询数据
 	var key, val string
 	row, err := this.SqlDataDb.Query(sql)
@@ -111,7 +111,46 @@ func (this *MysqlDbInfo) QueryIdMap(sql string) (mOut map[string]string, err err
 	for row.Next() {
 		err = row.Scan(&key, &val)
 		errors_.CheckCommonErr(err)
-		mOut[key] = val
+		result[key] = val
+	}
+	return
+}
+
+// 根据sql得到col: value的map的切片
+func (this *MysqlDbInfo) QueryMap(sql string) (result []map[string]string) {
+	result = make([]map[string]string, 0)
+	var err error
+	rows, err := this.SqlDataDb.Query(sql)
+	if nil != err {
+		errors_.CheckCommonErr(err)
+		return nil
+	}
+	defer rows.Close()
+	cols, err := rows.Columns() //  [列名]
+	if nil != err {
+		errors_.CheckCommonErr(err)
+		return nil
+	}
+	// columns储存所有的列的值, columnPointers的每个元素为columns相应元素的指针
+	columns := make([]string, len(cols))
+	columnPointers := make([]interface{}, len(cols))
+	for i, _ := range columns {
+		columnPointers[i] = &columns[i]
+	}
+	for rows.Next() {
+		// 把每条记录的信息读到columnPointers里
+		if err := rows.Scan(columnPointers...); err != nil {
+			errors_.CheckCommonErr(err)
+			return nil
+		}
+		// Create our map, and retrieve the value for each column from the pointers slice,
+		// storing it in the map with the name of the column as the key.
+		m := make(map[string]string, 0) // m = {colName: value}
+		for i, colName := range cols {
+			val := columnPointers[i].(*string)
+			m[colName] = *val
+		}
+		result = append(result, m)
 	}
 	return
 }
