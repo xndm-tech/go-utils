@@ -19,8 +19,8 @@ func main() {
 	dbinfo := mysqls.MysqlDbInfo{}
 	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 
-	var cartoon_id1, cartoon_id2 string
-	var shoucang string
-	dbinfo.QueryStruct("select cartoon_id,cartoon_name,shoucang from cartoon limit 1", &cartoon_id1, &cartoon_id2, &shoucang)
-	fmt.Println(cartoon_id1, cartoon_id2, shoucang)
+	//var cartoon_id1, cartoon_id2 string
+	//var shoucang string
+
+	fmt.Println(dbinfo.QueryIdList("select cartoon_id,cartoon_name,shoucang from cartoon limit 1"))
 }

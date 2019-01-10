@@ -36,7 +36,10 @@ func TestMysqlDbInfo_QueryStruct(t *testing.T) {
 	dbinfo := MysqlDbInfo{}
 	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 
-	var cartoon_id1, cartoon_id2 int
-	dbinfo.QueryStruct("select cartoon_id,cartoon_id from cartoon limit 1", &cartoon_id1, &cartoon_id2)
-	t.Log(cartoon_id1, cartoon_id2)
+	//var cartoon_id1, cartoon_id2 int
+
+	var names []string
+	err = dbinfo.SqlDataDb.Select(&names, "SELECT cartoon_id FROM cartoon LIMIT 10")
+	t.Log(names)
+	t.Log(dbinfo.QueryIdList("select cartoon_id from cartoon limit ?", "10"))
 }
