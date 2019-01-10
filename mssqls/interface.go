@@ -4,9 +4,10 @@ package mssqls
 有关sqlServer数据库连接的封装
 */
 import (
-	"database/sql"
 	"fmt"
 	"time"
+
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/xndm-recommend/go-utils/config"
@@ -15,14 +16,14 @@ import (
 
 type MssqlMethod interface {
 	GetMssqlConnFromConf(c *config.ConfigEngine, name string)
-	QueryIdList(sql string)
-	QueryIdListLen(sql string, len int)
-	QueryStruct(sql string, pars ...interface{})
-	QueryIdMap(sql string)
+	QueryIdList(sql string, para ...string) (ids []string, err error)
+	QueryIdIntList(sql string, para ...string) (ids []int, err error)
+	QueryStruct(sql string, dest ...interface{}) (err error)
+	QueryIdMap(sql string) (result map[string]string, err error)
 }
 
 type MssqlDbInfo struct {
-	SqlDataDb *sql.DB
+	SqlDataDb *sqlx.DB
 	TableName map[string]string
 	MaxConns  int
 	DbTimeOut int
@@ -35,7 +36,7 @@ func getMssqlLoginStr(section *config.MssqlDbData) string {
 }
 
 func (this *MssqlDbInfo) createMssqlConns(login *config.MssqlDbData) {
-	db, err := sql.Open("mssql", getMssqlLoginStr(login))
+	db, err := sqlx.Open("mssql", getMssqlLoginStr(login))
 	errors_.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
