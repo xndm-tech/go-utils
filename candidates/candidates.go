@@ -13,12 +13,12 @@ const (
 )
 
 type Candidate struct {
-	Cids []string
+	Cids []interface{}
 	Len  int
-	Ind  map[string]int
+	Ind  map[interface{}]int
 }
 
-func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []string) {
+func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []interface{}) {
 	rows, err := db.SqlDataDb.Query(sql)
 	if err != nil {
 		errors_.CheckCommonErr(err)
@@ -36,12 +36,12 @@ func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []string) {
 	return ids
 }
 
-func getIndexId(ids []string) map[string]int {
-	IdInd := make(map[string]int, len(ids))
+func getIndexId(ids []interface{}) map[interface{}]int {
+	idInd := make(map[interface{}]int, len(ids))
 	for ind, id := range ids {
-		IdInd[id] = ind
+		idInd[id] = ind
 	}
-	return IdInd
+	return idInd
 }
 
 func (this *Candidate) GenCandidateFromdb(db *mysqls.MysqlDbInfo, sql string) {
@@ -50,13 +50,13 @@ func (this *Candidate) GenCandidateFromdb(db *mysqls.MysqlDbInfo, sql string) {
 	this.Len = len(this.Cids)
 }
 
-func (this *Candidate) GenCandidateFromList(s []string) {
+func (this *Candidate) GenCandidateFromList(s []interface{}) {
 	this.Cids = s
 	this.Ind = getIndexId(this.Cids)
 	this.Len = len(this.Cids)
 }
 
-func (this *Candidate) GetElementInd(s string) int {
+func (this *Candidate) GetElementInd(s interface{}) int {
 	if ind, ok := this.Ind[s]; ok {
 		return ind
 	} else {
@@ -64,11 +64,11 @@ func (this *Candidate) GetElementInd(s string) int {
 	}
 }
 
-func (this *Candidate) GetCids() []string {
+func (this *Candidate) GetCids() []interface{} {
 	return this.Cids
 }
 
-func (this *Candidate) GetInd() map[string]int {
+func (this *Candidate) GetInd() map[interface{}]int {
 	return this.Ind
 }
 
@@ -76,7 +76,7 @@ func (this *Candidate) GetLen() int {
 	return this.Len
 }
 
-func (this *Candidate) IsInSlice(item string) bool {
+func (this *Candidate) IsInSlice(item interface{}) bool {
 	if _, ok := this.Ind[item]; ok {
 		return true
 	} else {
@@ -84,24 +84,24 @@ func (this *Candidate) IsInSlice(item string) bool {
 	}
 }
 
-func (this *Candidate) GetDifference(s []string) []string {
-	return tools.DifferenceStr(this.Cids, s)
+func (this *Candidate) GetDifference(s []interface{}) []interface{} {
+	return tools.DiffInterface(this.Cids, s)
 }
 
-func (this *Candidate) GetDifferenceLen(s []string, len int) []string {
-	return tools.DifferenceStrLen(this.Cids, s, len)
+func (this *Candidate) GetDifferenceLen(s []interface{}, len int) []interface{} {
+	return tools.DiffInterfaceLen(this.Cids, s, len)
 }
 
-func (this *Candidate) GetSliceNoLoop(size, num int) ([]string, error) {
+func (this *Candidate) GetSliceNoLoop(size, num int) ([]interface{}, error) {
 	if num <= 0 || size <= 0 {
-		return []string{}, errors.New("Input paras error")
+		return []interface{}{}, errors.New("Input paras error")
 	}
 	return this.Cids[maths.MinInt(size*(num-1), this.Len):maths.MinInt(num*size, this.Len)], nil
 }
 
-func (this *Candidate) GetSliceLoop(size, num int) ([]string, error) {
+func (this *Candidate) GetSliceLoop(size, num int) ([]interface{}, error) {
 	if num <= 0 || size <= 0 {
-		return []string{}, errors.New("Input paras error")
+		return []interface{}{}, errors.New("Input parameter error!!!")
 	}
 	start := (size * (num - 1)) % this.Len
 	end := (num * size) % this.Len

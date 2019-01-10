@@ -8,14 +8,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/errors_"
-
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 type MssqlMethod interface {
 	GetMssqlConnFromConf(c *config.ConfigEngine, name string)
+	QueryIdList(sql string)
+	QueryIdListLen(sql string, len int)
+	QueryStruct(sql string, pars ...interface{})
+	QueryIdMap(sql string)
 }
 
 type MssqlDbInfo struct {

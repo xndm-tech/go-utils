@@ -7,15 +7,19 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/errors_"
-	"github.com/xndm-recommend/go-utils/tools"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/tools"
 )
 
 type MysqlMethod interface {
 	GetDbConnFromConf(c *config.ConfigEngine, name string)
+	QueryIdList(sql string)
+	QueryIdIntList(sql string)
+	QueryIdListLen(sql string, len int)
+	QueryStruct(sql string, pars ...interface{})
+	QueryIdMap(sql string)
 }
 
 type MysqlDbInfo struct {

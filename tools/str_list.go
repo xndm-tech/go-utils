@@ -1,6 +1,11 @@
 package tools
 
-import "github.com/xndm-recommend/go-utils/maths"
+import (
+	"errors"
+	"math/rand"
+
+	"github.com/xndm-recommend/go-utils/maths"
+)
 
 func StrToInterface(s []string) []interface{} {
 	ifs := make([]interface{}, len(s))
@@ -89,4 +94,46 @@ func UnionStrListLen(s1, s2 []string, i int) []string {
 		return u
 	}
 	return u[:maths.MinInt(len(u), i)]
+}
+
+// string list
+func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
+	if num <= 0 || size <= 0 {
+		return []string{}, errors.New("Input paras error")
+	}
+	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
+}
+
+func GetStrListLoop(s []string, size, num int) ([]string, error) {
+	if num <= 0 || size <= 0 || size >= len(s) {
+		return []string{}, errors.New("Input parameter error!!!")
+	}
+	start := (size * (num - 1)) % len(s)
+	end := (num * size) % len(s)
+	if start < end {
+		return s[start:end:end], nil
+	} else {
+		out := make([]string, 0, size)
+		out = append(out, s[start:len(s):len(s)]...)
+		out = append(out, s[:end:end]...)
+		return out, nil
+	}
+}
+
+// split list
+func SplitStrList(s []string) (s1, s2 []string) {
+	for i := 0; i < len(s); i++ {
+		if 0 == i%2 {
+			s1 = append(s1, s[i])
+		} else {
+			s2 = append(s2, s[i])
+		}
+	}
+	return
+}
+
+func ShuffleStrList(s []string) {
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
+	})
 }

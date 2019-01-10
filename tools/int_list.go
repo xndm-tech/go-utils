@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"errors"
 	"math/rand"
 
 	"github.com/xndm-recommend/go-utils/maths"
@@ -101,4 +102,47 @@ func UnionIntListLen(s1, s2 []int, i int) []int {
 		return u
 	}
 	return u[:maths.MinInt(len(u), i)]
+}
+
+// int list
+// string list
+func GetIntListNoLoop(s []int, size, num int) ([]int, error) {
+	if num <= 0 || size <= 0 {
+		return []int{}, errors.New("Input paras error!!!")
+	}
+	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
+}
+
+func GetIntListLoop(s []int, size, num int) ([]int, error) {
+	if num <= 0 || size <= 0 || size >= len(s) {
+		return []int{}, errors.New("Input parameter error!!!")
+	}
+	start := (size * (num - 1)) % len(s)
+	end := (num * size) % len(s)
+	if start < end {
+		return s[start:end:end], nil
+	} else {
+		out := make([]int, 0, size)
+		out = append(out, s[start:len(s):len(s)]...)
+		out = append(out, s[:end:end]...)
+		return out, nil
+	}
+}
+
+// split list
+func SplitIntList(s []int) (s1, s2 []int) {
+	for i := 0; i < len(s); i++ {
+		if 0 == i%2 {
+			s1 = append(s1, s[i])
+		} else {
+			s2 = append(s2, s[i])
+		}
+	}
+	return
+}
+
+func ShuffleIntList(s []int) {
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
+	})
 }

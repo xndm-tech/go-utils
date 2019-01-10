@@ -16,7 +16,6 @@ type RedisConnMethod interface {
 type RedisDbInfo struct {
 	RedisDataDb *redis.ClusterClient
 	PoolSize    int
-	DataTime    int
 }
 
 func getRedisNodes(redisConf *config.RedisData, i int) (clusterNodes []redis.ClusterNode) {
@@ -66,5 +65,4 @@ func (this *RedisDbInfo) GetRedisConnFromConf(c *config.ConfigEngine, name strin
 	redis_login := c.GetRedisDataFromConf(name)
 	this.RedisDataDb = createClusterClient(redis_login)
 	this.PoolSize = redis_login.Pool_size
-	this.DataTime = redis_login.Data_time
 }

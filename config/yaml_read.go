@@ -192,12 +192,10 @@ func (c *ConfigEngine) setField(obj interface{}, name string, value interface{})
 	if !structFieldValue.IsValid() {
 		return fmt.Errorf("No such field: %s in obj", name)
 	}
-
 	// CanSet判断值是否可以被更改
 	if !structFieldValue.CanSet() {
 		return fmt.Errorf("Cannot set %s field value", name)
 	}
-
 	// 获取要更改值的类型
 	structFieldType := structFieldValue.Type()
 	val := reflect.ValueOf(value)

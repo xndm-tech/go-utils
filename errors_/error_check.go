@@ -4,10 +4,16 @@ package errors_
 有关报错打印的封装
 */
 import (
+	"errors"
 	"reflect"
 	"runtime"
 
 	"github.com/cihub/seelog"
+)
+
+const (
+	GENDER_MALE_STR   = "0"
+	GENDER_FEMALE_STR = "1"
 )
 
 //错误处理函数
@@ -56,5 +62,25 @@ func CheckEmptyValue(val interface{}) {
 		if len(val.(map[interface{}]interface{})) == 0 {
 			panic(`this value shouldn't be empty map`)
 		}
+	}
+}
+
+func CheckValueStat(v, min, max int) int {
+	if v > max {
+		CheckCommonErr(errors.New("input value is too large!!!"))
+		return max
+	}
+	if v < min {
+		CheckCommonErr(errors.New("input value is too small!!!"))
+		return min
+	}
+	return v
+}
+
+func CheckGenderStat(g string) string {
+	if g == GENDER_FEMALE_STR {
+		return GENDER_FEMALE_STR
+	} else {
+		return GENDER_MALE_STR
 	}
 }
