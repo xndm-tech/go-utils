@@ -1,8 +1,9 @@
 package type_
 
 import (
-	"go-utils/errors_"
 	"strconv"
+
+	"github.com/xndm-recommend/go-utils/errors_"
 )
 
 func IntToStr(a int) string {
