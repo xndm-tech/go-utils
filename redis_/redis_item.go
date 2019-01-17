@@ -85,13 +85,13 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	}
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.ZAdd(key, zmembers...).Err()
-	errors_.CheckCommonErr(err)
+	errors_.CheckErrSendEmail(err)
 	cmdSetLen := p.ZCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.ZRemRangeByRank(key, 0, setLen-r.Len).Err()
-		errors_.CheckCommonErr(err)
+		errors_.CheckErrSendEmail(err)
 	}
 	return err
 }
@@ -99,7 +99,7 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) []string {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.ZRange(key, 0, -1).Result()
-	errors_.CheckCommonErr(err)
+	errors_.CheckErrSendEmail(err)
 	return result
 }
 
@@ -108,21 +108,21 @@ func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ..
 	key := r.getKey(items...)
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.SAdd(key, ids).Err()
-	errors_.CheckCommonErr(err)
+	errors_.CheckErrSendEmail(err)
 	p.Expire(key, time.Duration(r.ExpireTime)*time.Second)
 	cmdSetLen := p.SCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.SPopN(key, setLen-r.Len).Err()
-		utils.CheckCommonErr(err)
+		utils.CheckErrSendEmail(err)
 	}
 }
 
 func (r *RedisItem) ItemGetSAdd(redisClient *RedisDbInfo, items ...string) []string {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.SMembers(key).Result()
-	errors_.CheckCommonErr(err)
+	errors_.CheckErrSendEmail(err)
 	return result
 }
 
