@@ -29,22 +29,28 @@ type RedisItemMethod interface {
 }
 
 type RedisItem struct {
-	KeyPrefix  string
-	ExpireTime time.Duration
-	Len        int64
+	Prefix string
+	Expire time.Duration
+	Len    int64
+}
+
+type RedisItemYaml struct {
+	Prefix string
+	Expire int
+	Len    int
 }
 
 func (r *RedisItem) getKey(items ...string) string {
-	return r.KeyPrefix + "_" + strings.Join(items, "_")
+	return r.Prefix + "_" + strings.Join(items, "_")
 }
 
 // map
 func (r *RedisItem) ItemSetByte(redisClient *RedisDbInfo, bytes []byte, items ...string) error {
-	return redisClient.RedisDataDb.Set(r.getKey(items...), bytes, r.ExpireTime).Err()
+	return redisClient.RedisDataDb.Set(r.getKey(items...), bytes, r.Expire).Err()
 }
 
 func (r *RedisItem) ItemSet(redisClient *RedisDbInfo, value interface{}, items ...string) error {
-	return redisClient.RedisDataDb.Set(r.getKey(items...), value, r.ExpireTime).Err()
+	return redisClient.RedisDataDb.Set(r.getKey(items...), value, r.Expire).Err()
 }
 
 func (r *RedisItem) ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.StringCmd, error) {
@@ -57,7 +63,7 @@ func (r *RedisItem) ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (i
 	key := r.getKey(items...)
 	p := redisClient.RedisDataDb.Pipeline()
 	cmder := p.Incr(key)
-	p.Expire(key, r.ExpireTime)
+	p.Expire(key, r.Expire)
 	p.Exec()
 	val, err := cmder.Result()
 	errors_.CheckCommonErr(err)
@@ -109,7 +115,7 @@ func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ..
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.SAdd(key, ids).Err()
 	errors_.CheckErrSendEmail(err)
-	p.Expire(key, time.Duration(r.ExpireTime)*time.Second)
+	p.Expire(key, time.Duration(r.Expire)*time.Second)
 	cmdSetLen := p.SCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
@@ -127,8 +133,11 @@ func (r *RedisItem) ItemGetSAdd(redisClient *RedisDbInfo, items ...string) []str
 }
 
 // connection
-func (r *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string) {
-	login := new(RedisItem)
-	redisLogin := c.GetStruct(name, login)
-	r = redisLogin.(*RedisItem)
+func (this *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string) {
+	r := new(RedisItemYaml)
+	ret := c.GetStruct(name, r).(*RedisItemYaml)
+	this.Prefix = ret.Prefix
+	this.Len = int64(ret.Len)
+	this.Expire = time.Duration(ret.Expire) * time.Second
+
 }
