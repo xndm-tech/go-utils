@@ -1,21 +1,34 @@
-package type_convert
+package type_
 
-import "strconv"
+import (
+	"go-utils/errors_"
+	"strconv"
+)
 
 func IntToStr(a int) string {
 	return strconv.Itoa(a)
 }
 
-func StrToInt(a string) (int, error) {
-	return strconv.Atoi(a)
+func StrToInt(a string, default_int int) int {
+	if r, err := strconv.Atoi(a); err == nil {
+		return r
+	} else {
+		errors_.CheckCommonErr(err)
+		return default_int
+	}
 }
 
 func Int64ToStr(a int64) string {
 	return strconv.FormatInt(a, 10)
 }
 
-func StrToInt64(a string) (int64, error) {
-	return strconv.ParseInt(a, 10, 64)
+func StrToInt64(a string, default_int int64) int64 {
+	if r, err := strconv.ParseInt(a, 10, 64); err == nil {
+		return r
+	} else {
+		errors_.CheckCommonErr(err)
+		return default_int
+	}
 }
 
 func FloatToStr(a float64) string {

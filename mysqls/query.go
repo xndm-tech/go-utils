@@ -11,8 +11,8 @@ func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (ids []str
 		err = this.SqlDataDb.Select(&ids, sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
-			return
 		}
+		return
 	}
 	return
 }
