@@ -5,22 +5,22 @@ import (
 )
 
 //http://jmoiron.github.io/sqlx/
-func (this *MysqlDbInfo) QueryIdList(sql string, para ...string) (ids []string, err error) {
-	err = this.SqlDataDb.Select(&ids, sql, para)
+func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (ids []string, err error) {
+	err = this.SqlDataDb.Select(&ids, sql, para...)
 	if err != nil {
-		err := this.SqlDataDb.Select(&ids, sql, para)
+		err = this.SqlDataDb.Select(&ids, sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
-			return
 		}
+		return
 	}
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdIntList(sql string, para ...string) (ids []int, err error) {
-	err = this.SqlDataDb.Select(&ids, sql, para)
+func (this *MysqlDbInfo) QueryIdIntList(sql string, para ...interface{}) (ids []int, err error) {
+	err = this.SqlDataDb.Select(&ids, sql, para...)
 	if err != nil {
-		err := this.SqlDataDb.Select(&ids, sql, para)
+		err = this.SqlDataDb.Select(&ids, sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
 			return

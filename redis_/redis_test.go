@@ -1,6 +1,8 @@
-package mysqls
+package redis__test
 
 import (
+	"fmt"
+	"go-utils/redis_"
 	"testing"
 
 	"github.com/xndm-recommend/go-utils/config"
@@ -29,17 +31,14 @@ const (
 //	//fmt.Println(strings.Contains(a, ","))
 //}
 
-func TestMysqlDbInfo_QueryStruct(t *testing.T) {
+func TestGetRedisItemFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	err := c.Load(Config_path)
 	errors_.CheckCommonErr(err)
-	dbinfo := MysqlDbInfo{}
-	dbinfo.GetDbConnFromConf(&c, "Comic_data")
-
-	//var cartoon_id1, cartoon_id2 int
-
-	var names []string
-	err = dbinfo.SqlDataDb.Select(&names, "SELECT cartoon_id FROM cartoon LIMIT 10")
-	t.Log(names)
-	t.Log(dbinfo.QueryIdList("select cartoon_id from cartoon limit ?", "10"))
+	dbinfo := new(redis_.RedisItem)
+	dbinfo.GetRedisItemFromConf(&c, "Redis_items.Uid_personal_index")
+	//dbinfo.GetDbConnFromConf(&c, "Comic_data")
+	fmt.Println(dbinfo)
+	//StcRec.UidPersonalInterst.GetRedisItemFromConf(yamlConfig, "Redis_items.Uid_personal_interst")
+	//StcRec.UidPersonalInterst = GetRedisItemFromConf(yamlConfig, "Redis_items.Uid_personal_interst")
 }

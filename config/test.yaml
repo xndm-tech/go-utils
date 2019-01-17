@@ -8,3 +8,11 @@ Comic_data:
     Comic: cartoon
   Max_conns: 10
   Time_out: 50
+
+
+
+Redis_items:
+  Uid_personal_index:
+    Prefix: "smh_homepage_personal_index:"
+    Expire: 3600
+    Len: 10
