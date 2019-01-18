@@ -1,6 +1,8 @@
 package mysqls
 
 import (
+	sql_ "database/sql"
+
 	"github.com/xndm-recommend/go-utils/errors_"
 )
 
@@ -48,7 +50,7 @@ func (this *MysqlDbInfo) QueryStruct(sql string, dest ...interface{}) (err error
 func (this *MysqlDbInfo) QueryIdMap(sql string) (result map[string]string, err error) {
 	result = make(map[string]string, 0)
 	// 查询数据
-	var key, val string
+	var key, val sql_.NullString
 	row, err := this.SqlDataDb.Query(sql)
 	if err != nil {
 		row, err = this.SqlDataDb.Query(sql)
@@ -62,7 +64,7 @@ func (this *MysqlDbInfo) QueryIdMap(sql string) (result map[string]string, err e
 	for row.Next() {
 		err = row.Scan(&key, &val)
 		errors_.CheckCommonErr(err)
-		result[key] = val
+		result[key.String] = val.String
 	}
 	return
 }
