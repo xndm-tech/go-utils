@@ -51,9 +51,9 @@ func (this *MysqlDbInfo) QueryIdMap(sql string, para ...interface{}) (dest map[s
 	dest = make(map[string]string, 0)
 	// 查询数据
 	var key, val sql_.NullString
-	row, err := this.SqlDataDb.Query(sql)
+	row, err := this.SqlDataDb.Query(sql, para...)
 	if err != nil {
-		row, err = this.SqlDataDb.Query(sql)
+		row, err = this.SqlDataDb.Query(sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
 			return
