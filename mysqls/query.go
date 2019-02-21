@@ -7,10 +7,10 @@ import (
 )
 
 //http://jmoiron.github.io/sqlx/
-func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (ids []string, err error) {
-	err = this.SqlDataDb.Select(&ids, sql, para...)
+func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (dest []string, err error) {
+	err = this.SqlDataDb.Select(&dest, sql, para...)
 	if err != nil {
-		err = this.SqlDataDb.Select(&ids, sql, para...)
+		err = this.SqlDataDb.Select(&dest, sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
 		}
@@ -19,10 +19,10 @@ func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (ids []str
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdIntList(sql string, para ...interface{}) (ids []int, err error) {
-	err = this.SqlDataDb.Select(&ids, sql, para...)
+func (this *MysqlDbInfo) QueryIdIntList(sql string, para ...interface{}) (dest []int, err error) {
+	err = this.SqlDataDb.Select(&dest, sql, para...)
 	if err != nil {
-		err = this.SqlDataDb.Select(&ids, sql, para...)
+		err = this.SqlDataDb.Select(&dest, sql, para...)
 		if err != nil {
 			errors_.CheckCommonErr(err)
 			return
@@ -47,8 +47,8 @@ func (this *MysqlDbInfo) QueryStruct(sql string, dest ...interface{}) (err error
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdMap(sql string) (result map[string]string, err error) {
-	result = make(map[string]string, 0)
+func (this *MysqlDbInfo) QueryIdMap(sql string, para ...interface{}) (dest map[string]string, err error) {
+	dest = make(map[string]string, 0)
 	// 查询数据
 	var key, val sql_.NullString
 	row, err := this.SqlDataDb.Query(sql)
@@ -64,7 +64,7 @@ func (this *MysqlDbInfo) QueryIdMap(sql string) (result map[string]string, err e
 	for row.Next() {
 		err = row.Scan(&key, &val)
 		errors_.CheckCommonErr(err)
-		result[key.String] = val.String
+		dest[key.String] = val.String
 	}
 	return
 }
