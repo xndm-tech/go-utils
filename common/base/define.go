@@ -58,3 +58,9 @@ const (
 	DataStatusCode_NotReward DataStatusCode = 0
 	DataStatusCode_Rewarded  DataStatusCode = 1
 )
+
+const (
+	ANDROID string = "android"
+	IOS     string = "ios"
+	IPAD    string = "ipad"
+)
