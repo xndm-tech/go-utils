@@ -76,6 +76,21 @@ func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
 	}
 }
 
+//发送GET请求，失败后间隔一秒后重试，会重试指定次数
+//url:请求地址
+//times:重试次数
+//response:请求返回的内容
+func (this *HttpInfo) HttpGetDelayRetry(url string, times int) (response string, ok bool) {
+	for i := 0; i < times; i++ {
+		response, ok = this.HttpGet(url)
+		if ok {
+			break
+		}
+		time.Sleep(time.Second)
+	}
+	return response, ok
+}
+
 //发送POST请求
 //url:请求地址，data:POST请求提交的数据,contentType:请求体格式，如：application/json_struct
 //content:请求放回的内容
