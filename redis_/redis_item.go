@@ -118,7 +118,7 @@ func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ..
 	errors_.CheckCommonErr(err)
 	p.Expire(key, r.Expire)
 	cmdSetLen := p.SCard(key)
-	p.Exec()
+	_, err = p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err = redisClient.RedisDataDb.SPopN(key, setLen-r.Len).Err()
