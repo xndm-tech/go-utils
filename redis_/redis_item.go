@@ -64,7 +64,8 @@ func (r *RedisItem) ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (i
 	p := redisClient.RedisDataDb.Pipeline()
 	cmder := p.Incr(key)
 	p.Expire(key, r.Expire)
-	p.Exec()
+	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
 	val, err := cmder.Result()
 	errors_.CheckCommonErr(err)
 	return int(val), err
@@ -94,7 +95,7 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	err := p.ZAdd(key, zmembers...).Err()
 	errors_.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
-	p.Exec()
+	_, err = p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.ZRemRangeByRank(key, 0, setLen-r.Len).Err()
