@@ -1,31 +1,32 @@
 package redis_
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/go-redis/redis"
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
-	"github.com/zhanglanhui/go-utils/utils"
 )
 
 type RedisItemMethod interface {
 	GetRedisItemFromConf(c *config.ConfigEngine, name string)
 
 	ItemSetByte(redisClient *RedisDbInfo, bytes []byte, items ...string) error
-
 	ItemSet(redisClient *RedisDbInfo, value interface{}, items ...string) error
+	ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.StringCmd, error)
 
-	ItemGet(redisClient *RedisDbInfo, items ...string) (string, error)
-
-	ItemIncr(redisClient *RedisDbInfo, items ...string) (int, error)
+	ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (int, error)
 
 	ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...string) error
-
 	ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error)
 
-	ItemPGet(redisClient *RedisDbInfo, ids []string) ([]string, error)
+	ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ...string) error
+	ItemGetSAdd(redisClient *RedisDbInfo, items ...string) ([]string, error)
+
+	// 批量获取
+	ItemPGet(redisClient *RedisDbInfo, ids []string) ([]*redis.StringCmd, error)
 }
 
 type RedisItem struct {
@@ -70,6 +71,7 @@ func (r *RedisItem) ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (i
 	return int(val), err
 }
 
+// 批量获取
 func (r *RedisItem) ItemPGet(redisClient *RedisDbInfo, ids []string) ([]*redis.StringCmd, error) {
 	var cmders []*redis.StringCmd
 	p := redisClient.RedisDataDb.Pipeline()
@@ -91,45 +93,49 @@ func (r *RedisItem) ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...st
 	}
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.ZAdd(key, zmembers...).Err()
-	errors_.CheckErrSendEmail(err)
+	errors_.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
 	p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.Len {
 		err := redisClient.RedisDataDb.ZRemRangeByRank(key, 0, setLen-r.Len).Err()
-		errors_.CheckErrSendEmail(err)
+		errors_.CheckCommonErr(err)
 	}
 	return err
 }
 
-func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) []string {
+func (r *RedisItem) ItemGetZRange(redisClient *RedisDbInfo, items ...string) ([]string, error) {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.ZRange(key, 0, -1).Result()
-	errors_.CheckErrSendEmail(err)
-	return result
+	errors_.CheckCommonErr(err)
+	return result, err
 }
 
 // SAdd
-func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ...string) {
+func (r *RedisItem) ItemSetSAdd(redisClient *RedisDbInfo, ids []string, items ...string) error {
 	key := r.getKey(items...)
+	fmt.Println("key", key)
 	p := redisClient.RedisDataDb.Pipeline()
 	err := p.SAdd(key, ids).Err()
-	errors_.CheckErrSendEmail(err)
+	fmt.Println("err test", err)
+	errors_.CheckCommonErr(err)
 	p.Expire(key, time.Duration(r.Expire)*time.Second)
-	cmdSetLen := p.SCard(key)
-	p.Exec()
-	setLen := cmdSetLen.Val()
-	if setLen > r.Len {
-		err := redisClient.RedisDataDb.SPopN(key, setLen-r.Len).Err()
-		utils.CheckErrSendEmail(err)
-	}
+	//cmdSetLen := p.SCard(key)
+	//p.Exec()
+	//setLen := cmdSetLen.Val()
+	//if setLen > r.Len {
+	//	fmt.Println("alsdfjlasdfjalsd")
+	//	err = redisClient.RedisDataDb.SPopN(key, setLen-r.Len).Err()
+	//	errors_.CheckCommonErr(err)
+	//}
+	return err
 }
 
-func (r *RedisItem) ItemGetSAdd(redisClient *RedisDbInfo, items ...string) []string {
+func (r *RedisItem) ItemGetSAdd(redisClient *RedisDbInfo, items ...string) ([]string, error) {
 	key := r.getKey(items...)
 	result, err := redisClient.RedisDataDb.SMembers(key).Result()
-	errors_.CheckErrSendEmail(err)
-	return result
+	errors_.CheckCommonErr(err)
+	return result, err
 }
 
 // connection
@@ -139,5 +145,4 @@ func (this *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string)
 	this.Prefix = ret.Prefix
 	this.Len = int64(ret.Len)
 	this.Expire = time.Duration(ret.Expire) * time.Second
-
 }
