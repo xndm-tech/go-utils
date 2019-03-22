@@ -16,6 +16,9 @@ type RedisItemMethod interface {
 	ItemSet(redisClient *RedisDbInfo, value interface{}, items ...string) error
 	ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.StringCmd, error)
 
+	ItemHSet(redisClient *RedisDbInfo, field string, value interface{}, items ...string) error
+	ItemHGet(redisClient *RedisDbInfo, field string, items ...string) (*redis.StringCmd, error)
+
 	ItemIncrExpire(redisClient *RedisDbInfo, items ...string) (int, error)
 
 	ItemZAdd(redisClient *RedisDbInfo, ids []string, items ...string) error
@@ -55,6 +58,15 @@ func (r *RedisItem) ItemSet(redisClient *RedisDbInfo, value interface{}, items .
 
 func (r *RedisItem) ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.StringCmd, error) {
 	stringCmd := redisClient.RedisDataDb.Get(r.getKey(items...))
+	return stringCmd, stringCmd.Err()
+}
+
+func (r *RedisItem) ItemHSet(redisClient *RedisDbInfo, field string, value interface{}, items ...string) error {
+	return redisClient.RedisDataDb.HSet(r.getKey(items...), field, value).Err()
+}
+
+func (r *RedisItem) ItemHGet(redisClient *RedisDbInfo, field string, items ...string) (*redis.StringCmd, error) {
+	stringCmd := redisClient.RedisDataDb.HGet(r.getKey(items...), field)
 	return stringCmd, stringCmd.Err()
 }
 
