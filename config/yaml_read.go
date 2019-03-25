@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 	//"gopkg.in/yaml.v2"
 )
 
@@ -177,21 +177,35 @@ func (c *ConfigEngine) GetStruct(name string, s interface{}) interface{} {
 
 func (c *ConfigEngine) mapToStruct(m map[interface{}]interface{}, s interface{}) interface{} {
 	// 先将结构体转换出一个map[string]string{tag:fieldName}
+	var yamlTagMap map[string]string
 	structElements := reflect.ValueOf(s).Elem()
-	yamlTagMap := make(map[string]string, structElements.NumField())
+	yamlTagMap = make(map[string]string, structElements.NumField())
 	for i := 0; i < structElements.NumField(); i++ {
 		yamlTagMap[structElements.Type().Field(i).Tag.Get("yaml")] = structElements.Type().Field(i).Name
 	}
 	for key, value := range m {
-		switch key.(type) {
-		case string:
-			// 查询tagMap，如果有tag用tag对应的fieldName，否则直接用获取的key
-			if fieldName, ok := yamlTagMap[key.(string)]; ok {
-				c.setField(s, fieldName, value)
-			} else {
-				c.setField(s, key.(string), value)
-			}
+		fieldName, ok := yamlTagMap[key.(string)]
+		if !ok {
+			fieldName = key.(string)
 		}
+		switch structElements.FieldByName(fieldName).Kind() {
+		case reflect.Struct:
+			//fmt.Println("struct:", fieldName)
+			c.mapToStruct(m[key].(map[interface{}]interface{}), reflect.Indirect(reflect.ValueOf(s)).FieldByName(fieldName).Addr().Interface())
+		default:
+			//fmt.Println(structElements.FieldByName(fieldName).Kind().String())
+			//fmt.Println("interface:", fieldName)
+			c.setField(s, fieldName, value)
+		}
+		//switch value.(type) {
+		//case map[interface{}]interface{}:
+		//case interface{}:
+		//	c.setField(s, fieldName, value)
+		//}
+		//switch key.(type) {
+		//case string:
+		//	c.setField(s, key.(string), value)
+		//}
 	}
 	return s
 }

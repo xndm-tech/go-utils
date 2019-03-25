@@ -35,9 +35,9 @@ type RedisItem struct {
 }
 
 type RedisItemYaml struct {
-	Prefix string
-	Expire int
-	Len    int
+	Prefix string `yaml:"prefix"`
+	Expire int    `yaml:"expire"`
+	Len    int    `yaml:"len"`
 }
 
 func (r *RedisItem) getKey(items ...string) string {
@@ -139,5 +139,5 @@ func (this *RedisItem) GetRedisItemFromConf(c *config.ConfigEngine, name string)
 	this.Prefix = ret.Prefix
 	this.Len = int64(ret.Len)
 	this.Expire = time.Duration(ret.Expire) * time.Second
-
+	errors_.CheckEmptyValue(this.Prefix)
 }

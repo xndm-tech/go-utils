@@ -1,8 +1,6 @@
 package errors_
 
 import (
-	"runtime"
-
 	"github.com/cihub/seelog"
 	"github.com/getsentry/raven-go"
 	"github.com/pkg/errors"
@@ -15,8 +13,7 @@ func SentryCaptureError(err error) {
 func CheckErrSendEmail(err error) {
 	if err != nil {
 		errDetail := errors.WithStack(err)
-		_, file, line, _ := runtime.Caller(1)
-		seelog.Error("Important error:", file, ":", line, errDetail)
+		seelog.Errorf("%+v", errDetail)
 		raven.CaptureError(errDetail, nil)
 	}
 }
