@@ -61,12 +61,12 @@ func (r *RedisItem) ItemGet(redisClient *RedisDbInfo, items ...string) (*redis.S
 	return stringCmd, stringCmd.Err()
 }
 
-func (r *RedisItem) ItemHSet(redisClient *RedisDbInfo, key string, value interface{}, items ...string) error {
-	return redisClient.RedisDataDb.HSet(key, r.getKey(items...), value).Err()
+func (r *RedisItem) ItemHSet(redisClient *RedisDbInfo, field string, value interface{}, items ...string) error {
+	return redisClient.RedisDataDb.HSet(r.getKey(items...), field, value).Err()
 }
 
-func (r *RedisItem) ItemHGet(redisClient *RedisDbInfo, key string, items ...string) (*redis.StringCmd, error) {
-	stringCmd := redisClient.RedisDataDb.HGet(key, r.getKey(items...))
+func (r *RedisItem) ItemHGet(redisClient *RedisDbInfo, field string, items ...string) (*redis.StringCmd, error) {
+	stringCmd := redisClient.RedisDataDb.HGet(r.getKey(items...), field)
 	return stringCmd, stringCmd.Err()
 }
 
