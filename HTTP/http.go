@@ -76,6 +76,27 @@ func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
 	}
 }
 
+//发送GET请求
+//url:请求地址
+//response:请求返回的内容
+func (this *HttpInfo) HttpGetBody(url string, body []byte) (response string, ok bool) {
+	request, err := http.NewRequest("GET", url, bytes.NewReader(body))
+	errors_.CheckCommonErr(err)
+	resp, err := this.HttpClient.Do(request)
+	if err != nil {
+		errors_.CheckCommonErr(err)
+		return "", false
+	}
+	defer resp.Body.Close()
+	if 200 == resp.StatusCode {
+		body, err := ioutil.ReadAll(resp.Body)
+		errors_.CheckCommonErr(err)
+		return string(body), true
+	} else {
+		return "", false
+	}
+}
+
 //发送GET请求，失败后间隔一秒后重试，会重试指定次数
 //url:请求地址
 //times:重试次数

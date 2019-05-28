@@ -1,9 +1,9 @@
 package config
 
 type HttpData struct {
-	Url      string   `yaml:"Url"`
-	Para     []string `yaml:"Para"`
-	Time_out int      `yaml:"Time_out"`
+	Url      string   `yaml:"url"`
+	Para     []string `yaml:"para"`
+	Time_out int      `yaml:"time_out"`
 }
 
 func (this *ConfigEngine) GetHttpFromConf(name string) *HttpData {
