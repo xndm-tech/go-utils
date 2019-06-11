@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -54,6 +55,31 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 		q.Set(this.Para[i], sVal)
 		u.RawQuery = q.Encode()
 	}
+	return u.String()
+}
+
+func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{})string{
+	u, err := url.Parse(this.Url)
+	errors_.CheckErrSendEmail(err)
+	q := u.Query()
+	value := reflect.ValueOf(stru)
+	typ := reflect.TypeOf(stru)
+	for i := 0; i < typ.NumField(); i++ {
+		var name string
+		name, ok := typ.Field(i).Tag.Lookup("url")
+		if !ok || name == "-"{
+			continue
+		}
+		var fieldVal string
+		switch typV := value.Field(i).Interface().(type){
+		case string:
+			fieldVal = typV
+		case int:
+			fieldVal = strconv.Itoa(typV)
+		}
+		q.Add(name, fieldVal)
+	}
+	u.RawQuery = q.Encode()
 	return u.String()
 }
 
