@@ -105,6 +105,17 @@ func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
 	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
 }
 
+func GetStrListRandN(s []string, size int) []string {
+	cs := append(s[:0:0], s...)
+	rand.Shuffle(len(cs), func(i, j int){
+		cs[i], cs[j] = cs[j], cs[i]
+	})
+	if size <= 0 || size >= len(s) {
+		return cs
+	}
+	return cs[:size]
+}
+
 func GetStrListLoop(s []string, size, num int) ([]string, error) {
 	if num <= 0 || size <= 0 || size >= len(s) {
 		return []string{}, err.Errorf("Input parameter error!!!, num:%d, size:%d, len(s):%d", num, size, len(s))
