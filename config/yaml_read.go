@@ -94,6 +94,32 @@ func (c *ConfigEngine) GetStringStringMap(name string) map[string]string {
 	return nil
 }
 
+func (c *ConfigEngine) GetStringStringSliceMap(name string) map[string][]string {
+	path := strings.Split(name, ".")
+	data := c.ConfigData
+	for key, value := range path {
+		v, ok := data[value]
+		if !ok {
+			break
+		}
+		if (key + 1) == len(path) {
+			stringMap := make(map[string][]string, len(v.(map[interface{}]interface{})))
+			for vkey, vval := range v.(map[interface{}]interface{}){
+				strList := make([]string, 0, len(vval.([]interface{})))
+				for _, vstr := range vval.([]interface{}){
+					strList = append(strList, vstr.(string))
+				}
+				stringMap[vkey.(string)] = strList
+			}
+			return stringMap
+		}
+		if reflect.TypeOf(v).String() == "map[interface {}]interface {}" {
+			data = v.(map[interface{}]interface{})
+		}
+	}
+	return nil
+}
+
 // 从配置文件中获取string类型的值
 func (c *ConfigEngine) GetString(name string) string {
 	value := c.Get(name)
