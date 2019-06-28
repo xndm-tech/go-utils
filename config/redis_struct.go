@@ -1,6 +1,6 @@
 package config
 
-type RedisData struct {
+type RedisClusterData struct {
 	Master_host []string `yaml:"Master_host"`
 	Master_port []string `yaml:"Master_port"`
 	Slave_host  []string `yaml:"Slave_host"`
@@ -9,6 +9,18 @@ type RedisData struct {
 	Nodes       int      `yaml:"Nodes"`
 	Data_time   int      `yaml:"Data_time"`
 	Pool_size   int      `yaml:"Pool_size"`
+}
+
+type RedisData struct {
+	Addr      string `yaml:"addr"`
+	Password  string `yaml:"Password"`
+	Pool_size int    `yaml:"Pool_size"`
+}
+
+func (this *ConfigEngine) GetRedisClusterDataFromConf(name string) *RedisClusterData {
+	login := new(RedisClusterData)
+	redisLogin := this.GetStruct(name, login)
+	return redisLogin.(*RedisClusterData)
 }
 
 func (this *ConfigEngine) GetRedisDataFromConf(name string) *RedisData {

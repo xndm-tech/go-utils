@@ -25,7 +25,7 @@ type ConfRead interface {
 
 	GetHttpFromConf(name string) *HttpData
 
-	GetRedisDataFromConf(name string) *RedisData
+	GetRedisDataFromConf(name string) *RedisClusterData
 
 	SentryRavenInit(name string) error
 }

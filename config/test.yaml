@@ -12,7 +12,33 @@ Comic_data:
 
 
 Redis_items:
-  Uid_personal_index:
-    Prefix: "smh_homepage_personal_index:"
+  test_item:
+    Prefix: "test:"
     Expire: 3600
     Len: 10
+
+Redis_cluster:
+  Master_host:
+    - "172.16.1.77"
+    - "172.16.1.77"
+    - "172.16.1.77"
+  Master_port:
+    - "7000"
+    - "7001"
+    - "7002"
+  Slave_host:
+    - "172.16.1.77"
+    - "172.16.1.77"
+    - "172.16.1.77"
+  Slave_port:
+    - "7003"
+    - "7004"
+    - "7005"
+  Password: "gUcAFcWf#Dg4He7R"
+  Nodes: 3
+  Pool_size: 200
+
+Redis:
+  Addr: "172.16.1.105:7006"
+  Password: "0iY87blaERqARYie"
+  Pool_size: 200
