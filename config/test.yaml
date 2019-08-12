@@ -1,3 +1,7 @@
+Version:
+  Algorithm: rec_app
+  Versions: 0.2.1
+
 Comic_data:
   Host: 47.99.39.114
   Port: "3306"
@@ -8,8 +12,6 @@ Comic_data:
     Comic: cartoon
   Max_conns: 10
   Time_out: 50
-
-
 
 Redis_items:
   test_item:
