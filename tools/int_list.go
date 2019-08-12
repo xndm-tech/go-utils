@@ -146,3 +146,41 @@ func ShuffleIntList(s []int) {
 		s[i], s[j] = s[j], s[i]
 	})
 }
+
+func MixListIntV2(l ...[]int) []int {
+	// 均匀混合推荐结果
+	var count int
+	var maxLen int
+	for _, s := range l {
+		count += len(s)
+		maxLen = maths.MaxInt(maxLen, len(s))
+	}
+	mix := make([]int, 0, count)
+	for i := 0; i < maxLen; i++ {
+		for j := range l {
+			if i < len(l[j]) {
+				mix = append(mix, l[j][i])
+			}
+		}
+	}
+	return RmDuplicateInt(mix)
+}
+
+func MixListIntLenV2(Len int, l ...[]int) []int {
+	// 均匀混合推荐结果
+	var count int
+	var maxLen int
+	for _, s := range l {
+		count += len(s)
+		maxLen = maths.MaxInt(maxLen, len(s))
+	}
+	mix := make([]int, 0, count)
+	for i := 0; i < maxLen; i++ {
+		for j := range l {
+			if i < len(l[j]) {
+				mix = append(mix, l[j][i])
+			}
+		}
+	}
+	return RmDuplicateIntLen(mix, Len)
+}

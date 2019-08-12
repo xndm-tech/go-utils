@@ -107,7 +107,7 @@ func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
 
 func GetStrListRandN(s []string, size int) []string {
 	cs := append(s[:0:0], s...)
-	rand.Shuffle(len(cs), func(i, j int){
+	rand.Shuffle(len(cs), func(i, j int) {
 		cs[i], cs[j] = cs[j], cs[i]
 	})
 	if size <= 0 || size >= len(s) {
@@ -162,4 +162,42 @@ func MixStrList(s1, s2 []string) []string {
 	mix = append(mix, s1[i:]...)
 	mix = append(mix, s2[j:]...)
 	return mix
+}
+
+func MixListStrV2(l ...[]string) []string {
+	// 均匀混合推荐结果
+	var count int
+	var maxLen int
+	for _, s := range l {
+		count += len(s)
+		maxLen = maths.MaxInt(maxLen, len(s))
+	}
+	mix := make([]string, 0, count)
+	for i := 0; i < maxLen; i++ {
+		for j := range l {
+			if i < len(l[j]) {
+				mix = append(mix, l[j][i])
+			}
+		}
+	}
+	return RmDuplicateStr(mix)
+}
+
+func MixListStrLenV2(Len int, l ...[]string) []string {
+	// 均匀混合推荐结果
+	var count int
+	var maxLen int
+	for _, s := range l {
+		count += len(s)
+		maxLen = maths.MaxInt(maxLen, len(s))
+	}
+	mix := make([]string, 0, count)
+	for i := 0; i < maxLen; i++ {
+		for j := range l {
+			if i < len(l[j]) {
+				mix = append(mix, l[j][i])
+			}
+		}
+	}
+	return RmDuplicateStrLen(mix, Len)
 }
