@@ -14,6 +14,7 @@ type RedisItemMethod interface {
 
 	ItemSetByte(redisClient redis.Cmdable, bytes []byte, items ...string) error
 	ItemSet(redisClient redis.Cmdable, value interface{}, items ...string) error
+	ItemPSet(redisClient redis.Cmdable, kv map[string]string) ([]*redis.StatusCmd, error)
 	ItemGet(redisClient redis.Cmdable, items ...string) (*redis.StringCmd, error)
 
 	ItemHSet(redisClient redis.Cmdable, key string, value interface{}, items ...string) error
@@ -57,6 +58,16 @@ func (r *RedisItem) ItemSetByte(redisClient redis.Cmdable, values []byte, keys .
 
 func (r *RedisItem) ItemSet(redisClient redis.Cmdable, value interface{}, keys ...string) error {
 	return redisClient.Set(r.ItemGetKey(keys...), value, r.Expire).Err()
+}
+
+func (r *RedisItem) ItemPSet(redisClient redis.Cmdable, kv map[string]string) ([]*redis.StatusCmd, error) {
+	var cmders []*redis.StatusCmd
+	p := redisClient.Pipeline()
+	for k, v := range kv {
+		cmders = append(cmders, p.Set(r.ItemGetKey(k), v, r.Expire))
+	}
+	_, err := p.Exec()
+	return cmders, err
 }
 
 func (r *RedisItem) ItemGet(redisClient redis.Cmdable, keys ...string) (*redis.StringCmd, error) {
