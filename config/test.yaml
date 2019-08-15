@@ -16,7 +16,7 @@ Comic_data:
 Redis_items:
   test_item:
     Prefix: "test:"
-    Expire: 3600
+    Expire: 1
     Len: 10
 
 Redis_cluster:

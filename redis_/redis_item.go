@@ -67,6 +67,7 @@ func (r *RedisItem) ItemPSet(redisClient redis.Cmdable, kv map[string]string) ([
 		cmders = append(cmders, p.Set(r.ItemGetKey(k), v, r.Expire))
 	}
 	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -82,12 +83,18 @@ func (r *RedisItem) ItemPGet(redisClient redis.Cmdable, keys []string) ([]*redis
 		cmders = append(cmders, p.Get(r.ItemGetKey(k)))
 	}
 	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
 	return cmders, err
 }
 
 // hset类型
 func (r *RedisItem) ItemHSet(redisClient redis.Cmdable, field string, values interface{}, keys ...string) error {
-	return redisClient.HSet(r.ItemGetKey(keys...), field, values).Err()
+	if err := redisClient.HSet(r.ItemGetKey(keys...), field, values).Err(); nil == err {
+		return redisClient.Expire(r.ItemGetKey(keys...), r.Expire).Err()
+	} else {
+		errors_.CheckCommonErr(err)
+		return err
+	}
 }
 
 func (r *RedisItem) ItemPHSet(redisClient redis.Cmdable, field string, kv map[string]string) ([]*redis.BoolCmd, error) {
@@ -95,8 +102,10 @@ func (r *RedisItem) ItemPHSet(redisClient redis.Cmdable, field string, kv map[st
 	p := redisClient.Pipeline()
 	for k, v := range kv {
 		cmders = append(cmders, p.HSet(r.ItemGetKey(k), field, v))
+		cmders = append(cmders, p.Expire(r.ItemGetKey(k), r.Expire))
 	}
 	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -112,6 +121,7 @@ func (r *RedisItem) ItemPHGet(redisClient redis.Cmdable, field string, keys ...s
 		cmders = append(cmders, p.HGet(r.ItemGetKey(k), field))
 	}
 	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
 	return cmders, err
 }
 

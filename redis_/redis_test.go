@@ -3,6 +3,7 @@ package redis__test
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
@@ -83,12 +84,6 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//if cmd1.Val() != "just test" {
-	//	t.Error(cmd.Val())
-	//	t.Error("set redis item in redis db failed")
-	//} else {
-	//	t.Log("success!!!")
-	//}
 	x := cmd1[0]
 	if x.Val() != "just testaaaa" {
 		t.Error(cmd.Val())
@@ -103,4 +98,31 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	} else {
 		t.Log("success!!!")
 	}
+
+	// redis hset add expire
+	err = redisItem.ItemHSet(redisdb.RedisDataDb, "ugender", "just test", "Hset:test123")
+	if err != nil {
+		fmt.Println(err)
+	}
+	cmd, err = redisItem.ItemHGet(redisdb.RedisDataDb, "ugender", "Hset:test123")
+	if err != nil {
+		fmt.Println(err)
+	}
+	if cmd.Val() != "just test" {
+		t.Error(cmd.Val())
+		t.Error("set redis item in redis db failed")
+	} else {
+		t.Log("success!!!")
+	}
+	time.Sleep(3 * time.Second)
+	if cmd.Val() != "just test" {
+		t.Error(cmd.Val())
+		t.Error("set redis item in redis db failed")
+	} else {
+		t.Log("success!!!")
+	}
+
+	fmt.Println("begin")
+	time.Sleep(2 * time.Second)
+	fmt.Println("end")
 }
