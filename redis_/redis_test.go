@@ -72,15 +72,18 @@ func TestGetRedisItemFromConf(t *testing.T) {
 
 	var kv map[string]string
 	kv = make(map[string]string)
-	kv["a"] = "just testaaaa"
-	kv["b"] = "just testbbbbbbb"
-	kv["c"] = "just asdfasdf"
-	kv["b"] = "just bbbbbbbb"
+	kv["test a"] = "just testaaaa"
+	kv["test b"] = "just testbbbbbbb"
+	kv["test c"] = "just asdfasdf"
+	kv["test b"] = "just bbbbbbbb"
 	_, err = redisItem.ItemPHSet(redisdb.RedisDataDb, "ugender", kv)
 	if err != nil {
 		fmt.Println(err)
 	}
-	cmd1, err := redisItem.ItemPHGet(redisdb.RedisDataDb, "ugender", "a", "b")
+
+	time.Sleep(2 * time.Second)
+
+	cmd1, err := redisItem.ItemPHGet(redisdb.RedisDataDb, "ugender", "test a", "test b")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -99,30 +102,30 @@ func TestGetRedisItemFromConf(t *testing.T) {
 		t.Log("success!!!")
 	}
 
-	// redis hset add expire
-	err = redisItem.ItemHSet(redisdb.RedisDataDb, "ugender", "just test", "Hset:test123")
-	if err != nil {
-		fmt.Println(err)
-	}
-	cmd, err = redisItem.ItemHGet(redisdb.RedisDataDb, "ugender", "Hset:test123")
-	if err != nil {
-		fmt.Println(err)
-	}
-	if cmd.Val() != "just test" {
-		t.Error(cmd.Val())
-		t.Error("set redis item in redis db failed")
-	} else {
-		t.Log("success!!!")
-	}
-	time.Sleep(3 * time.Second)
-	if cmd.Val() != "just test" {
-		t.Error(cmd.Val())
-		t.Error("set redis item in redis db failed")
-	} else {
-		t.Log("success!!!")
-	}
-
-	fmt.Println("begin")
-	time.Sleep(2 * time.Second)
-	fmt.Println("end")
+	//// redis hset add expire
+	//err = redisItem.ItemHSet(redisdb.RedisDataDb, "ugender", "just test", "Hset:test123")
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//cmd, err = redisItem.ItemHGet(redisdb.RedisDataDb, "ugender", "Hset:test123")
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//if cmd.Val() != "just test" {
+	//	t.Error(cmd.Val())
+	//	t.Error("set redis item in redis db failed")
+	//} else {
+	//	t.Log("success!!!")
+	//}
+	//time.Sleep(3 * time.Second)
+	//if cmd.Val() != "just test" {
+	//	t.Error(cmd.Val())
+	//	t.Error("set redis item in redis db failed")
+	//} else {
+	//	t.Log("success!!!")
+	//}
+	//
+	//fmt.Println("begin")
+	//time.Sleep(2 * time.Second)
+	//fmt.Println("end")
 }

@@ -58,7 +58,7 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 	return u.String()
 }
 
-func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{})string{
+func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{}) string {
 	u, err := url.Parse(this.Url)
 	errors_.CheckErrSendEmail(err)
 	q := u.Query()
@@ -67,11 +67,11 @@ func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{})string{
 	for i := 0; i < typ.NumField(); i++ {
 		var name string
 		name, ok := typ.Field(i).Tag.Lookup("url")
-		if !ok || name == "-"{
+		if !ok || name == "-" {
 			continue
 		}
 		var fieldVal string
-		switch typV := value.Field(i).Interface().(type){
+		switch typV := value.Field(i).Interface().(type) {
 		case string:
 			fieldVal = typV
 		case int:
@@ -141,7 +141,7 @@ func (this *HttpInfo) HttpGetDelayRetry(url string, times int) (response string,
 //发送POST请求
 //url:请求地址，data:POST请求提交的数据,contentType:请求体格式，如：application/json_struct
 //content:请求放回的内容
-func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string) (content string) {
+func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string) (content string, err error) {
 	jsonStr, err := json.Marshal(data)
 	errors_.CheckCommonErr(err)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
@@ -153,5 +153,5 @@ func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string)
 	defer resp.Body.Close()
 	result, err := ioutil.ReadAll(resp.Body)
 	errors_.CheckCommonErr(err)
-	return string(result)
+	return string(result), err
 }

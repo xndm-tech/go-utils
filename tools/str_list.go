@@ -80,6 +80,42 @@ func DifferenceStrLen(s1, s2 []string, i int) []string {
 	return strings[:maths.MinInt(len(strings), i)]
 }
 
+// Intersect
+func IntersectStrList(l1, l2 []string) []string {
+	// l2放置较长的list
+	var interList []string
+	mapTmp := make(map[string]int, len(l2))
+	for _, x := range l2 {
+		mapTmp[x] = 0
+	}
+
+	for _, x := range l1 {
+		if _, ok := mapTmp[x]; ok {
+			interList = append(interList, x)
+		}
+	}
+	return interList
+}
+
+func IntersectStrListLen(l1, l2 []string, Len int) []string {
+	// l2放置较长的list
+	var interList []string
+	mapTmp := make(map[string]int, len(l2))
+	for _, x := range l2 {
+		mapTmp[x] = 0
+	}
+
+	for _, x := range l1 {
+		if _, ok := mapTmp[x]; ok {
+			interList = append(interList, x)
+			if len(interList) == Len {
+				return interList
+			}
+		}
+	}
+	return interList
+}
+
 // string list union
 func UnionStrList(s1, s2 []string) []string {
 	return append(s1, s2...)
