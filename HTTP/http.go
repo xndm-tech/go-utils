@@ -144,7 +144,7 @@ func (this *HttpInfo) HttpGetDelayRetry(url string, times int) (response string,
 func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string) (content string, err error) {
 	jsonStr, err := json.Marshal(data)
 	errors_.CheckCommonErr(err)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonStr))
 	errors_.CheckCommonErr(err)
 	req.Header.Set("Content-Type", contentType)
 	defer req.Body.Close()

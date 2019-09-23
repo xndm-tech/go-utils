@@ -14,5 +14,5 @@ type HTTPMethod interface {
 
 	HttpGet(url string) (response string, ok bool)
 
-	HttpPost(url string, data interface{}, contentType string) (content string)
+	HttpPost(url string, data interface{}, contentType string) (content string, err error)
 }
