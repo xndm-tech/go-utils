@@ -51,7 +51,11 @@ func RmDuplicateStrLen(s []string, i int) []string {
 	if i <= 0 {
 		return RmDuplicateStr(s)
 	}
-	return RmDuplicateStr(s)[:i]
+	dup := RmDuplicateStr(s)
+	if len(dup) <= i {
+		return dup
+	}
+	return dup[:i:i]
 }
 
 // s1对s2做差
@@ -77,7 +81,7 @@ func DifferenceStrLen(s1, s2 []string, i int) []string {
 	if i < 0 {
 		return strings
 	}
-	return strings[:maths.MinInt(len(strings), i)]
+	return strings[:maths.MinInt(len(strings), i):maths.MinInt(len(strings), i)]
 }
 
 // Intersect
@@ -130,7 +134,7 @@ func UnionStrListLen(s1, s2 []string, i int) []string {
 	if i < 0 {
 		return u
 	}
-	return u[:maths.MinInt(len(u), i)]
+	return u[:maths.MinInt(len(u), i):maths.MinInt(len(u), i)]
 }
 
 // string list
@@ -149,7 +153,7 @@ func GetStrListRandN(s []string, size int) []string {
 	if size <= 0 || size >= len(s) {
 		return cs
 	}
-	return cs[:size]
+	return cs[:size:size]
 }
 
 func GetStrListLoop(s []string, size, num int) ([]string, error) {
