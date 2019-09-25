@@ -30,6 +30,8 @@ type RedisItemMethod interface {
 	ItemSetSAdd(redisClient redis.Cmdable, ids []string, items ...string) error
 	ItemGetSAdd(redisClient redis.Cmdable, items ...string) ([]string, error)
 
+	SetRedisItem(prefix string, len, expire int)
+
 	// 批量获取
 	ItemPGet(redisClient redis.Cmdable, ids []string) ([]*redis.StringCmd, error)
 }
@@ -186,6 +188,12 @@ func (r *RedisItem) ItemGetSAdd(redisClient redis.Cmdable, keys ...string) ([]st
 	result, err := redisClient.SMembers(r.ItemGetKey(keys...)).Result()
 	errors_.CheckCommonErr(err)
 	return result, err
+}
+
+func (this *RedisItem) SetRedisItem(prefix string, len, expire int) {
+	this.Prefix = prefix
+	this.Len = int64(len)
+	this.Expire = time.Duration(expire) * time.Second
 }
 
 // connection

@@ -47,20 +47,17 @@ func RmDuplicateStr(s []string) []string {
 	return dup
 }
 
-func RmDuplicateStrLen(s []string, i int) []string {
-	if i <= 0 {
-		return RmDuplicateStr(s)
+func RmDuplicateStrLen(s1 []string, i int) []string {
+	s := RmDuplicateStr(s1)
+	if len(s) <= i || i < 0 {
+		return s
 	}
-	dup := RmDuplicateStr(s)
-	if len(dup) <= i {
-		return dup
-	}
-	return dup[:i:i]
+	return s[:i:i]
 }
 
 // s1对s2做差
 func DifferenceStr(s1, s2 []string) []string {
-	dup := make([]string, 0, len(s1))
+	s := make([]string, 0, len(s1))
 	for _, i := range s1 {
 		sign := true
 		for _, v := range s2 {
@@ -70,18 +67,18 @@ func DifferenceStr(s1, s2 []string) []string {
 			}
 		}
 		if true == sign {
-			dup = append(dup, i)
+			s = append(s, i)
 		}
 	}
-	return dup
+	return s
 }
 
 func DifferenceStrLen(s1, s2 []string, i int) []string {
-	strings := DifferenceStr(s1, s2)
-	if i < 0 {
-		return strings
+	s := DifferenceStr(s1, s2)
+	if len(s) <= i || i < 0 {
+		return s
 	}
-	return strings[:maths.MinInt(len(strings), i):maths.MinInt(len(strings), i)]
+	return s[:i:i]
 }
 
 // Intersect
@@ -92,7 +89,6 @@ func IntersectStrList(l1, l2 []string) []string {
 	for _, x := range l2 {
 		mapTmp[x] = 0
 	}
-
 	for _, x := range l1 {
 		if _, ok := mapTmp[x]; ok {
 			interList = append(interList, x)
@@ -130,11 +126,11 @@ func UnionStrListDup(s1, s2 []string) []string {
 }
 
 func UnionStrListLen(s1, s2 []string, i int) []string {
-	u := UnionStrList(s1, s2)
-	if i < 0 {
-		return u
+	s := UnionStrList(s1, s2)
+	if len(s) <= i || i < 0 {
+		return s
 	}
-	return u[:maths.MinInt(len(u), i):maths.MinInt(len(u), i)]
+	return s[:i:i]
 }
 
 // string list
@@ -145,15 +141,15 @@ func GetStrListNoLoop(s []string, size, num int) ([]string, error) {
 	return s[maths.MinInt(size*(num-1), len(s)):maths.MinInt(num*size, len(s))], nil
 }
 
-func GetStrListRandN(s []string, size int) []string {
-	cs := append(s[:0:0], s...)
-	rand.Shuffle(len(cs), func(i, j int) {
-		cs[i], cs[j] = cs[j], cs[i]
+func GetStrListRandN(s1 []string, size int) []string {
+	s := append(s1[:0:0], s1...)
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
 	})
-	if size <= 0 || size >= len(s) {
-		return cs
+	if size <= 0 || size >= len(s1) {
+		return s
 	}
-	return cs[:size:size]
+	return s[:size:size]
 }
 
 func GetStrListLoop(s []string, size, num int) ([]string, error) {

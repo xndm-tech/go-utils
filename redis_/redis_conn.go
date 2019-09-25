@@ -27,3 +27,15 @@ func (this *RedisDb) GetRedisConnFromConf(c *config.ConfigEngine, name string) {
 	this.RedisDataDb = createSingleClient(redis_login)
 	this.PoolSize = redis_login.Pool_size
 }
+
+func (this *RedisDb) CreateSingleClient(addr, password string, poolSize int) {
+	redisDB := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		PoolSize: poolSize,
+		Password: password,
+	})
+	_, err := redisDB.Ping().Result()
+	errors_.CheckFatalErr(err)
+	this.RedisDataDb = redisDB
+	this.PoolSize = poolSize
+}

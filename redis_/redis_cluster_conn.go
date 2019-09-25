@@ -8,6 +8,7 @@ import (
 
 type RedisConnMethod interface {
 	GetRedisConnFromConf(c *config.ConfigEngine, name string)
+	CreateSingleClient(addr, password string, poolSize int)
 }
 
 /*
