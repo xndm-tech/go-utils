@@ -149,7 +149,10 @@ func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string)
 	req.Header.Set("Content-Type", contentType)
 	defer req.Body.Close()
 	resp, err := this.HttpClient.Do(req)
-	errors_.CheckCommonErr(err)
+	if err != nil {
+		errors_.CheckCommonErr(err)
+		return "", err
+	}
 	defer resp.Body.Close()
 	result, err := ioutil.ReadAll(resp.Body)
 	errors_.CheckCommonErr(err)
