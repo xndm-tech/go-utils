@@ -19,8 +19,10 @@ type RedisItemMethod interface {
 
 	ItemHSet(redisClient redis.Cmdable, key string, value interface{}, items ...string) error
 	ItemPHSet(redisClient redis.Cmdable, field string, kv map[string]string) ([]*redis.BoolCmd, error)
+	ItemPHSetField(redisClient redis.Cmdable, key string, fv map[string]string) ([]*redis.BoolCmd, error)
 	ItemHGet(redisClient redis.Cmdable, key string, items ...string) (*redis.StringCmd, error)
 	ItemPHGet(redisClient redis.Cmdable, field string, keys ...string) ([]*redis.StringCmd, error)
+	ItemPHGetField(redisClient redis.Cmdable, keys string, field ...string) ([]*redis.StringCmd, error)
 
 	ItemIncrExpire(redisClient redis.Cmdable, items ...string) (int, error)
 
@@ -111,6 +113,18 @@ func (r *RedisItem) ItemPHSet(redisClient redis.Cmdable, field string, kv map[st
 	return cmders, err
 }
 
+func (r *RedisItem) ItemPHSetField(redisClient redis.Cmdable, key string, fv map[string]string) ([]*redis.BoolCmd, error) {
+	var cmders []*redis.BoolCmd
+	p := redisClient.Pipeline()
+	for f, v := range fv {
+		cmders = append(cmders, p.HSet(r.ItemGetKey(key), f, v))
+		cmders = append(cmders, p.Expire(r.ItemGetKey(key), r.Expire))
+	}
+	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
+	return cmders, err
+}
+
 func (r *RedisItem) ItemHGet(redisClient redis.Cmdable, field string, keys ...string) (*redis.StringCmd, error) {
 	stringCmd := redisClient.HGet(r.ItemGetKey(keys...), field)
 	return stringCmd, stringCmd.Err()
@@ -121,6 +135,17 @@ func (r *RedisItem) ItemPHGet(redisClient redis.Cmdable, field string, keys ...s
 	p := redisClient.Pipeline()
 	for _, k := range keys {
 		cmders = append(cmders, p.HGet(r.ItemGetKey(k), field))
+	}
+	_, err := p.Exec()
+	errors_.CheckCommonErr(err)
+	return cmders, err
+}
+
+func (r *RedisItem) ItemPHGetField(redisClient redis.Cmdable, keys string, field ...string) ([]*redis.StringCmd, error) {
+	var cmders []*redis.StringCmd
+	p := redisClient.Pipeline()
+	for _, f := range field {
+		cmders = append(cmders, p.HGet(r.ItemGetKey(keys), f))
 	}
 	_, err := p.Exec()
 	errors_.CheckCommonErr(err)
