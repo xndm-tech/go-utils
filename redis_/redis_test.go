@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	redis_test "go-utils/redis_"
-
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/errors_"
 	"github.com/xndm-recommend/go-utils/redis_"
@@ -134,7 +132,7 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	var err error
 	err = c.Load(Config_path)
 	errors_.CheckCommonErr(err)
-	redisItem := new(redis_test.RedisItem)
+	redisItem := new(redis_.RedisItem)
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	t.Log(redisItem)
 	redisdb := new(redis_.RedisDb)
