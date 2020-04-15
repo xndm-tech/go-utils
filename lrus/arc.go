@@ -193,7 +193,7 @@ func (c *ARCCache) replace(b2ContainsKey bool) {
 	}
 }
 
-// Len returns the number of cached entries
+// size returns the number of cached entries
 func (c *ARCCache) Len() int {
 	c.lock.RLock()
 	defer c.lock.RUnlock()

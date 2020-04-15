@@ -20,7 +20,7 @@ const (
 func CheckCommonErr(err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1)
-		seelog.Warn(file, ":", line, err)
+		_ = seelog.Error(file, ":", line, err)
 	}
 }
 
@@ -28,7 +28,7 @@ func CheckCommonErr(err error) {
 func CheckFatalErr(err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1)
-		seelog.Error("Important error:", file, ":", line, err)
+		_ = seelog.Error("Important error:", file, ":", line, err)
 		panic(err)
 	}
 }

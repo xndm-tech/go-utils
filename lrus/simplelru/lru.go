@@ -137,7 +137,7 @@ func (c *LRU) Keys() []interface{} {
 	return keys
 }
 
-// Len returns the number of items in the cache.
+// size returns the number of items in the cache.
 func (c *LRU) Len() int {
 	return c.evictList.Len()
 }

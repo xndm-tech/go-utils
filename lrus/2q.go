@@ -162,7 +162,7 @@ func (c *TwoQueueCache) ensureSpace(recentEvict bool) {
 	c.frequent.RemoveOldest()
 }
 
-// Len returns the number of items in the cache.
+// size returns the number of items in the cache.
 func (c *TwoQueueCache) Len() int {
 	c.lock.RLock()
 	defer c.lock.RUnlock()

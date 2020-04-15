@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	space = " "
+	Space = " "
 )
 
 // IsEmpty returns true if the string is empty
@@ -38,7 +38,7 @@ func LeftStr(text string, size int) string {
 	var buffer bytes.Buffer
 	buffer.WriteString(text)
 	for i := 0; i < spaces; i++ {
-		buffer.WriteString(space)
+		buffer.WriteString(Space)
 	}
 	return buffer.String()
 }
@@ -51,7 +51,7 @@ func RightStr(text string, size int) string {
 	}
 	var buffer bytes.Buffer
 	for i := 0; i < spaces; i++ {
-		buffer.WriteString(space)
+		buffer.WriteString(Space)
 	}
 	buffer.WriteString(text)
 	return buffer.String()

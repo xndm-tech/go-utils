@@ -7,39 +7,19 @@ import (
 )
 
 //http://jmoiron.github.io/sqlx/
-func (this *MysqlDbInfo) QueryIdList(sql string, para ...interface{}) (dest []string, err error) {
-	err = this.SqlDataDb.Select(&dest, sql, para...)
-	if err != nil {
-		err = this.SqlDataDb.Select(&dest, sql, para...)
-		if err != nil {
-			errors_.CheckCommonErr(err)
-		}
-		return
-	}
+func (this *MysqlDbInfo) SelectStrList(sql string, para ...interface{}) (dest []string, err error) {
+	errors_.CheckCommonErr(this.sqlDataDb.Select(&dest, sql, para...))
 	return
 }
 
-func (this *MysqlDbInfo) QueryIdIntList(sql string, para ...interface{}) (dest []int, err error) {
-	err = this.SqlDataDb.Select(&dest, sql, para...)
-	if err != nil {
-		err = this.SqlDataDb.Select(&dest, sql, para...)
-		if err != nil {
-			errors_.CheckCommonErr(err)
-			return
-		}
-	}
+func (this *MysqlDbInfo) SelectIntList(sql string, para ...interface{}) (dest []int, err error) {
+	errors_.CheckCommonErr(this.sqlDataDb.Select(&dest, sql, para...))
 	return
 }
 
 func (this *MysqlDbInfo) QueryStruct(sql string, dest ...interface{}) (err error) {
-	rows, err := this.SqlDataDb.Query(sql)
-	if err != nil {
-		rows, err = this.SqlDataDb.Query(sql)
-		if err != nil {
-			errors_.CheckCommonErr(err)
-			return
-		}
-	}
+	rows, err := this.sqlDataDb.Query(sql)
+	errors_.CheckCommonErr(err)
 	defer rows.Close()
 	rows.Next()
 	err = rows.Scan(dest...)
@@ -51,14 +31,7 @@ func (this *MysqlDbInfo) QueryIdMap(sql string, para ...interface{}) (dest map[s
 	dest = make(map[string]string, 0)
 	// 查询数据
 	var key, val sql_.NullString
-	row, err := this.SqlDataDb.Query(sql, para...)
-	if err != nil {
-		row, err = this.SqlDataDb.Query(sql, para...)
-		if err != nil {
-			errors_.CheckCommonErr(err)
-			return
-		}
-	}
+	row, err := this.sqlDataDb.Query(sql, para...)
 	defer row.Close()
 	errors_.CheckCommonErr(err)
 	for row.Next() {

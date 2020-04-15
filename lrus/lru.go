@@ -102,7 +102,7 @@ func (c *Cache) Keys() []interface{} {
 	return c.lru.Keys()
 }
 
-// Len returns the number of items in the cache.
+// size returns the number of items in the cache.
 func (c *Cache) Len() int {
 	c.lock.RLock()
 	defer c.lock.RUnlock()

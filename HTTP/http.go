@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strconv"
 	"time"
 
@@ -16,22 +15,22 @@ import (
 )
 
 type HttpInfo struct {
-	HttpClient *http.Client
-	Url        string
-	Para       []string
-	TimeOut    int
+	httpClient *http.Client
+	url        string
+	para       []string
+	timeOut    int
 }
 
 func (this *HttpInfo) createHttpConns(sLogin *config.HttpData) {
 	if 0 == sLogin.Time_out {
 		errors_.CheckFatalErr(errors.New("can't read http post timeout"))
 	}
-	this.HttpClient = &http.Client{Timeout: time.Duration(sLogin.Time_out) * time.Millisecond}
-	this.Url = sLogin.Url
+	this.httpClient = &http.Client{Timeout: time.Duration(sLogin.Time_out) * time.Millisecond}
+	this.url = sLogin.Url
 	for _, param := range sLogin.Para {
-		this.Para = append(this.Para, param)
+		this.para = append(this.para, param)
 	}
-	this.TimeOut = sLogin.Time_out
+	this.timeOut = sLogin.Time_out
 }
 
 func (this *HttpInfo) GetHttpConnFromConf(c *config.ConfigEngine, name string) {
@@ -40,7 +39,7 @@ func (this *HttpInfo) GetHttpConnFromConf(c *config.ConfigEngine, name string) {
 
 // 线上设置url参数
 func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
-	var url_tmp string = this.Url
+	var url_tmp = this.url
 	u, err := url.Parse(url_tmp)
 	errors_.CheckCommonErr(err)
 	for i, val := range values {
@@ -49,37 +48,12 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 			sVal = strconv.Itoa(val.(int))
 		}
 		q := u.Query()
-		if len(this.Para) <= i {
-			errors_.CheckCommonErr(errors.New("Set Url Para error"))
+		if len(this.para) <= i {
+			errors_.CheckCommonErr(errors.New("Set url para error"))
 		}
-		q.Set(this.Para[i], sVal)
+		q.Set(this.para[i], sVal)
 		u.RawQuery = q.Encode()
 	}
-	return u.String()
-}
-
-func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{}) string {
-	u, err := url.Parse(this.Url)
-	errors_.CheckErrSendEmail(err)
-	q := u.Query()
-	value := reflect.ValueOf(stru)
-	typ := reflect.TypeOf(stru)
-	for i := 0; i < typ.NumField(); i++ {
-		var name string
-		name, ok := typ.Field(i).Tag.Lookup("url")
-		if !ok || name == "-" {
-			continue
-		}
-		var fieldVal string
-		switch typV := value.Field(i).Interface().(type) {
-		case string:
-			fieldVal = typV
-		case int:
-			fieldVal = strconv.Itoa(typV)
-		}
-		q.Add(name, fieldVal)
-	}
-	u.RawQuery = q.Encode()
 	return u.String()
 }
 
@@ -87,7 +61,7 @@ func (this *HttpInfo) Struct2Url(stru interface{}, values ...interface{}) string
 //url:请求地址
 //response:请求返回的内容
 func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
-	resp, err := this.HttpClient.Get(url)
+	resp, err := this.httpClient.Get(url)
 	if err != nil {
 		errors_.CheckCommonErr(err)
 		return "", false
@@ -108,7 +82,7 @@ func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
 func (this *HttpInfo) HttpGetBody(url string, body []byte) (response string, ok bool) {
 	request, err := http.NewRequest("GET", url, bytes.NewReader(body))
 	errors_.CheckCommonErr(err)
-	resp, err := this.HttpClient.Do(request)
+	resp, err := this.httpClient.Do(request)
 	if err != nil {
 		errors_.CheckCommonErr(err)
 		return "", false
@@ -148,7 +122,7 @@ func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string)
 	errors_.CheckCommonErr(err)
 	req.Header.Set("Content-Type", contentType)
 	defer req.Body.Close()
-	resp, err := this.HttpClient.Do(req)
+	resp, err := this.httpClient.Do(req)
 	if err != nil {
 		errors_.CheckCommonErr(err)
 		return "", err
