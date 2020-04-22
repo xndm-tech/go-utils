@@ -14,7 +14,7 @@ type RedisConnMethod interface {
 /*
 有关redis cluster连接的封装
 */
-type RedisDbInfo struct {
+type RedisClusterDbInfo struct {
 	RedisDataDb *redis.ClusterClient
 	PoolSize    int
 }
@@ -62,7 +62,7 @@ func createClusterClient(redisConf *config.RedisClusterData) *redis.ClusterClien
 	return redisdb
 }
 
-func (this *RedisDbInfo) GetRedisConnFromConf(c *config.ConfigEngine, name string) {
+func (this *RedisClusterDbInfo) GetRedisConnFromConf(c *config.ConfigEngine, name string) {
 	redis_login := c.GetRedisClusterDataFromConf(name)
 	this.RedisDataDb = createClusterClient(redis_login)
 	this.PoolSize = redis_login.Pool_size
