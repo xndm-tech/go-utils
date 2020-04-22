@@ -6,7 +6,7 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 func SendResponse(c *gin.Context, retCode ResponseCode, rsp interface{}) {
@@ -36,6 +36,6 @@ func RecoverFunc(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "[]")
 		buf := make([]byte, 4096)
 		n := runtime.Stack(buf, false)
-		errors_.CheckErrSendEmail(fmt.Errorf("recovery:%s\nstack:%s", rec, string(buf[:n])))
+		errs.CheckErrSendEmail(fmt.Errorf("recovery:%s\nstack:%s", rec, string(buf[:n])))
 	}
 }

@@ -3,7 +3,7 @@ package rediss
 import (
 	"github.com/go-redis/redis"
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 type RedisDbInfo struct {
@@ -18,7 +18,7 @@ func createSingleClient(redisConf *config.RedisData) *redis.Client {
 		Password: redisConf.Password,
 	})
 	_, err := redisdb.Ping().Result()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return redisdb
 }
 
@@ -35,7 +35,7 @@ func (this *RedisDbInfo) CreateSingleClient(addr, password string, poolSize int)
 		Password: password,
 	})
 	_, err := redisDB.Ping().Result()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	this.redisDataDb = redisDB
 	this.poolSize = poolSize
 }

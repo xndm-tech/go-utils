@@ -11,7 +11,7 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 type MssqlMethod interface {
@@ -37,12 +37,12 @@ func getMssqlLoginStr(section *config.MssqlDbData) string {
 
 func (this *MssqlDbInfo) createMssqlConns(login *config.MssqlDbData) {
 	db, err := sqlx.Open("mssql", getMssqlLoginStr(login))
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
 	db.SetMaxIdleConns(login.Max_conns)
 	err = db.Ping()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	this.SqlDataDb = db
 	this.TableName = login.Table_name
 	this.MaxConns = login.Max_conns

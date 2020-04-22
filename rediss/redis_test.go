@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 	"github.com/xndm-recommend/go-utils/rediss"
 )
 
@@ -17,7 +17,7 @@ func TestGetRedisClusterItemFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	errors_.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	redisItem := rediss.ItemInfo{}
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	t.Log(redisItem)
@@ -44,7 +44,7 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	errors_.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	redisItem := new(rediss.ItemInfo)
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	t.Log(redisItem)
@@ -133,7 +133,7 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	//c := config.ConfigEngine{}
 	//var err error
 	//err = c.Load(Config_path)
-	//errors_.CheckCommonErr(err)
+	//errs.CheckCommonErr(err)
 	//redisItem := new(rediss.ItemInfo)
 	//redisItem.getRedisItemFromConf(&c, "Redis_items.test_item")
 	//t.Log(redisItem)

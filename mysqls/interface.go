@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 	"github.com/xndm-recommend/go-utils/tools"
 )
 
@@ -39,11 +39,11 @@ func getMySqlLoginStr(data *config.MysqlDbData) string {
 
 func (this *MysqlDbInfo) createDatabaseConns(login *config.MysqlDbData) {
 	db, err := sqlx.Open("mysql", getMySqlLoginStr(login))
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	db.SetConnMaxLifetime(time.Duration(login.Time_out) * time.Second)
 	db.SetMaxOpenConns(login.Max_conns)
 	db.SetMaxIdleConns(login.Max_conns)
-	errors_.CheckFatalErr(db.Ping())
+	errs.CheckFatalErr(db.Ping())
 	this.sqlDataDb = db
 	this.tableName = login.Table_name
 	this.maxConns = login.Max_conns
@@ -62,7 +62,7 @@ func (this *MysqlDbInfo) GetTableName(key string) string {
 	if val, ok := this.tableName[key]; ok {
 		return val
 	} else {
-		errors_.CheckCommonErr(fmt.Errorf(fmt.Sprintf("key %s not in tablenames.", key)))
+		errs.CheckCommonErr(fmt.Errorf(fmt.Sprintf("key %s not in tablenames.", key)))
 		return tools.Space
 	}
 }

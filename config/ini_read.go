@@ -4,7 +4,7 @@ package config
 有关ini配置文件的封装
 */
 import (
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 	"gopkg.in/ini.v1"
 )
 
@@ -31,7 +31,7 @@ func (this *IniParser) GetBool(section string, key string) bool {
 		return false
 	}
 	_bool, err := s.Key(key).Bool()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return _bool
 }
 
@@ -55,7 +55,7 @@ func (this *IniParser) GetInt(section string, key string) int {
 		return 0
 	}
 	value_int, err := s.Key(key).Int()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return value_int
 }
 
@@ -68,7 +68,7 @@ func (this *IniParser) GetInt32(section string, key string) int32 {
 		return 0
 	}
 	value_int, err := s.Key(key).Int()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return int32(value_int)
 }
 
@@ -81,7 +81,7 @@ func (this *IniParser) GetUint32(section string, key string) uint32 {
 		return 0
 	}
 	value_int, err := s.Key(key).Uint()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return uint32(value_int)
 }
 
@@ -94,7 +94,7 @@ func (this *IniParser) GetInt64(section string, key string) int64 {
 		return 0
 	}
 	value_int, err := s.Key(key).Int64()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return value_int
 }
 
@@ -107,7 +107,7 @@ func (this *IniParser) GetUint64(section string, key string) uint64 {
 		return 0
 	}
 	value_int, err := s.Key(key).Uint64()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return value_int
 }
 
@@ -120,7 +120,7 @@ func (this *IniParser) GetFloat32(section string, key string) float32 {
 		return 0
 	}
 	value_float, err := s.Key(key).Float64()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return float32(value_float)
 }
 
@@ -133,7 +133,7 @@ func (this *IniParser) GetFloat64(section string, key string) float64 {
 		return 0
 	}
 	value_float, err := s.Key(key).Float64()
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return value_float
 }
 

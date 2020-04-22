@@ -2,7 +2,7 @@ package candidates
 
 import (
 	"github.com/pkg/errors"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 	"github.com/xndm-recommend/go-utils/maths"
 	"github.com/xndm-recommend/go-utils/mysqls"
 	"github.com/xndm-recommend/go-utils/tools"
@@ -21,14 +21,14 @@ type Candidate struct {
 func getCandidateIds(db *mysqls.MysqlDbInfo, sql string) (ids []interface{}) {
 	rows, err := db.SqlDataDb.Query(sql)
 	if err != nil {
-		errors_.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return ids
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var tmpId string
 		err := rows.Scan(&tmpId)
-		errors_.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		if nil == err {
 			ids = append(ids, tmpId)
 		}

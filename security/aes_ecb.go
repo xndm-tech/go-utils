@@ -5,7 +5,7 @@ import (
 	"crypto/aes"
 	"encoding/base64"
 
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 // 用aes加密算法对数据进行加密，加密模式为ecb，加密之后用base64进行编码
@@ -18,7 +18,7 @@ func AesEcbEncryptBASE64(str2encode, key string) string {
 // 对加密数据进行解码，(aes，加密模式ecb，base64编码）
 func AesEcbDecryptBASE64(encryptData, key string) string {
 	encryptByte, err := base64.StdEncoding.DecodeString(encryptData)
-	errors_.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return string(decrypt(encryptByte, key))
 }
 

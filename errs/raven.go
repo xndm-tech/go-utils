@@ -1,4 +1,4 @@
-package errors_
+package errs
 
 import (
 	"github.com/cihub/seelog"

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 func TestMysqlDbInfo_QueryStruct(t *testing.T) {
 	c := config.ConfigEngine{}
 	err := c.Load(Config_path)
-	errors_.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	dbinfo := Version{}
 	dbinfo.GeVersionFromConf(&c, "Version")
 	fmt.Println(dbinfo.GetAlgoVersion())

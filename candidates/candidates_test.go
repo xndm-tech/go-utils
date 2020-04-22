@@ -6,7 +6,7 @@ import (
 
 	"github.com/xndm-recommend/go-utils/candidates"
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 	"github.com/xndm-recommend/go-utils/mysqls"
 )
 
@@ -17,7 +17,7 @@ const (
 func TestCandidate(b *testing.T) {
 	c := config.ConfigEngine{}
 	err := c.Load(Config_path)
-	errors_.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	dbinfo := mysqls.MysqlDbInfo{}
 	dbinfo.GetDbConnFromConf(&c, "Comic_data")
 

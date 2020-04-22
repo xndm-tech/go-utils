@@ -2,13 +2,13 @@ package config
 
 import (
 	"github.com/getsentry/raven-go"
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 func (c *ConfigEngine) SentryRavenInit(name string) error {
 	sentryDSN := c.GetString(name)
-	errors_.CheckEmptyValue(sentryDSN)
+	errs.CheckEmptyValue(sentryDSN)
 	err := raven.SetDSN(sentryDSN)
-	errors_.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return err
 }

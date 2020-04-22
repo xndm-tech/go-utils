@@ -1,9 +1,9 @@
-package type_
+package types
 
 import (
 	"strconv"
 
-	"github.com/xndm-recommend/go-utils/errors_"
+	"github.com/xndm-recommend/go-utils/errs"
 )
 
 func IntToStr(a int) string {
@@ -14,7 +14,7 @@ func StrToInt(a string, default_int int) int {
 	if r, err := strconv.Atoi(a); err == nil {
 		return r
 	} else {
-		errors_.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return default_int
 	}
 }
@@ -27,7 +27,7 @@ func StrToInt64(a string, default_int int64) int64 {
 	if r, err := strconv.ParseInt(a, 10, 64); err == nil {
 		return r
 	} else {
-		errors_.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return default_int
 	}
 }
