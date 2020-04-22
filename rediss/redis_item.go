@@ -11,30 +11,22 @@ import (
 
 type RedisItemMethod interface {
 	GetRedisItemFromConf(c *config.ConfigEngine, name string)
-
 	ItemSetByte(redisClient redis.Cmdable, bytes []byte, items ...string) error
 	ItemSet(redisClient redis.Cmdable, value interface{}, items ...string) error
 	ItemPSet(redisClient redis.Cmdable, kv map[string]string) ([]*redis.StatusCmd, error)
 	ItemGet(redisClient redis.Cmdable, items ...string) (*redis.StringCmd, error)
-
 	ItemHSet(redisClient redis.Cmdable, key string, value interface{}, items ...string) error
 	ItemPHSet(redisClient redis.Cmdable, field string, kv map[string]string) ([]*redis.BoolCmd, error)
 	ItemPHSetField(redisClient redis.Cmdable, key string, fv map[string]string) ([]*redis.BoolCmd, error)
 	ItemHGet(redisClient redis.Cmdable, key string, items ...string) (*redis.StringCmd, error)
 	ItemPHGet(redisClient redis.Cmdable, field string, keys ...string) ([]*redis.StringCmd, error)
 	ItemPHGetField(redisClient redis.Cmdable, keys string, field ...string) ([]*redis.StringCmd, error)
-
 	ItemIncrExpire(redisClient redis.Cmdable, items ...string) (int, error)
-
 	ItemZAdd(redisClient redis.Cmdable, ids []string, items ...string) error
 	ItemGetZRange(redisClient redis.Cmdable, items ...string) ([]string, error)
-
 	ItemSetSAdd(redisClient redis.Cmdable, ids []string, items ...string) error
 	ItemGetSAdd(redisClient redis.Cmdable, items ...string) ([]string, error)
-
 	SetRedisItem(prefix string, len, expire int)
-
-	// 批量获取
 	ItemPGet(redisClient redis.Cmdable, ids []string) ([]*redis.StringCmd, error)
 }
 
