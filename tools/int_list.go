@@ -43,6 +43,18 @@ func IsInIntSlice(s []int, item int) bool {
 	return false
 }
 
+func IsInInt32Slice(s []int32, item int32) bool {
+	if 0 == len(s) {
+		return false
+	}
+	for _, sItem := range s {
+		if item == sItem {
+			return true
+		}
+	}
+	return false
+}
+
 // int slice自去重
 func RmDuplicateInt(s []int) []int {
 	dup := make([]int, 0, len(s))
@@ -54,11 +66,29 @@ func RmDuplicateInt(s []int) []int {
 	return dup
 }
 
+// int slice自去重
+func RmDuplicateInt32(s []int32) []int32 {
+	dup := make([]int32, 0, len(s))
+	for _, v := range s {
+		if !IsInInt32Slice(dup, v) {
+			dup = append(dup, v)
+		}
+	}
+	return dup
+}
+
 func RmDuplicateIntLen(s []int, i int) []int {
 	if i <= 0 {
 		return RmDuplicateInt(s)
 	}
 	return RmDuplicateInt(s)[:i]
+}
+
+func RmDuplicateInt32Len(s []int32, i int) []int32 {
+	if i <= 0 {
+		return RmDuplicateInt32(s)
+	}
+	return RmDuplicateInt32(s)[:i]
 }
 
 // s1对s2做差
@@ -183,4 +213,23 @@ func MixListIntLenV2(Len int, l ...[]int) []int {
 		}
 	}
 	return RmDuplicateIntLen(mix, Len)
+}
+
+func MixListInt32LenV2(Len int, l ...[]int32) []int32 {
+	// 均匀混合推荐结果
+	var count int
+	var maxLen int
+	for _, s := range l {
+		count += len(s)
+		maxLen = maths.MaxInt(maxLen, len(s))
+	}
+	mix := make([]int32, 0, count)
+	for i := 0; i < maxLen; i++ {
+		for j := range l {
+			if i < len(l[j]) {
+				mix = append(mix, l[j][i])
+			}
+		}
+	}
+	return RmDuplicateInt32Len(mix, Len)
 }
