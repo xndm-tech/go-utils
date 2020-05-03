@@ -3,10 +3,8 @@ package tools
 import (
 	"bytes"
 	"strings"
-)
 
-const (
-	Space = " "
+	"github.com/xndm-recommend/go-utils/common/consts"
 )
 
 // IsEmpty returns true if the string is empty
@@ -38,7 +36,7 @@ func LeftStr(text string, size int) string {
 	var buffer bytes.Buffer
 	buffer.WriteString(text)
 	for i := 0; i < spaces; i++ {
-		buffer.WriteString(Space)
+		buffer.WriteString(consts.BLANK)
 	}
 	return buffer.String()
 }
@@ -51,7 +49,7 @@ func RightStr(text string, size int) string {
 	}
 	var buffer bytes.Buffer
 	for i := 0; i < spaces; i++ {
-		buffer.WriteString(Space)
+		buffer.WriteString(consts.BLANK)
 	}
 	buffer.WriteString(text)
 	return buffer.String()

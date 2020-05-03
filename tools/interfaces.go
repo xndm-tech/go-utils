@@ -17,7 +17,7 @@ func DiffInterface(s1, s2 []interface{}) []interface{} {
 				break
 			}
 		}
-		if true == sign {
+		if sign {
 			dup = append(dup, i)
 		}
 	}
