@@ -39,7 +39,7 @@ func TestMysqlDbInfo_QueryStruct(t *testing.T) {
 	//var cartoon_id1, cartoon_id2 int
 
 	var names []string
-	err = dbinfo.GetDb().Select(&names, "SELECT cartoon_id FROM cartoon LIMIT 10")
+	_ = dbinfo.GetDb().Select(&names, "SELECT cartoon_id FROM cartoon LIMIT 10")
 	t.Log(names)
 	t.Log(dbinfo.SelectStrList("select cartoon_id from cartoon limit ?", "10"))
 }

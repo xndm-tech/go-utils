@@ -28,7 +28,7 @@ func (this *MysqlDbInfo) QueryStruct(sql string, dest ...interface{}) (err error
 }
 
 func (this *MysqlDbInfo) QueryIdMap(sql string, para ...interface{}) (dest map[string]string, err error) {
-	dest = make(map[string]string, 0)
+	dest = make(map[string]string, 100)
 	// 查询数据
 	var key, val sql_.NullString
 	row, err := this.sqlDataDb.Query(sql, para...)

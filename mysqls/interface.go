@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/xndm-recommend/go-utils/common/consts"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/xndm-recommend/go-utils/config"
@@ -63,6 +65,6 @@ func (this *MysqlDbInfo) GetTableName(key string) string {
 		return val
 	} else {
 		errs.CheckCommonErr(fmt.Errorf(fmt.Sprintf("key %s not in tablenames.", key)))
-		return tools.Space
+		return consts.BLANK
 	}
 }
