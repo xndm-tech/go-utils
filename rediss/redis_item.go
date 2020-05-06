@@ -28,6 +28,9 @@ type RedisItemMethod interface {
 	ItemGetSAdd(redisClient redis.Cmdable, items ...string) ([]string, error)
 	SetRedisItem(prefix string, len, expire int)
 	ItemPGet(redisClient redis.Cmdable, ids []string) ([]*redis.StringCmd, error)
+	GetPrefix() string
+	GetExpire() time.Duration
+	GetSize() int64
 }
 
 type ItemInfo struct {
@@ -211,6 +214,18 @@ func (this *ItemInfo) SetRedisItem(prefix string, len, expire int) {
 	this.prefix = prefix
 	this.size = int64(len)
 	this.expire = time.Duration(expire) * time.Second
+}
+
+func (this *ItemInfo) GetPrefix() string {
+	return this.prefix
+}
+
+func (this *ItemInfo) GetExpire() time.Duration {
+	return this.expire
+}
+
+func (this *ItemInfo) GetSize() int64 {
+	return this.size
 }
 
 // connection
