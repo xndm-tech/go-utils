@@ -18,6 +18,12 @@ func ShuffleIntList(s []int) {
 	})
 }
 
+func ShuffleInt32List(s []int32) {
+	rand.Shuffle(len(s), func(i, j int) {
+		s[i], s[j] = s[j], s[i]
+	})
+}
+
 // list自去重
 func RmDuplicateInt(s []int) []int {
 	if len(s) < CutThr {
