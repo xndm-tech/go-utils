@@ -216,6 +216,12 @@ func (this *ItemInfo) SetRedisItem(prefix string, len, expire int) {
 	this.expire = time.Duration(expire) * time.Second
 }
 
+func (this *ItemInfo) SetRedisItem2(prefix string, len int64, expire time.Duration) {
+	this.prefix = prefix
+	this.size = len
+	this.expire = expire
+}
+
 func (this *ItemInfo) GetPrefix() string {
 	return this.prefix
 }
