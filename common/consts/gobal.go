@@ -13,26 +13,30 @@ const (
 )
 
 const (
-	SQLCON = "#"
-	SQLSEP = ","
-	SEP    = "|"
-	BLANK  = " "
-	ZERO   = 0
+	SQLCON    = "#"
+	SQLSEP    = ","
+	SEP       = "|"
+	BLANK     = " "
+	EMPTY_STR = ""
+	ZERO      = 0
 )
 
 const (
 	DEFAULT_UID = 0
 	ALL_UID     = 0
+	ALL_GID     = 0
 )
 
 const (
-	UOLDER_ID = 0
-	UNEWER_ID = 1
+	DEFAULT_NEWER = 0
+	NEWER_NEW_ID  = 1
+	NEWER_OLD_ID  = 2
 )
 
 const (
-	MALE_ID   = 0
-	FEMALE_ID = 1
+	DEFAULT_GENDER   = 0
+	GENDER_MALE_ID   = 1
+	GENDER_FEMALE_ID = 2
 )
 
 const (
