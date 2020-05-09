@@ -22,14 +22,19 @@ const (
 
 const (
 	DEFAULT_UID = 0
+	ALL_UID     = 0
+)
 
-	ALL_UID   = 0
-	UNEWER_ID = 0
-	UOLDER_ID = 1
+const (
+	UOLDER_ID = 0
+	UNEWER_ID = 1
+)
 
-	ALL_GID   = 0
+const (
 	MALE_ID   = 0
 	FEMALE_ID = 1
+)
 
+const (
 	TIMEFORMAT = "2006-01-02"
 )
