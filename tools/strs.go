@@ -33,6 +33,9 @@ func RmDuplicateStrLen(s []string, l int) []string {
 
 // s1对s2做差
 func DifferenceStr(s1, s2 []string) []string {
+	if len(s2) == 0 {
+		return s1
+	}
 	ints := make([]string, 0, len(s1))
 	for _, i := range s1 {
 		if !slices.IsInStrSlice(s2, i) {

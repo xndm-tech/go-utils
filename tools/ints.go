@@ -55,6 +55,9 @@ func RmDuplicateInt32Len(s []int32, l int) []int32 {
 
 // s1对s2做差
 func DifferenceInt(s1, s2 []int) []int {
+	if len(s2) == 0 {
+		return s1
+	}
 	ints := make([]int, 0, len(s1))
 	for _, i := range s1 {
 		if !slices.IsInIntSlice(s2, i) {
@@ -71,6 +74,9 @@ func DifferenceIntLen(s1, s2 []int, l int) []int {
 }
 
 func DifferenceInt32(s1, s2 []int32) []int32 {
+	if len(s2) == 0 {
+		return s1
+	}
 	ints := make([]int32, 0, len(s1))
 	for _, i := range s1 {
 		if !slices.IsInInt32Slice(s2, i) {
