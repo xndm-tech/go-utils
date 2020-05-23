@@ -9,6 +9,26 @@ import (
 	"github.com/xndm-recommend/go-utils/maths"
 )
 
+func IsEmptyStrs(s []string) bool {
+	return len(s) == consts.ZERO
+}
+
+// cut strs
+func CutStrList(s []string, l int) []string {
+	size := maths.MinInt(maths.MaxInt(l, consts.ZERO), len(s))
+	return s[:size:size]
+}
+
+// cut strs
+func CutStrListAndFilling(s []string, f []string, l int) []string {
+	if cut := CutStrList(s, l); len(cut) < l {
+		tmp := append(s, f...)
+		return RmDuplicateStrLen(tmp, l)
+	} else {
+		return cut
+	}
+}
+
 // Shuffle
 func ShuffleStrList(s []string) {
 	rand.Shuffle(len(s), func(i, j int) {
@@ -18,7 +38,7 @@ func ShuffleStrList(s []string) {
 
 // list自去重
 func RmDuplicateStr(s []string) []string {
-	if len(s) < CutThr {
+	if len(s) < PerfThr {
 		return slices.RemoveRepByLoopStr(s)
 	} else {
 		return slices.RemoveRepByMapStr(s)

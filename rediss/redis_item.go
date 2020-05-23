@@ -174,7 +174,7 @@ func (r *ItemInfo) ItemZAdd(redisClient redis.Cmdable, values []string, keys ...
 	_, err = p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.size {
-		err := redisClient.ZRemRangeByRank(key, 0, setLen-r.size).Err()
+		err := redisClient.ZRemRangeByRank(key, 0, setLen-r.size-1).Err()
 		errs.CheckCommonErr(err)
 	}
 	return err

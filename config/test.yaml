@@ -18,6 +18,10 @@ Redis_items:
     Prefix: "test:"
     Expire: 1
     Len: 10
+  test_item2:
+    Prefix: "test:"
+    Expire: 200
+    Len: 5
 
 Redis_cluster:
   Master_host:

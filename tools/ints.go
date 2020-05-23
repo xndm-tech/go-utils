@@ -9,7 +9,47 @@ import (
 	"github.com/xndm-recommend/go-utils/maths"
 )
 
-var CutThr = 300
+var PerfThr = 300
+
+func IsEmptyInts(s []int) bool {
+	return len(s) == consts.ZERO
+}
+
+func IsEmptyInt32s(s []int32) bool {
+	return len(s) == consts.ZERO
+}
+
+// cut strs
+func CutIntList(s []int, l int) []int {
+	size := maths.MinInt(maths.MaxInt(l, consts.ZERO), len(s))
+	return s[:size:size]
+}
+
+// cut strs
+func CutIntListAndFilling(s []int, f []int, l int) []int {
+	if cut := CutIntList(s, l); len(cut) < l {
+		tmp := append(s, f...)
+		return RmDuplicateIntLen(tmp, l)
+	} else {
+		return cut
+	}
+}
+
+// cut strs
+func CutInt32List(s []int32, l int) []int32 {
+	size := maths.MinInt(maths.MaxInt(l, consts.ZERO), len(s))
+	return s[:size:size]
+}
+
+// cut strs
+func CutInt32ListAndFilling(s []int32, f []int32, l int) []int32 {
+	if cut := CutInt32List(s, l); len(cut) < l {
+		tmp := append(s, f...)
+		return RmDuplicateInt32Len(tmp, l)
+	} else {
+		return cut
+	}
+}
 
 // Shuffle
 func ShuffleIntList(s []int) {
@@ -26,7 +66,7 @@ func ShuffleInt32List(s []int32) {
 
 // list自去重
 func RmDuplicateInt(s []int) []int {
-	if len(s) < CutThr {
+	if len(s) < PerfThr {
 		return slices.RemoveRepByLoop(s)
 	} else {
 		return slices.RemoveRepByMap(s)
@@ -34,7 +74,7 @@ func RmDuplicateInt(s []int) []int {
 }
 
 func RmDuplicateInt32(s []int32) []int32 {
-	if len(s) < CutThr {
+	if len(s) < PerfThr {
 		return slices.RemoveRepByLoop32(s)
 	} else {
 		return slices.RemoveRepByMap32(s)
