@@ -12,9 +12,10 @@ type RedisClusterData struct {
 }
 
 type RedisData struct {
-	Addr      string `yaml:"addr"`
+	Addr      string `yaml:"Addr"`
 	Password  string `yaml:"Password"`
 	Pool_size int    `yaml:"Pool_size"`
+	Db        int    `yaml:"Db"`
 }
 
 func (this *ConfigEngine) GetRedisClusterDataFromConf(name string) *RedisClusterData {

@@ -16,6 +16,8 @@ func createSingleClient(redisConf *config.RedisData) *redis.Client {
 		Addr:     redisConf.Addr,
 		PoolSize: redisConf.Pool_size,
 		Password: redisConf.Password,
+		// Database to be selected after connecting to the server.
+		DB: redisConf.Db,
 	})
 	_, err := redisdb.Ping().Result()
 	errs.CheckFatalErr(err)
