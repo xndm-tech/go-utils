@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/xndm-recommend/go-utils/common/consts"
 	"github.com/xndm-recommend/go-utils/common/slices"
@@ -31,6 +32,7 @@ func CutStrListAndFilling(s []string, f []string, l int) []string {
 
 // Shuffle
 func ShuffleStrList(s []string) {
+	rand.Seed(time.Now().Unix())
 	rand.Shuffle(len(s), func(i, j int) {
 		s[i], s[j] = s[j], s[i]
 	})

@@ -2,6 +2,7 @@ package tools
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/xndm-recommend/go-utils/maths"
 )
@@ -33,6 +34,7 @@ func DiffInterfaceLen(s1, s2 []interface{}, i int) []interface{} {
 }
 
 func ShuffleList(s ...interface{}) {
+	rand.Seed(time.Now().Unix())
 	rand.Shuffle(len(s), func(i, j int) {
 		s[i], s[j] = s[j], s[i]
 	})
