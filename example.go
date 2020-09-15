@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/errs"
-	"github.com/xndm-recommend/go-utils/rediss"
+	"github.com/xndm-recommend/go-utils/dbs/rediss"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 const (
@@ -19,16 +19,16 @@ func main() {
 	err = c.Load(Config_path)
 	errs.CheckCommonErr(err)
 	redisItem := new(rediss.ItemInfo)
-	redisItem.getRedisItemFromConf(&c, "Redis_items.test_item")
+	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	redisdb := new(rediss.RedisDbInfo)
-	redisdb.getRedisConnFromConf(&c, "Redis")
+	redisdb.GetRedisConnFromConf(&c, "Redis")
 
 	// redis hset add expire
-	err = redisItem.itemHSet(redisdb.redisDataDb, "ugender", "just test", "Hset:vvvv")
+	err = redisItem.ItemHSet(redisdb.GetDb(), "ugender", "just test", "Hset:vvvv")
 	if err != nil {
 		fmt.Println(err)
 	}
-	cmd, err := redisItem.itemHGet(redisdb.redisDataDb, "ugender", "Hset:vvvv")
+	cmd, err := redisItem.ItemHGet(redisdb.GetDb(), "ugender", "Hset:vvvv")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -41,7 +41,7 @@ func main() {
 
 	time.Sleep(time.Duration(2) * time.Second)
 
-	cmd, err = redisItem.itemHGet(redisdb.redisDataDb, "ugender", "Hset:vvvv")
+	cmd, err = redisItem.ItemHGet(redisdb.GetDb(), "ugender", "Hset:vvvv")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -55,11 +55,11 @@ func main() {
 	maptest := make(map[string]string, 0)
 	maptest["Hset:vvvv11111111"] = "just test"
 	// redis hset add expire
-	_, err = redisItem.itemPHSet(redisdb.redisDataDb, "ugender", maptest)
+	_, err = redisItem.ItemPHSet(redisdb.GetDb(), "ugender", maptest)
 	if err != nil {
 		fmt.Println(err)
 	}
-	cmd, err = redisItem.itemHGet(redisdb.redisDataDb, "ugender", "Hset:vvvv11111111")
+	cmd, err = redisItem.ItemHGet(redisdb.GetDb(), "ugender", "Hset:vvvv11111111")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -72,14 +72,8 @@ func main() {
 
 	time.Sleep(time.Duration(2) * time.Second)
 
-	cmd, err = redisItem.itemHGet(redisdb.redisDataDb, "ugender", "Hset:vvvv11111111")
+	cmd, err = redisItem.ItemHGet(redisdb.GetDb(), "ugender", "Hset:vvvv11111111")
 	if err != nil {
 		fmt.Println(err)
-	}
-	if cmd.Val() != "just test" {
-		fmt.Println(cmd.Val())
-		fmt.Println("get2 redis item in redis db failed")
-	} else {
-		fmt.Println("success2!!!")
 	}
 }

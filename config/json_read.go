@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 
-	"github.com/xndm-recommend/go-utils/errs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 // 从json string中获得map

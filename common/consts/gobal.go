@@ -41,4 +41,8 @@ const (
 
 const (
 	TIMEFORMAT = "2006-01-02"
+
+	ONE_DAY   = 1
+	ONE_WEEK  = 7
+	ONE_MONTH = 30
 )

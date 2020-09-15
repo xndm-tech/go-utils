@@ -8,7 +8,7 @@ type BaseRequest struct {
 type Response struct {
 	Code        ResponseCode `json:"status"`
 	Msg         string       `json:"msg"`
-	Data        interface{}  `json:"data"`
+	Data        interface{}  `json:"types"`
 	ServiceTime int64        `json:"servicetime"`
 }
 

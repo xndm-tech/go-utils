@@ -6,7 +6,7 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xndm-recommend/go-utils/errs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 func SendResponse(c *gin.Context, retCode ResponseCode, rsp interface{}) {
