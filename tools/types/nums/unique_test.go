@@ -7,7 +7,7 @@ import (
 	"github.com/xndm-recommend/go-utils/tools/maths"
 )
 
-const length = 500
+const length = 10000
 
 func TestRmDuplicateIntLen(b *testing.T) {
 	a := []int{1, 2, 3, 4, 5, 4, 4, 6}
@@ -37,5 +37,23 @@ func BenchmarkUniqueInt(b *testing.B) {
 	a := maths.GenNRandInt(length, 100)
 	for i := 0; i < b.N; i++ {
 		UniqueInt(a)
+	}
+}
+
+func BenchmarkDifferInt(b *testing.B) {
+	a := maths.GenNRandInt(length, 100)
+	aa := maths.GenNRandInt(length, 100)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		DifferInt(a, aa)
+	}
+}
+
+func BenchmarkDifferIntByMap(b *testing.B) {
+	a := maths.GenNRandInt(length, 100)
+	aa := maths.GenNRandInt(length, 100)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		DifferInt(a, aa)
 	}
 }

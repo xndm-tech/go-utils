@@ -6,6 +6,7 @@ import (
 )
 
 var PerfThr = 300
+var PerfThrDiff = 100
 
 // int slice自去重,通过两重循环过滤重复元素
 func uniqueIntByLoop(s []int) []int {
@@ -109,17 +110,68 @@ func UniqueInt32Len(s []int32, l int) []int32 {
 }
 
 // s1对s2做差
-func DifferInt(s1, s2 []int) []int {
+func differIntByLoop(s1, s2 []int) []int {
 	if len(s2) == 0 {
 		return s1
 	}
-	ints := make([]int, 0, len(s1))
+	var ints []int
 	for _, i := range s1 {
 		if !IsInIntSlice(s2, i) {
 			ints = append(ints, i)
 		}
 	}
 	return ints
+}
+
+// 通过map主键唯一的特性过滤重复元素
+func differIntByMap(s1, s2 []int) []int {
+	var dup []int
+	tmpMap := make(map[int]byte, len(s2)) // 存放不重复主键
+	for _, v := range s2 {
+		tmpMap[v] = 0
+	}
+	for _, i := range s1 {
+		if _, ok := tmpMap[i]; !ok {
+			dup = append(dup, i)
+		}
+	}
+	return dup
+}
+
+func differIntByLoop32(s1, s2 []int32) []int32 {
+	if len(s2) == 0 {
+		return s1
+	}
+	var ints []int32
+	for _, i := range s1 {
+		if !IsInInt32Slice(s2, i) {
+			ints = append(ints, i)
+		}
+	}
+	return ints
+}
+
+// 通过map主键唯一的特性过滤重复元素
+func differIntByMap32(s1, s2 []int32) []int32 {
+	var dup []int32
+	tmpMap := make(map[int32]byte, len(s2)) // 存放不重复主键
+	for _, v := range s2 {
+		tmpMap[v] = 0
+	}
+	for _, i := range s1 {
+		if _, ok := tmpMap[i]; !ok {
+			dup = append(dup, i)
+		}
+	}
+	return dup
+}
+
+func DifferInt(s1, s2 []int) []int {
+	if len(s1) < PerfThrDiff {
+		return differIntByLoop(s1, s2)
+	} else {
+		return differIntByMap(s1, s2)
+	}
 }
 
 func DifferIntLen(s1, s2 []int, l int) []int {
@@ -129,16 +181,11 @@ func DifferIntLen(s1, s2 []int, l int) []int {
 }
 
 func DifferInt32(s1, s2 []int32) []int32 {
-	if len(s2) == 0 {
-		return s1
+	if len(s1) < PerfThrDiff {
+		return differIntByLoop32(s1, s2)
+	} else {
+		return differIntByMap32(s1, s2)
 	}
-	ints := make([]int32, 0, len(s1))
-	for _, i := range s1 {
-		if !IsInInt32Slice(s2, i) {
-			ints = append(ints, i)
-		}
-	}
-	return ints
 }
 
 func DifferInt32Len(s1, s2 []int32, l int) []int32 {
