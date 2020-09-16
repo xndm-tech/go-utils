@@ -11,3 +11,11 @@ func IsEmptyInts(s []int) bool {
 func IsEmptyInt32s(s []int32) bool {
 	return len(s) == consts.ZERO
 }
+
+func IsEmptyInt64s(s []int64) bool {
+	return len(s) == consts.ZERO
+}
+
+func IsEmpty(s ...interface{}) bool {
+	return len(s) == consts.ZERO
+}

@@ -33,3 +33,19 @@ func GenNRandInt32(size int, n int32) []int32 {
 	}
 	return ints
 }
+
+func GenRandInt64(size int) []int64 {
+	ints := make([]int64, size)
+	for ind := range ints {
+		ints[ind] = rand.Int63()
+	}
+	return ints
+}
+
+func GenNRandInt64(size int, n int64) []int64 {
+	ints := make([]int64, size)
+	for ind := range ints {
+		ints[ind] = rand.Int63n(n)
+	}
+	return ints
+}

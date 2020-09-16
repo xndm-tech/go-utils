@@ -4,50 +4,8 @@ import (
 	"strconv"
 
 	"github.com/xndm-recommend/go-utils/tools/errs"
-	"github.com/xndm-recommend/go-utils/tools/types/nums"
 	"github.com/xndm-recommend/go-utils/tools/types/strs"
 )
-
-/**
-string 转换
-*/
-func IntToStr(a int) string {
-	return strconv.Itoa(a)
-}
-
-func Int32ToStr(a int32) string {
-	return strconv.FormatInt(int64(a), 10)
-}
-
-func Int64ToStr(a int64) string {
-	return strconv.FormatInt(a, 10)
-}
-
-func FloatToStr(a float64) string {
-	return strconv.FormatFloat(a, 'f', -1, 64)
-}
-
-func IntsToStrs(a []int) []string {
-	if nums.IsEmptyInts(a) {
-		return nil
-	}
-	ret := make([]string, len(a))
-	for i, b := range a {
-		ret[i] = IntToStr(b)
-	}
-	return ret
-}
-
-func Int32sToStrs(a []int32) []string {
-	if nums.IsEmptyInt32s(a) {
-		return nil
-	}
-	ret := make([]string, len(a))
-	for i, b := range a {
-		ret[i] = Int32ToStr(b)
-	}
-	return ret
-}
 
 // str2other
 func StrToByte(s string) []byte {
@@ -117,6 +75,17 @@ func StrsToInt32s(a []string, defaultInt int32) []int32 {
 	ret := make([]int32, len(a))
 	for i, b := range a {
 		ret[i] = StrToInt32(b, defaultInt)
+	}
+	return ret
+}
+
+func StrsToInt64s(a []string, defaultInt int64) []int64 {
+	if strs.IsEmptyStrs(a) {
+		return nil
+	}
+	ret := make([]int64, len(a))
+	for i, b := range a {
+		ret[i] = StrToInt64(b, defaultInt)
 	}
 	return ret
 }
