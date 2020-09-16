@@ -3,10 +3,10 @@ Version:
   Versions: 0.2.1
 
 Comic_data:
-  Host: 47.99.39.114
+  Host: 192.168.1.65
   Port: "3306"
-  User: recommend
-  Password: "R1QaL1^G0Fpv8^ZT"
+  User: root
+  Password: "w&cf3ImdzkJVyWwJ"
   Db_name: samh
   Table_name:
     Comic: cartoon
@@ -23,28 +23,8 @@ Redis_items:
     Expire: 200
     Len: 5
 
-Redis_cluster:
-  Master_host:
-    - "172.16.1.77"
-    - "172.16.1.77"
-    - "172.16.1.77"
-  Master_port:
-    - "7000"
-    - "7001"
-    - "7002"
-  Slave_host:
-    - "172.16.1.77"
-    - "172.16.1.77"
-    - "172.16.1.77"
-  Slave_port:
-    - "7003"
-    - "7004"
-    - "7005"
-  Password: "gUcAFcWf#Dg4He7R"
-  Nodes: 3
-  Pool_size: 200
-
 Redis:
-  Addr: "172.16.1.105:7006"
+  Addr: "172.16.1.105:7007"
   Password: "0iY87blaERqARYie"
   Pool_size: 200
+  Db: 0

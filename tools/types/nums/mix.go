@@ -21,7 +21,7 @@ func MixListIntV2(s ...[]int) []int {
 			}
 		}
 	}
-	return RmDuplicateInt(mix)
+	return UniqueInt(mix)
 }
 
 func MixListIntLenV2(l int, s ...[]int) []int {
@@ -45,7 +45,7 @@ func MixListInt32V2(s ...[]int32) []int32 {
 			}
 		}
 	}
-	return RmDuplicateInt32(mix)
+	return UniqueInt32(mix)
 }
 
 func MixListInt32LenV2(l int, s ...[]int32) []int32 {

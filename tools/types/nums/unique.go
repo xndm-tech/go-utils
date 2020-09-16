@@ -9,7 +9,7 @@ var PerfThr = 300
 
 // int slice自去重,通过两重循环过滤重复元素
 func uniqueIntByLoop(s []int) []int {
-	dup := make([]int, 0, len(s))
+	var dup []int
 	for _, v := range s {
 		if !IsInIntSlice(dup, v) {
 			dup = append(dup, v)
@@ -20,7 +20,7 @@ func uniqueIntByLoop(s []int) []int {
 
 // 通过map主键唯一的特性过滤重复元素
 func uniqueIntByMap(s []int) []int {
-	dup := make([]int, 0, len(s))
+	var dup []int
 	tmpMap := make(map[int]byte, len(s)) // 存放不重复主键
 	for _, v := range s {
 		if _, ok := tmpMap[v]; !ok {
@@ -33,7 +33,7 @@ func uniqueIntByMap(s []int) []int {
 
 // int slice自去重,通过两重循环过滤重复元素
 func uniqueIntByLoop32(s []int32) []int32 {
-	dup := make([]int32, 0, len(s))
+	var dup []int32
 	for _, v := range s {
 		if !IsInInt32Slice(dup, v) {
 			dup = append(dup, v)
@@ -44,7 +44,7 @@ func uniqueIntByLoop32(s []int32) []int32 {
 
 // 通过map主键唯一的特性过滤重复元素
 func uniqueIntByMap32(s []int32) []int32 {
-	dup := make([]int32, 0, len(s))
+	var dup []int32
 	tmpMap := make(map[int32]byte, len(s)) // 存放不重复主键
 	for _, v := range s {
 		if _, ok := tmpMap[v]; !ok {
@@ -57,7 +57,7 @@ func uniqueIntByMap32(s []int32) []int32 {
 
 // int slice自去重,通过两重循环过滤重复元素
 func uniqueIntByLoop64(s []int64) []int64 {
-	dup := make([]int64, 0, len(s))
+	var dup []int64
 	for _, v := range s {
 		if !IsInInt64Slice(dup, v) {
 			dup = append(dup, v)
@@ -68,7 +68,7 @@ func uniqueIntByLoop64(s []int64) []int64 {
 
 // 通过map主键唯一的特性过滤重复元素
 func uniqueIntByMap64(s []int64) []int64 {
-	dup := make([]int64, 0, len(s))
+	var dup []int64
 	tmpMap := make(map[int64]byte, len(s)) // 存放不重复主键
 	for _, v := range s {
 		if _, ok := tmpMap[v]; !ok {

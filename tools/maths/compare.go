@@ -6,8 +6,146 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/xndm-recommend/go-utils/common/consts"
+
 	"github.com/pkg/errors"
 )
+
+func MinInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func MinInt32(a, b int32) int32 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+// Int64Min returns the minimum of the params
+func MinInt64(a, b int64) int64 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func MinFloat(a, b float32) float32 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func MinInts(a []int) int {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var min = a[consts.ZERO]
+	for _, i := range a {
+		if i < min {
+			min = i
+		}
+	}
+	return min
+}
+
+func MinInt32s(a []int32) int32 {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var min = a[consts.ZERO]
+	for _, i := range a {
+		if i < min {
+			min = i
+		}
+	}
+	return min
+}
+
+func MinFloats(a []float32) float32 {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var min = a[consts.ZERO]
+	for _, i := range a {
+		if i < min {
+			min = i
+		}
+	}
+	return min
+}
+
+func MaxInt(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
+
+func MaxInt32(a, b int32) int32 {
+	if a < b {
+		return b
+	}
+	return a
+}
+
+// Int64Max returns the maximum of the params
+func MaxInt64(a, b int64) int64 {
+	if a < b {
+		return b
+	}
+	return a
+}
+
+func MaxFloat(a, b float32) float32 {
+	if a < b {
+		return b
+	}
+	return a
+}
+
+func MaxInts(a []int) int {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var max = a[consts.ZERO]
+	for _, i := range a {
+		if i > max {
+			max = i
+		}
+	}
+	return max
+}
+
+func MaxInt32s(a []int32) int32 {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var max = a[consts.ZERO]
+	for _, i := range a {
+		if i > max {
+			max = i
+		}
+	}
+	return max
+}
+
+func MaxFloats(a []float32) float32 {
+	if consts.ZERO == len(a) {
+		return consts.ZERO
+	}
+	var max = a[consts.ZERO]
+	for _, i := range a {
+		if i > max {
+			max = i
+		}
+	}
+	return max
+}
 
 func Min(a, b interface{}) interface{} {
 	switch a.(type) {
@@ -32,27 +170,6 @@ func Min(a, b interface{}) interface{} {
 	default:
 		return errors.New("input num type error!!!")
 	}
-}
-
-func MinInt(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func MinInt32(a, b int32) int32 {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func MinFloat(a, b float32) float32 {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 func Max(a, b interface{}) interface{} {
@@ -80,25 +197,12 @@ func Max(a, b interface{}) interface{} {
 	}
 }
 
-func MaxInt(a, b int) int {
-	if a < b {
-		return b
+// RoundToInt32 rounds floats into integer nums.
+func RoundToInt32(a float64) int32 {
+	if a < 0 {
+		return int32(a - 0.5)
 	}
-	return a
-}
-
-func MaxInt32(a, b int32) int32 {
-	if a < b {
-		return b
-	}
-	return a
-}
-
-func MaxFloat(a, b float32) float32 {
-	if a < b {
-		return b
-	}
-	return a
+	return int32(a + 0.5)
 }
 
 // 小数点后 n 位 - 四舍五入

@@ -16,7 +16,7 @@ func CutIntList(s []int, l int) []int {
 func CutIntListAndFilling(s []int, f []int, l int) []int {
 	if cut := CutIntList(s, l); len(cut) < l {
 		tmp := append(s, f...)
-		return RmDuplicateIntLen(tmp, l)
+		return UniqueIntLen(tmp, l)
 	} else {
 		return cut
 	}
@@ -30,7 +30,7 @@ func CutInt32List(s []int32, l int) []int32 {
 func CutInt32ListAndFilling(s []int32, f []int32, l int) []int32 {
 	if cut := CutInt32List(s, l); len(cut) < l {
 		tmp := append(s, f...)
-		return RmDuplicateInt32Len(tmp, l)
+		return UniqueInt32Len(tmp, l)
 	} else {
 		return cut
 	}

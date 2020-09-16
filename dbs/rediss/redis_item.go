@@ -51,6 +51,44 @@ func (r *ItemInfo) ItemGetKey(keys ...string) string {
 }
 
 // set
+func (r *ItemInfo) ItemSetBit(redisClient redis.Cmdable, offset int64, value int, keys ...string) error {
+	if err := redisClient.SetBit(r.ItemGetKey(keys...), offset, value).Err(); nil == err {
+		return redisClient.Expire(r.ItemGetKey(keys...), r.expire).Err()
+	} else {
+		return err
+	}
+}
+
+func (r *ItemInfo) ItemPSetBit(redisClient redis.Cmdable, offsets []int64, value int, keys ...string) ([]*redis.IntCmd, error) {
+	var cmder []*redis.IntCmd
+	p := redisClient.Pipeline()
+	for _, offset := range offsets {
+		cmder = append(cmder, p.SetBit(r.ItemGetKey(keys...), offset, value))
+	}
+	if _, err := p.Exec(); nil == err {
+		err = redisClient.Expire(r.ItemGetKey(keys...), r.expire).Err()
+		return cmder, err
+	} else {
+		return cmder, err
+	}
+}
+
+func (r *ItemInfo) ItemGetBit(redisClient redis.Cmdable, offset int64, keys ...string) (*redis.IntCmd, error) {
+	intCmd := redisClient.GetBit(r.ItemGetKey(keys...), offset)
+	return intCmd, intCmd.Err()
+}
+
+func (r *ItemInfo) ItemPGetBit(redisClient redis.Cmdable, offsets []int64, keys ...string) ([]*redis.IntCmd, error) {
+	var cmder []*redis.IntCmd
+	p := redisClient.Pipeline()
+	for _, offset := range offsets {
+		cmder = append(cmder, p.GetBit(r.ItemGetKey(keys...), offset))
+	}
+	_, err := p.Exec()
+	errs.CheckCommonErr(err)
+	return cmder, err
+}
+
 func (r *ItemInfo) ItemSetByte(redisClient redis.Cmdable, values []byte, keys ...string) error {
 	return redisClient.Set(r.ItemGetKey(keys...), values, r.expire).Err()
 }

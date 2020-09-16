@@ -46,3 +46,10 @@ const (
 	ONE_WEEK  = 7
 	ONE_MONTH = 30
 )
+
+const (
+	INT_MAX       = int(^uint(0) >> 1)
+	INT_MIN       = ^INT_MAX
+	UINT_MIN uint = 0
+	UINT_MAX      = ^uint(0)
+)

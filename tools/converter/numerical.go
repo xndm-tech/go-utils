@@ -1,9 +1,5 @@
 package converter
 
-import (
-	"strconv"
-)
-
 /**
 int32 转换
 */
@@ -38,13 +34,13 @@ func Int64ToInt32(i int64) int32 {
 }
 
 func IntToFloat32(a int) float32 {
-	return strconv.Itoa(a)
+	return float32(a)
 }
 
 func Int32ToFloat32(a int32) float32 {
-	return strconv.Itoa(a)
+	return float32(a)
 }
 
 func Int64ToFloat32(a int64) float32 {
-	return strconv.Itoa(a)
+	return float32(a)
 }
