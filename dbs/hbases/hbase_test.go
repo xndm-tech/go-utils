@@ -1,12 +1,5 @@
 package hbases
 
-import (
-	"fmt"
-	"testing"
-
-	"github.com/tsuna/gohbase/hrpc"
-)
-
 //func TestHbaseConnection(t *testing.T) {
 //	client := gohbase.NewClient("emr-worker-1.cluster-181564")
 //	//fmt.Println(client)
@@ -23,19 +16,19 @@ import (
 //	fmt.Println(getRes)
 //}
 
-func TestHbaseGets(t *testing.T) {
-	var hbase = &HBHelper{}
-	hbase.ConnectHBase("emr-worker-1.cluster-181564", "root-region-server")
-	t.Log("hbase._client", hbase._client)
-	f := map[string][]string{"comicInfo": []string{"cid"}}
-	getres, err := hbase.GetsByOption("item", "7119", hrpc.Families(f))
-	t.Log(err)
-	for i, v := range getres.Cells {
-		row := string(v.Row[:])
-		fam := string(v.Family[:])
-		qua := string(v.Qualifier[:])
-		value := string(v.Value[:])
-		str := fmt.Sprintf("index:%d		Rowkey: %s		family: %s		qualifies:%s		value:%s", i, row, fam, qua, value)
-		fmt.Println(str)
-	}
-}
+//func TestHbaseGets(t *testing.T) {
+//	var hbase = &gohbase.HBHelper{}
+//	hbase.ConnectHBase("emr-worker-1.cluster-181564", "root-region-server")
+//	t.Log("hbase._client", hbase._client)
+//	f := map[string][]string{"comicInfo": []string{"cid"}}
+//	getres, err := hbase.GetsByOption("item", "7119", hrpc.Families(f))
+//	t.Log(err)
+//	for i, v := range getres.Cells {
+//		row := string(v.Row[:])
+//		fam := string(v.Family[:])
+//		qua := string(v.Qualifier[:])
+//		value := string(v.Value[:])
+//		str := fmt.Sprintf("index:%d		Rowkey: %s		family: %s		qualifies:%s		value:%s", i, row, fam, qua, value)
+//		fmt.Println(str)
+//	}
+//}

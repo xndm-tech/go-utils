@@ -1,4 +1,4 @@
-package hbases
+package gohbase
 
 import (
 	"context"

@@ -5,9 +5,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"testing"
 
-	"./gen-go/hbase"
 	"github.com/apache/thrift/lib/go/thrift"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gen-go/hbase"
 )
 
 const (
@@ -18,7 +19,7 @@ const (
 	PASSWORD = "root"
 )
 
-func main() {
+func TestDDDD(t *testing.T) {
 	defaultCtx := context.Background()
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 	trans, err := thrift.NewTHttpClient(HOST)
