@@ -7,7 +7,7 @@ import (
 	"github.com/xndm-recommend/go-utils/tools/maths"
 )
 
-const length = 10000
+const length = 30000
 
 func TestRmDuplicateIntLen(b *testing.T) {
 	a := []int{1, 2, 3, 4, 5, 4, 4, 6}
