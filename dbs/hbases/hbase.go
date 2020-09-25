@@ -37,7 +37,6 @@ func (hb *HBHelper) PutsByRowkeyVersion(table, rowKey string, values map[string]
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
 func (hb *HBHelper) GetsByOption(table string, rowkey string, options func(hrpc.Call) error) (*hrpc.Result, error) {
 	getRequest, err := hrpc.NewGetStr(context.Background(), table, rowkey, options)
-	fmt.Println(err)
 	errs.CheckCommonErr(err)
 	res, err := hb._client.Get(getRequest)
 	errs.CheckCommonErr(err)
