@@ -17,15 +17,15 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	"github.com/tsuna/gohbase/compression"
-	"github.com/tsuna/gohbase/hrpc"
-	"github.com/tsuna/gohbase/pb"
-	"github.com/tsuna/gohbase/region"
-	"github.com/tsuna/gohbase/test"
-	"github.com/tsuna/gohbase/test/mock"
-	mockRegion "github.com/tsuna/gohbase/test/mock/region"
-	mockZk "github.com/tsuna/gohbase/test/mock/zk"
-	"github.com/tsuna/gohbase/zk"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/compression"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/pb"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/region"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/test"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/test/mock"
+	mockRegion "github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/test/mock/region"
+	mockZk "github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/test/mock/zk"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/zk"
 	"google.golang.org/protobuf/proto"
 	"modernc.org/b"
 )
@@ -162,7 +162,7 @@ func TestReestablishRegionSplit(t *testing.T) {
 	}
 
 	expRegs := map[string]struct{}{
-		"hbase:meta,,1":                                          struct{}{},
+		"hbase:meta,,1": struct{}{},
 		"test1,,1480547738107.825c5c7e480c76b73d6d2bad5d3f7bb8.": struct{}{},
 	}
 

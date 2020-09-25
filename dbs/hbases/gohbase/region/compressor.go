@@ -11,7 +11,7 @@ import (
 	"io"
 	"net"
 
-	"github.com/tsuna/gohbase/compression"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/compression"
 )
 
 type compressor struct {

@@ -12,7 +12,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/tsuna/gohbase/pb"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/pb"
 	"google.golang.org/protobuf/proto"
 )
 

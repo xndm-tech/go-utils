@@ -13,8 +13,8 @@ import (
 	"io"
 	"math"
 
-	"github.com/tsuna/gohbase/hrpc"
-	"github.com/tsuna/gohbase/pb"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/pb"
 	"google.golang.org/protobuf/proto"
 )
 

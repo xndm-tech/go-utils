@@ -12,11 +12,11 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/tsuna/gohbase/compression"
-	"github.com/tsuna/gohbase/hrpc"
-	"github.com/tsuna/gohbase/pb"
-	"github.com/tsuna/gohbase/region"
-	"github.com/tsuna/gohbase/zk"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/compression"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/pb"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/region"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/zk"
 	"google.golang.org/protobuf/proto"
 	"modernc.org/b"
 )

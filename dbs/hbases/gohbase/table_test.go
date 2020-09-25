@@ -15,9 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tsuna/gohbase"
-	"github.com/tsuna/gohbase/filter"
-	"github.com/tsuna/gohbase/hrpc"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/filter"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
 )
 
 // Name of the meta region.

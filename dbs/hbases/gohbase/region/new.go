@@ -13,8 +13,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/tsuna/gohbase/compression"
-	"github.com/tsuna/gohbase/hrpc"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/compression"
+	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
 )
 
 // NewClient creates a new RegionClient.
