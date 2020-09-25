@@ -20,7 +20,6 @@ require (
 	github.com/steakknife/bloomfilter v0.0.0-20180922174646-6819c0d2a570 // indirect
 	github.com/steakknife/hamming v0.0.0-20180906055917-c99c65617cd3 // indirect
 	github.com/stretchr/testify v1.4.0
-	github.com/tsuna/gohbase v0.0.0-20200831170559-79db14850535
 	gopkg.in/ini.v1 v1.61.0
 	gopkg.in/yaml.v2 v2.2.8
 )
