@@ -5,6 +5,9 @@ Version:
 HBase_db:
   ZooKeeperQuorum: "emr-worker-1.cluster-181564,emr-worker-2.cluster-181564,emr-header-1.cluster-181564"
   User: "recommender/user@EMR.181564.COM"
+  Namespace: "default"
+  Table_name:
+    Item: item
 
 Comic_data:
   Host: 192.168.1.65

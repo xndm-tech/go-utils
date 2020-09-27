@@ -1,8 +1,10 @@
 package config
 
 type HBaseDbData struct {
-	ZK   string `yaml:"ZooKeeperQuorum"`
-	User string `yaml:"User"`
+	ZK        string            `yaml:"ZooKeeperQuorum"`
+	User      string            `yaml:"User"`
+	Namespace string            `yaml:"Namespace"`
+	TableName map[string]string `yaml:"Table_name"`
 }
 
 func (this *ConfigEngine) GetHBaseFromConf(name string) *HBaseDbData {

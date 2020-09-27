@@ -15,9 +15,11 @@ import (
 )
 
 type HBaseDbInfo struct {
-	Zkquorum string
-	Option   string
-	_client  gohbase.Client
+	Zkquorum  string
+	Option    string
+	Namespace string
+	TableName map[string]string
+	_client   gohbase.Client
 }
 
 func (hb *HBaseDbInfo) ConnectHBase(account string, zkquorum string) {
@@ -33,6 +35,8 @@ func (hb *HBaseDbInfo) connectHBase(db *config.HBaseDbData) {
 	user := gohbase.EffectiveUser(db.User)
 	options := []gohbase.Option{auth, user}
 	hb.Zkquorum = db.ZK
+	hb.Namespace = db.Namespace
+	hb.TableName = db.TableName
 	hb._client = gohbase.NewClient(db.ZK, options...)
 }
 

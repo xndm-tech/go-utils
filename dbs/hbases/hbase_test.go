@@ -29,7 +29,7 @@ func TestHbaseConnection(t *testing.T) {
 	//getRequest, err := hrpc.NewGetStr(context.Background(), "item", "7119")
 	//errs.CheckCommonErr(err)
 	f := map[string][]string{"comicInfo": []string{"cid"}}
-	getRes, _ := db.GetsByOption("item", "7119", hrpc.Families(f))
+	getRes, _ := db.GetsByOption("default:item", "7119", hrpc.Families(f))
 	fmt.Println(getRes)
 }
 
@@ -40,6 +40,7 @@ func TestHbaseConnectionFromConfig(t *testing.T) {
 	errs.CheckCommonErr(err)
 	db.GetDbConnFromConf(&c, "HBase_db")
 	t.Log("db", db)
+	t.Log("db", db.TableName)
 	//// Values maps a ColumnFamily -> Qualifiers -> Values.
 	//values := map[string]map[string][]byte{"cf": map[string][]byte{"a": []byte{0}}}
 	//putRequest, err := hrpc.NewPutStr(context.Background(), "item", "comic_info", values)
