@@ -2,6 +2,10 @@ Version:
   Algorithm: rec_app
   Versions: 0.2.1
 
+HBase_db:
+  ZooKeeperQuorum: "emr-worker-1.cluster-181564,emr-worker-2.cluster-181564,emr-header-1.cluster-181564"
+  User: "recommender/user@EMR.181564.COM"
+
 Comic_data:
   Host: 192.168.1.65
   Port: "3306"

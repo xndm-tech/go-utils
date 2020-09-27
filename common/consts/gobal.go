@@ -4,6 +4,7 @@ const (
 	// 当前支持平台
 	PLATFORM_SAMH = "samh"
 	PLATFORM_MKZ  = "mkz"
+	PLATFORM_KMH  = "kmh"
 )
 
 const (

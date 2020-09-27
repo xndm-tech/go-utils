@@ -4,11 +4,18 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/tools/errs"
+
 	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase/hrpc"
 )
 
+const (
+	Config_path = "../../config/test.yaml"
+)
+
 func TestHbaseConnection(t *testing.T) {
-	db := &HBHelper{}
+	db := &HBaseDbInfo{}
 	db.ConnectHBase("recommender/user@EMR.181564.COM",
 		"emr-worker-1.cluster-181564,emr-worker-2.cluster-181564,emr-header-1.cluster-181564")
 	t.Log("db", db)
@@ -26,8 +33,29 @@ func TestHbaseConnection(t *testing.T) {
 	fmt.Println(getRes)
 }
 
+func TestHbaseConnectionFromConfig(t *testing.T) {
+	db := &HBaseDbInfo{}
+	c := config.ConfigEngine{}
+	err := c.Load(Config_path)
+	errs.CheckCommonErr(err)
+	db.GetDbConnFromConf(&c, "HBase_db")
+	t.Log("db", db)
+	//// Values maps a ColumnFamily -> Qualifiers -> Values.
+	//values := map[string]map[string][]byte{"cf": map[string][]byte{"a": []byte{0}}}
+	//putRequest, err := hrpc.NewPutStr(context.Background(), "item", "comic_info", values)
+	//errs.CheckCommonErr(err)
+	//rsp, err := client.Put(putRequest)
+	//fmt.Println(rsp)
+
+	//getRequest, err := hrpc.NewGetStr(context.Background(), "item", "7119")
+	//errs.CheckCommonErr(err)
+	f := map[string][]string{"comicInfo": []string{"cid"}}
+	getRes, _ := db.GetsByOption("item", "7119", hrpc.Families(f))
+	fmt.Println(getRes)
+}
+
 //func TestHbaseGets(t *testing.T) {
-//	var hbase = &gohbase1.HBHelper{}
+//	var hbase = &gohbase1.HBaseDbInfo{}
 //	hbase.ConnectHBase("emr-worker-1.cluster-181564", "root-region-server")
 //	t.Log("hbase._client", hbase._client)
 //	f := map[string][]string{"comicInfo": []string{"cid"}}
