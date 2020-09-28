@@ -78,6 +78,10 @@ func (this *HBaseDbInfo) Ping() error {
 	return errors.New("连接为空")
 }
 
+func (this *HBaseDbInfo) GetClient() gohbase.Client {
+	return this._client
+}
+
 func (this *HBaseDbInfo) GetDbConnFromConf(c *config.ConfigEngine, name string) {
 	this.connectHBase(c.GetHBaseFromConf(name))
 }
