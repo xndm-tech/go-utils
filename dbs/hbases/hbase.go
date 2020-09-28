@@ -71,6 +71,13 @@ func (hb *HBaseDbInfo) GetsByOption(table string, rowkey string, options func(hr
 	return res, nil
 }
 
+func (this *HBaseDbInfo) Ping() error {
+	if this._client != nil {
+		return nil
+	}
+	return errors.New("连接为空")
+}
+
 func (this *HBaseDbInfo) GetDbConnFromConf(c *config.ConfigEngine, name string) {
 	this.connectHBase(c.GetHBaseFromConf(name))
 }
