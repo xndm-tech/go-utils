@@ -6,7 +6,6 @@ package hbases
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase"
@@ -53,22 +52,16 @@ func (hb *HBaseDbInfo) PutsByRowkeyVersion(table, rowKey string, values map[stri
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
 func (hb *HBaseDbInfo) GetsByOption(table string, rowkey string, options func(hrpc.Call) error) (*hrpc.Result, error) {
 	getRequest, err := hrpc.NewGetStr(context.Background(), table, rowkey, options)
-	errs.CheckCommonErr(err)
+	if nil != err {
+		errs.CheckCommonErr(err)
+		return nil, err
+	}
 	res, err := hb._client.Get(getRequest)
-	errs.CheckCommonErr(err)
-	defer func() {
-		if err := recover(); err != nil {
-			switch fmt.Sprintf("%v", err) {
-			case "runtime error: index out of range":
-				err = errors.New("NoSuchRowKeyOrQualifierException")
-			case "runtime error: invalid memory address or nil pointer dereference":
-				err = errors.New("NoSuchColFamilyException")
-			default:
-				err = fmt.Errorf("%v", err)
-			}
-		}
-	}()
-	return res, nil
+	if nil != err {
+		errs.CheckCommonErr(err)
+		return nil, err
+	}
+	return res, err
 }
 
 func (this *HBaseDbInfo) Ping() error {
