@@ -12,7 +12,6 @@ import (
 	"github.com/xndm-recommend/go-utils/common/consts"
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/tools/errs"
-	"github.com/xndm-recommend/go-utils/tools/types/strs"
 )
 
 type MysqlMethod interface {
@@ -33,9 +32,9 @@ type MysqlDbInfo struct {
 }
 
 func getMySqlLoginStr(data *config.MysqlDbData) string {
-	return strs.JoinStrs(data.User, ":",
-		data.Password, "@tcp(", data.Host, ":",
-		data.Port, ")/", data.Db_name, "?charset=utf8")
+	return data.User + ":" +
+		data.Password + "@tcp(" + data.Host + ":" +
+		data.Port + ")/" + data.Db_name + "?charset=utf8"
 }
 
 func (this *MysqlDbInfo) createDatabaseConns(login *config.MysqlDbData) {

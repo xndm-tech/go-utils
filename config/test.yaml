@@ -10,13 +10,13 @@ HBase_db:
     Item: item
 
 Comic_data:
-  Host: 192.168.1.65
+  Host: 172.16.1.105
   Port: "3306"
-  User: root
-  Password: "w&cf3ImdzkJVyWwJ"
-  Db_name: samh
+  User: recommender
+  Password: "BhRuKc!RJ64eBDQn"
+  Db_name: test
   Table_name:
-    Comic: cartoon
+    Comic: behavior
   Max_conns: 10
   Time_out: 50
 

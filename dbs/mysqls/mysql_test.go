@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Config_path = "../config/test.yaml"
+	Config_path = "../../config/test.yaml"
 )
 
 func TestMysqlDbInfo_QueryIdList(b *testing.T) {
@@ -18,7 +18,7 @@ func TestMysqlDbInfo_QueryIdList(b *testing.T) {
 	errs.CheckCommonErr(err)
 	db := MysqlDbInfo{}
 	db.GetDbConnFromConf(&c, "Comic_data")
-	ids, _ := db.SelectStrList("select cartoon_id from cartoon limit 1")
+	ids, _ := db.SelectStrList("select item_id from behavior limit 1")
 	b.Log(ids)
 }
 
