@@ -70,6 +70,7 @@ func (hb *HBaseDbInfo) GetsByScanOption(table string, options ...func(hrpc.Call)
 	var (
 		scanRequest *hrpc.Scan
 		res         *hrpc.Result
+		err1        error
 	)
 	scanRequest, err = hrpc.NewScanStr(context.Background(), table, options...)
 	if nil != err {
@@ -78,12 +79,13 @@ func (hb *HBaseDbInfo) GetsByScanOption(table string, options ...func(hrpc.Call)
 	}
 	scanner := hb._client.Scan(scanRequest)
 	for {
-		res, err = scanner.Next()
-		if err == io.EOF || res == nil {
+		res, err1 = scanner.Next()
+		if err1 == io.EOF || res == nil {
 			break
 		}
-		if err != nil {
-			errs.CheckCommonErr(err)
+		if nil != err1 {
+			errs.CheckCommonErr(err1)
+			return nil, err1
 		}
 		rsp = append(rsp, res)
 	}
