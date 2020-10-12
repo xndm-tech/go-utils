@@ -9,10 +9,12 @@ import (
 )
 
 func LoggerSetup(c string) {
+	//seelog.RegisterCustomFormatter("QuoteMsg", createQuoteMsgFormatter)
+	//seelog.RegisterCustomFormatter("QuoteMsg",createQuoteMsgFormatter)
 	logger, err := seelog.LoggerFromConfigAsFile(c)
 	if err != nil {
 		errs.CheckFatalErr(err)
 		return
 	}
-	seelog.ReplaceLogger(logger)
+	_ = seelog.ReplaceLogger(logger)
 }

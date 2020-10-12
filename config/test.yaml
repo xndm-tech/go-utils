@@ -3,8 +3,8 @@ Version:
   Versions: 0.2.1
 
 HBase_db:
-  ZooKeeperQuorum: "emr-worker-1.cluster-181564,emr-worker-2.cluster-181564,emr-header-1.cluster-181564"
-  User: "recommender/user@EMR.181564.COM"
+  ZooKeeperQuorum: "emr-worker-1.cluster-75930,emr-header-1.cluster-75930,emr-header-2.cluster-75930"
+  User: "recommender/user@EMR.75930.COM"
   Namespace: "default"
   Table_name:
     Item: item

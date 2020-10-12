@@ -13,7 +13,7 @@ func SentryCaptureError(err error) {
 func CheckErrSendEmail(err error) {
 	if err != nil {
 		errDetail := errors.WithStack(err)
-		seelog.Errorf("%+v", errDetail)
+		_ = seelog.Errorf("%+v", errDetail)
 		raven.CaptureError(errDetail, nil)
 	}
 }

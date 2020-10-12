@@ -6,6 +6,7 @@ package hbases
 import (
 	"context"
 	"errors"
+	"io"
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/dbs/hbases/gohbase"
@@ -50,8 +51,8 @@ func (hb *HBaseDbInfo) PutsByRowkeyVersion(table, rowKey string, values map[stri
 }
 
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
-func (hb *HBaseDbInfo) GetsByOption(table string, rowkey string, options func(hrpc.Call) error) (*hrpc.Result, error) {
-	getRequest, err := hrpc.NewGetStr(context.Background(), table, rowkey, options)
+func (hb *HBaseDbInfo) GetsByOption(table, rowkey string, options ...func(hrpc.Call) error) (*hrpc.Result, error) {
+	getRequest, err := hrpc.NewGetStr(context.Background(), table, rowkey, options...)
 	if nil != err {
 		errs.CheckCommonErr(err)
 		return nil, err
@@ -62,6 +63,31 @@ func (hb *HBaseDbInfo) GetsByOption(table string, rowkey string, options func(hr
 		return nil, err
 	}
 	return res, err
+}
+
+//指定表，通过options筛选数据，例如Families函数，或者filter函数
+func (hb *HBaseDbInfo) GetsByScanOption(table string, options ...func(hrpc.Call) error) (rsp []*hrpc.Result, err error) {
+	var (
+		scanRequest *hrpc.Scan
+		res         *hrpc.Result
+	)
+	scanRequest, err = hrpc.NewScanStr(context.Background(), table, options...)
+	if nil != err {
+		errs.CheckCommonErr(err)
+		return nil, err
+	}
+	scanner := hb._client.Scan(scanRequest)
+	for {
+		res, err = scanner.Next()
+		if err == io.EOF || res == nil {
+			break
+		}
+		if err != nil {
+			errs.CheckCommonErr(err)
+		}
+		rsp = append(rsp, res)
+	}
+	return
 }
 
 func (this *HBaseDbInfo) Ping() error {

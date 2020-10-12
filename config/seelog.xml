@@ -1,0 +1,23 @@
+<seelog>
+    <outputs formatid="main">
+        <filter levels="warn">
+            <rollingfile type="date" filename="/data/logs/samh/rpc_server/profile/user/warn/warning.log"
+                         datepattern="2006-01-02" maxrolls="3"/>
+        </filter>
+        <filter levels="info">
+            <rollingfile type="date" filename="/data/logs/samh/rpc_server/profile/user/records/info.log"
+                         datepattern="2006-01-02" maxrolls="3"/>
+        </filter>
+        <filter levels="debug">
+            <rollingfile type="date" filename="/data/logs/samh/rpc_server/profile/user/debug/debug.log"
+                         datepattern="2006-01-02" maxrolls="3"/>
+        </filter>
+        <filter levels="error,critical">
+            <rollingfile type="date" filename="/data/logs/samh/rpc_server/profile/user/error/error.log"
+                         datepattern="2006-01-02" maxrolls="15"/>
+        </filter>
+    </outputs>
+    <formats>
+        <format id="main" format="[%Date %Time] [%Level] %File:%Line %Msg%n"/>
+    </formats>
+</seelog>

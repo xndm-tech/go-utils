@@ -7,9 +7,28 @@ import (
 	"errors"
 	"reflect"
 	"runtime"
+	"strconv"
 
 	"github.com/cihub/seelog"
 )
+
+//错误处理函数
+func CheckCommonInfo(err string, params ...interface{}) {
+	_, file, line, _ := runtime.Caller(1)
+	seelog.Infof(file+":"+strconv.Itoa(line)+" "+err, params...)
+}
+
+//错误处理函数
+func CheckCommonDebug(err string, params ...interface{}) {
+	_, file, line, _ := runtime.Caller(1)
+	seelog.Debugf(file+":"+strconv.Itoa(line)+" "+err, params...)
+}
+
+//错误处理函数
+func CheckCommonWarn(err string, params ...interface{}) {
+	_, file, line, _ := runtime.Caller(1)
+	_ = seelog.Warnf(file+":"+strconv.Itoa(line)+" "+err, params...)
+}
 
 //错误处理函数
 func CheckCommonErr(err error) {
@@ -23,7 +42,7 @@ func CheckCommonErr(err error) {
 func CheckFatalErr(err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1)
-		_ = seelog.Error("Important error:", file, ":", line, err)
+		_ = seelog.Critical("Important error:", file, ":", line, err)
 		panic(err)
 	}
 }
