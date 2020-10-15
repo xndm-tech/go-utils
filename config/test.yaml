@@ -3,7 +3,7 @@ Version:
   Versions: 0.2.1
 
 HBase_db:
-  ZooKeeperQuorum: "emr-worker-1.cluster-75930,emr-header-1.cluster-75930,emr-header-2.cluster-75930"
+  ZooKeeperQuorum: "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com:2181"
   User: "recommender/user@EMR.75930.COM"
   Namespace: "default"
   Table_name:
