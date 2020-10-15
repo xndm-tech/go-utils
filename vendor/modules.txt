@@ -3,9 +3,6 @@
 github.com/apache/thrift/lib/go/thrift
 # github.com/beltran/gosasl v0.0.0-20200816203322-2f20f217aef6
 ## explicit
-github.com/beltran/gosasl
-# github.com/beltran/gssapi v0.0.0-20200324152954-d86554db4bab
-github.com/beltran/gssapi
 # github.com/certifi/gocertifi v0.0.0-20200211180108-c7c1fbc02894
 ## explicit
 github.com/certifi/gocertifi
@@ -62,7 +59,6 @@ github.com/go-sql-driver/mysql
 github.com/golang-sql/civil
 # github.com/golang/mock v1.4.4
 ## explicit
-github.com/golang/mock/gomock
 # github.com/golang/protobuf v1.4.1
 ## explicit
 github.com/golang/protobuf/proto
@@ -122,6 +118,16 @@ github.com/smartystreets/goconvey/convey/reporting
 # github.com/stretchr/testify v1.4.0
 ## explicit
 github.com/stretchr/testify/assert
+# github.com/tsuna/gohbase v0.0.0-20201006203713-f1ffe9f66b83
+## explicit
+github.com/tsuna/gohbase
+github.com/tsuna/gohbase/compression
+github.com/tsuna/gohbase/compression/snappy
+github.com/tsuna/gohbase/filter
+github.com/tsuna/gohbase/hrpc
+github.com/tsuna/gohbase/pb
+github.com/tsuna/gohbase/region
+github.com/tsuna/gohbase/zk
 # github.com/ugorji/go/codec v1.1.7
 github.com/ugorji/go/codec
 # golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
