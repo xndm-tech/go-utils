@@ -206,6 +206,7 @@ func (r *ItemInfo) ItemZAdd(redisClient redis.Cmdable, values []string, keys ...
 		zmembers = append(zmembers, redis.Z{Score: float64(time.Now().UnixNano()), Member: id})
 	}
 	p := redisClient.Pipeline()
+	p.Expire(key, r.expire)
 	err := p.ZAdd(key, zmembers...).Err()
 	errs.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
