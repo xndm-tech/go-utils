@@ -16,3 +16,11 @@ func GetMapKeysAndValues(m map[string]string) ([]string, []string) {
 	}
 	return keys, values
 }
+
+func Strs2Map(s []string, value string) (m map[string]string) {
+	m = make(map[string]string, len(s))
+	for _, ss := range s {
+		m[ss] = value
+	}
+	return
+}
