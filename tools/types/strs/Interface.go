@@ -9,9 +9,9 @@ func Strs2Interface(s []string) []interface{} {
 }
 
 func Interface2Strs(interfaces []interface{}) []string {
-	var strs = make([]interface{}, len(interfaces))
+	var strs = make([]string, len(interfaces))
 	for i, v := range interfaces {
-		strs[i] = v
+		strs[i] = v.(string)
 	}
 	return strs
 }
