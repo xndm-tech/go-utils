@@ -1,4 +1,4 @@
-package bitmap
+package redis
 
 import (
 	"fmt"

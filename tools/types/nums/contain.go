@@ -2,7 +2,7 @@ package nums
 
 import "github.com/xndm-recommend/go-utils/common/consts"
 
-func IsInIntSlice(s []int, item int) bool {
+func IsContainInt(s []int, item int) bool {
 	if consts.ZERO == len(s) {
 		return false
 	}
@@ -14,7 +14,7 @@ func IsInIntSlice(s []int, item int) bool {
 	return false
 }
 
-func IsInInt32Slice(s []int32, item int32) bool {
+func IsNotContainInt(s []int, item int) bool {
 	if consts.ZERO == len(s) {
 		return false
 	}
@@ -26,7 +26,19 @@ func IsInInt32Slice(s []int32, item int32) bool {
 	return false
 }
 
-func IsInInt64Slice(s []int64, item int64) bool {
+func IsContainInt32(s []int32, item int32) bool {
+	if consts.ZERO == len(s) {
+		return false
+	}
+	for _, sItem := range s {
+		if item == sItem {
+			return true
+		}
+	}
+	return false
+}
+
+func IsContainInt64(s []int64, item int64) bool {
 	if consts.ZERO == len(s) {
 		return false
 	}

@@ -1,7 +1,9 @@
-package bitmap
+package bloomfilter
 
 import (
 	"testing"
+
+	"github.com/xndm-recommend/go-utils/tools/filter/bitmap"
 
 	"github.com/xndm-recommend/go-utils/tools/types/nums"
 
@@ -35,7 +37,8 @@ func TestCuckoo(t *testing.T) {
 
 func BenchmarkUniqueInt(b *testing.B) {
 	b.StopTimer()
-	can := maths.GenNRandInt(lenth, 100)
+	lenth1 := 500
+	can := maths.GenNRandInt(lenth1, 100)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		nums.UniqueInt(can)
@@ -72,6 +75,6 @@ func BenchmarkUniqueRedis(b *testing.B) {
 	redisdb.GetRedisConnFromConf(&c, "Redis")
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		UniqueByRedis(redisdb, redisItem, canstr)
+		bitmap.UniqueByRedis(redisdb, redisItem, canstr)
 	}
 }

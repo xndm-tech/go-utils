@@ -3,8 +3,6 @@ package strs
 import (
 	"reflect"
 	"strings"
-
-	"github.com/xndm-recommend/go-utils/common/consts"
 )
 
 // split
@@ -12,20 +10,20 @@ func ContainStrNum(str string, sep string) int {
 	return len(strings.Split(str, sep)) - 1
 }
 
-func IsContainStr(slice []string, item string) bool {
-	if consts.ZERO == len(slice) {
+func IsContainStr(slice []string, s string) bool {
+	if IsEmptyStrs(slice) {
 		return false
 	}
-	for _, sItem := range slice {
-		if item == sItem {
+	for _, i := range slice {
+		if s == i {
 			return true
 		}
 	}
 	return false
 }
 
-func IsNotContainStr(slice []string, item string) bool {
-	return !IsContainStr(slice, item)
+func IsNotContainStr(slice []string, s string) bool {
+	return !IsContainStr(slice, s)
 }
 
 // Returns true if slice strings contains any of the strings.

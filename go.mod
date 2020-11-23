@@ -3,6 +3,7 @@ module github.com/xndm-recommend/go-utils
 go 1.14
 
 require (
+	github.com/RoaringBitmap/roaring v0.5.5
 	github.com/apache/thrift v0.13.0
 	github.com/beltran/gosasl v0.0.0-20200816203322-2f20f217aef6 // indirect
 	github.com/certifi/gocertifi v0.0.0-20200211180108-c7c1fbc02894 // indirect

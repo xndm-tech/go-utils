@@ -1,4 +1,4 @@
-package bitmap
+package redis
 
 import (
 	"github.com/xndm-recommend/go-utils/dbs/rediss"

@@ -1,3 +1,6 @@
+# github.com/RoaringBitmap/roaring v0.5.5
+## explicit
+github.com/RoaringBitmap/roaring
 # github.com/apache/thrift v0.13.0
 ## explicit
 github.com/apache/thrift/lib/go/thrift
@@ -36,6 +39,8 @@ github.com/gin-gonic/gin/binding
 github.com/gin-gonic/gin/internal/bytesconv
 github.com/gin-gonic/gin/internal/json
 github.com/gin-gonic/gin/render
+# github.com/glycerine/go-unsnap-stream v0.0.0-20181221182339-f9677308dec2
+github.com/glycerine/go-unsnap-stream
 # github.com/go-playground/locales v0.13.0
 github.com/go-playground/locales
 github.com/go-playground/locales/currency
@@ -65,7 +70,7 @@ github.com/golang/protobuf/proto
 # github.com/golang/snappy v0.0.2
 ## explicit
 github.com/golang/snappy
-# github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1
+# github.com/gopherjs/gopherjs v0.0.0-20190910122728-9d188e94fb99
 github.com/gopherjs/gopherjs/js
 # github.com/jmoiron/sqlx v1.2.0
 ## explicit
@@ -85,6 +90,10 @@ github.com/mattn/go-isatty
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
 github.com/modern-go/reflect2
+# github.com/mschoch/smat v0.0.0-20160514031455-90eadee771ae
+github.com/mschoch/smat
+# github.com/philhofer/fwd v1.0.0
+github.com/philhofer/fwd
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
@@ -118,6 +127,8 @@ github.com/smartystreets/goconvey/convey/reporting
 # github.com/stretchr/testify v1.4.0
 ## explicit
 github.com/stretchr/testify/assert
+# github.com/tinylib/msgp v1.1.0
+github.com/tinylib/msgp/msgp
 # github.com/tsuna/gohbase v0.0.0-20201006203713-f1ffe9f66b83
 ## explicit
 github.com/tsuna/gohbase
@@ -130,9 +141,11 @@ github.com/tsuna/gohbase/region
 github.com/tsuna/gohbase/zk
 # github.com/ugorji/go/codec v1.1.7
 github.com/ugorji/go/codec
-# golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
+# github.com/willf/bitset v1.1.10
+github.com/willf/bitset
+# golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 golang.org/x/crypto/md4
-# golang.org/x/sys v0.0.0-20200116001909-b77594299b42
+# golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd
 golang.org/x/sys/unix
 # google.golang.org/protobuf v1.25.0
 ## explicit
