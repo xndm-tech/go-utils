@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 
 	"github.com/go-redis/redis"
 	"github.com/xndm-recommend/go-utils/config"
@@ -86,7 +86,7 @@ func (r *ItemInfo) ItemPGetBit(redisClient redis.Cmdable, offsets []int64, keys 
 		cmder = append(cmder, p.GetBit(r.ItemGetKey(keys...), offset))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmder, err
 }
 
@@ -105,7 +105,7 @@ func (r *ItemInfo) ItemPSet(redisClient redis.Cmdable, kv map[string]string) ([]
 		cmders = append(cmders, p.Set(r.ItemGetKey(k), v, r.expire))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -121,7 +121,7 @@ func (r *ItemInfo) ItemPGet(redisClient redis.Cmdable, keys []string) ([]*redis.
 		cmders = append(cmders, p.Get(r.ItemGetKey(k)))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -130,7 +130,7 @@ func (r *ItemInfo) ItemHSet(redisClient redis.Cmdable, field string, values inte
 	if err := redisClient.HSet(r.ItemGetKey(keys...), field, values).Err(); nil == err {
 		return redisClient.Expire(r.ItemGetKey(keys...), r.expire).Err()
 	} else {
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return err
 	}
 }
@@ -143,7 +143,7 @@ func (r *ItemInfo) ItemPHSet(redisClient redis.Cmdable, field string, kv map[str
 		cmders = append(cmders, p.Expire(r.ItemGetKey(k), r.expire))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -155,7 +155,7 @@ func (r *ItemInfo) ItemPHSetField(redisClient redis.Cmdable, key string, fv map[
 		cmders = append(cmders, p.Expire(r.ItemGetKey(key), r.expire))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -171,7 +171,7 @@ func (r *ItemInfo) ItemPHGet(redisClient redis.Cmdable, field string, keys ...st
 		cmders = append(cmders, p.HGet(r.ItemGetKey(k), field))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -182,7 +182,7 @@ func (r *ItemInfo) ItemPHGetField(redisClient redis.Cmdable, keys string, field 
 		cmders = append(cmders, p.HGet(r.ItemGetKey(keys), f))
 	}
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return cmders, err
 }
 
@@ -193,9 +193,9 @@ func (r *ItemInfo) ItemIncrExpire(redisClient redis.Cmdable, keys ...string) (in
 	cmder := p.Incr(key)
 	p.Expire(key, r.expire)
 	_, err := p.Exec()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	val, err := cmder.Result()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return int(val), err
 }
 
@@ -209,13 +209,13 @@ func (r *ItemInfo) ItemZAdd(redisClient redis.Cmdable, values []string, keys ...
 	p := redisClient.Pipeline()
 	p.Expire(key, r.expire)
 	err := p.ZAdd(key, zmembers...).Err()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	cmdSetLen := p.ZCard(key)
 	_, err = p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.size {
 		err := redisClient.ZRemRangeByRank(key, 0, setLen-r.size-1).Err()
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 	}
 	return err
 }
@@ -223,7 +223,7 @@ func (r *ItemInfo) ItemZAdd(redisClient redis.Cmdable, values []string, keys ...
 func (r *ItemInfo) ItemGetZRange(redisClient redis.Cmdable, keys ...string) ([]string, error) {
 	key := r.ItemGetKey(keys...)
 	result, err := redisClient.ZRange(key, 0, -1).Result()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return result, err
 }
 
@@ -232,21 +232,21 @@ func (r *ItemInfo) ItemSetSAdd(redisClient redis.Cmdable, values []string, keys 
 	key := r.ItemGetKey(keys...)
 	p := redisClient.Pipeline()
 	err := p.SAdd(key, values).Err()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	p.Expire(key, r.expire)
 	cmdSetLen := p.SCard(key)
 	_, err = p.Exec()
 	setLen := cmdSetLen.Val()
 	if setLen > r.size {
 		err = redisClient.SPopN(key, setLen-r.size).Err()
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 	}
 	return err
 }
 
 func (r *ItemInfo) ItemGetSAdd(redisClient redis.Cmdable, keys ...string) ([]string, error) {
 	result, err := redisClient.SMembers(r.ItemGetKey(keys...)).Result()
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return result, err
 }
 
@@ -281,5 +281,5 @@ func (this *ItemInfo) GetRedisItemFromConf(c *config.ConfigEngine, name string) 
 	this.prefix = ret.Prefix
 	this.size = int64(ret.Len)
 	this.expire = time.Duration(ret.Expire) * time.Second
-	logs.CheckEmptyValue(this.prefix)
+	errs.CheckEmptyValue(this.prefix)
 }

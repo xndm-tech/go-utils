@@ -3,7 +3,7 @@ package rediss
 import (
 	"github.com/go-redis/redis"
 	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 type RedisConnMethod interface {
@@ -58,7 +58,7 @@ func createClusterClient(redisConf *config.RedisClusterData) *redis.ClusterClien
 		Password:     redisConf.Password,
 	})
 	_, err := redisdb.Ping().Result()
-	logs.CheckFatalErr(err)
+	errs.CheckFatalErr(err)
 	return redisdb
 }
 

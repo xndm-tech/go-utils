@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/dbs/rediss"
@@ -18,7 +18,7 @@ func main() {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	redisItem := new(rediss.ItemInfo)
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	redisdb := new(rediss.RedisDbInfo)

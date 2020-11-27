@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cihub/seelog"
@@ -58,7 +58,7 @@ func createClient() (interface{}, error) {
 		fmt.Fprintln(os.Stderr, "error resolving address:", err)
 		os.Exit(1)
 	}
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	if err != nil {
 		_ = seelog.Error("hbase连接异常")
 		_ = seelog.Error(err)
@@ -68,6 +68,6 @@ func createClient() (interface{}, error) {
 	httClient := trans.(*thrift.THttpClient)
 	httClient.SetHeader("ACCESSKEYID", "root")
 	httClient.SetHeader("ACCESSSIGNATURE", "root")
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return MyHbaseClient{hbase.NewTHBaseServiceClientFactory(trans, protocolFactory), trans}, nil
 }

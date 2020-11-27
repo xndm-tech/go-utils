@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 
 	"github.com/xndm-recommend/go-utils/config"
 )
@@ -24,7 +24,7 @@ type HttpInfo struct {
 
 func (this *HttpInfo) createHttpConns(sLogin *config.HttpData) {
 	if 0 == sLogin.Time_out {
-		logs.CheckFatalErr(errors.New("can't read http post timeout"))
+		errs.CheckFatalErr(errors.New("can't read http post timeout"))
 	}
 	this.httpClient = &http.Client{Timeout: time.Duration(sLogin.Time_out) * time.Millisecond}
 	this.url = sLogin.Url
@@ -42,7 +42,7 @@ func (this *HttpInfo) GetHttpConnFromConf(c *config.ConfigEngine, name string) {
 func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 	var url_tmp = this.url
 	u, err := url.Parse(url_tmp)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	for i, val := range values {
 		sVal, err := val.(string)
 		if false == err {
@@ -50,7 +50,7 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 		}
 		q := u.Query()
 		if len(this.para) <= i {
-			logs.CheckCommonErr(errors.New("Set url para error"))
+			errs.CheckCommonErr(errors.New("Set url para error"))
 		}
 		q.Set(this.para[i], sVal)
 		u.RawQuery = q.Encode()
@@ -64,13 +64,13 @@ func (this *HttpInfo) SetUrlPara(values ...interface{}) string {
 func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
 	resp, err := this.httpClient.Get(url)
 	if err != nil {
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return "", false
 	}
 	defer resp.Body.Close()
 	if 200 == resp.StatusCode {
 		body, err := ioutil.ReadAll(resp.Body)
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return string(body), true
 	} else {
 		return "", false
@@ -82,16 +82,16 @@ func (this *HttpInfo) HttpGet(url string) (response string, ok bool) {
 //response:请求返回的内容
 func (this *HttpInfo) HttpGetBody(url string, body []byte) (response string, ok bool) {
 	request, err := http.NewRequest("GET", url, bytes.NewReader(body))
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	resp, err := this.httpClient.Do(request)
 	if err != nil {
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return "", false
 	}
 	defer resp.Body.Close()
 	if 200 == resp.StatusCode {
 		body, err := ioutil.ReadAll(resp.Body)
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return string(body), true
 	} else {
 		return "", false
@@ -118,18 +118,18 @@ func (this *HttpInfo) HttpGetDelayRetry(url string, times int) (response string,
 //content:请求放回的内容
 func (this *HttpInfo) HttpPost(url string, data interface{}, contentType string) (content string, err error) {
 	jsonStr, err := json.Marshal(data)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonStr))
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	req.Header.Set("Content-Type", contentType)
 	defer req.Body.Close()
 	resp, err := this.httpClient.Do(req)
 	if err != nil {
-		logs.CheckCommonErr(err)
+		errs.CheckCommonErr(err)
 		return "", err
 	}
 	defer resp.Body.Close()
 	result, err := ioutil.ReadAll(resp.Body)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	return string(result), err
 }

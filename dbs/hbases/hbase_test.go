@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 
 	"github.com/tsuna/gohbase/filter"
 
@@ -21,7 +21,7 @@ func TestHbaseConnectionFromConfig(t *testing.T) {
 	db := &HBaseDbInfo{}
 	c := config.ConfigEngine{}
 	err := c.Load(Config_path)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	db.GetDbConnFromConf(&c, "HBase_db")
 	t.Log(db.Ping())
 	t.Log("db", db)
@@ -35,7 +35,7 @@ func TestHbaseConnectionFromConfig1(t *testing.T) {
 	db := &HBaseDbInfo{}
 	c := config.ConfigEngine{}
 	err := c.Load(Config_path)
-	logs.CheckCommonErr(err)
+	errs.CheckCommonErr(err)
 	db.GetDbConnFromConf(&c, "HBase_db")
 	t.Log(db.Ping())
 	t.Log("db", db)

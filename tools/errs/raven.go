@@ -1,9 +1,10 @@
-package logs
+package errs
 
 import (
 	"github.com/cihub/seelog"
 	"github.com/getsentry/raven-go"
 	"github.com/pkg/errors"
+	"github.com/xndm-recommend/go-utils/tools/logs"
 )
 
 func SentryCaptureError(err error) {
@@ -26,7 +27,7 @@ func CheckLogrusCaptureError(err error, tags map[string]string, args ...interfac
 			errs[k] = v
 		}
 		errs["error"] = err
-		Error(errs, args)
+		logs.Error(errs, args)
 		raven.CaptureError(errDetail, nil)
 	}
 }
