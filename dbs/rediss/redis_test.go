@@ -5,10 +5,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/xndm-recommend/go-utils/tools/logs"
+
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/dbs/rediss"
 	"github.com/xndm-recommend/go-utils/tools/converter"
-	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 const (
@@ -19,7 +20,7 @@ func TestGetRedisClusterItemFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	redisItem := rediss.ItemInfo{}
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	t.Log(redisItem)
@@ -45,7 +46,7 @@ func TestGetRedisItemRangeFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	redisItem := new(rediss.ItemInfo)
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item2")
 	t.Log(redisItem)
@@ -71,7 +72,7 @@ func TestGetRedisItemFromConf(t *testing.T) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load(Config_path)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	if nil != err {
 		panic(err)
 	}

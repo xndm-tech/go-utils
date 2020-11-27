@@ -35,3 +35,5 @@ Redis:
   Password: "0iY87blaERqARYie"
   Pool_size: 200
   Db: 0
+
+Sentry_dsn: "http://61a9f95ab993403da474cd0dd6850a86@172.16.1.104:9020/2"

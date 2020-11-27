@@ -3,6 +3,8 @@ package bloomfilter
 import (
 	"testing"
 
+	"github.com/xndm-recommend/go-utils/tools/logs"
+
 	"github.com/xndm-recommend/go-utils/tools/filter/bitmap"
 
 	"github.com/xndm-recommend/go-utils/tools/types/nums"
@@ -13,7 +15,6 @@ import (
 	"github.com/xndm-recommend/go-utils/config"
 	"github.com/xndm-recommend/go-utils/dbs/rediss"
 	"github.com/xndm-recommend/go-utils/tools/converter"
-	"github.com/xndm-recommend/go-utils/tools/errs"
 	"github.com/xndm-recommend/go-utils/tools/maths"
 )
 
@@ -68,7 +69,7 @@ func BenchmarkUniqueRedis(b *testing.B) {
 	c := config.ConfigEngine{}
 	var err error
 	err = c.Load("../../../config/test.yaml")
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	redisItem := new(rediss.ItemInfo)
 	redisItem.GetRedisItemFromConf(&c, "Redis_items.test_item")
 	redisdb := new(rediss.RedisDbInfo)

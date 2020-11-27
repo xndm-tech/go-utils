@@ -1,4 +1,4 @@
-package errs
+package logs
 
 /*
 有关报错打印的封装

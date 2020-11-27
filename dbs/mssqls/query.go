@@ -1,7 +1,7 @@
 package mssqls
 
 import (
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-recommend/go-utils/tools/logs"
 )
 
 //http://jmoiron.github.io/sqlx/
@@ -10,7 +10,7 @@ func (this *MssqlDbInfo) QueryIdList(sql string, para ...interface{}) (ids []str
 	if err != nil {
 		err = this.SqlDataDb.Select(&ids, sql, para...)
 		if err != nil {
-			errs.CheckCommonErr(err)
+			logs.CheckCommonErr(err)
 			return
 		}
 	}
@@ -22,7 +22,7 @@ func (this *MssqlDbInfo) QueryIdIntList(sql string, para ...interface{}) (ids []
 	if err != nil {
 		err = this.SqlDataDb.Select(&ids, sql, para...)
 		if err != nil {
-			errs.CheckCommonErr(err)
+			logs.CheckCommonErr(err)
 			return
 		}
 	}
@@ -34,14 +34,14 @@ func (this *MssqlDbInfo) QueryStruct(sql string, dest ...interface{}) (err error
 	if err != nil {
 		rows, err = this.SqlDataDb.Query(sql)
 		if err != nil {
-			errs.CheckCommonErr(err)
+			logs.CheckCommonErr(err)
 			return
 		}
 	}
 	defer rows.Close()
 	rows.Next()
 	err = rows.Scan(dest...)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	return
 }
 
@@ -53,15 +53,15 @@ func (this *MssqlDbInfo) QueryIdMap(sql string) (result map[string]string, err e
 	if err != nil {
 		row, err = this.SqlDataDb.Query(sql)
 		if err != nil {
-			errs.CheckCommonErr(err)
+			logs.CheckCommonErr(err)
 			return
 		}
 	}
 	defer row.Close()
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	for row.Next() {
 		err = row.Scan(&key, &val)
-		errs.CheckCommonErr(err)
+		logs.CheckCommonErr(err)
 		result[key] = val
 	}
 	return

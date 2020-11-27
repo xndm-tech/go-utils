@@ -4,13 +4,14 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-recommend/go-utils/tools/logs"
+
 	"google.golang.org/grpc"
 )
 
 func NewGRPCConnect(address string) (conn *grpc.ClientConn, err error) {
 	conn, err = grpc.Dial(address, grpc.WithInsecure())
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	if err != nil {
 		return nil, err
 	}
@@ -20,7 +21,7 @@ func NewGRPCConnect(address string) (conn *grpc.ClientConn, err error) {
 func NewGRPCConnects(addresses []string) (conns []*grpc.ClientConn, err error) {
 	for _, address := range addresses {
 		conn, err := NewGRPCConnect(address)
-		errs.CheckCommonErr(err)
+		logs.CheckCommonErr(err)
 		if err != nil {
 			return nil, err
 		}

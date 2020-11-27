@@ -3,13 +3,13 @@ package field
 import (
 	"io/ioutil"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-recommend/go-utils/tools/logs"
 )
 
 // 获取当前路径下所有文件名
 func GetAllFiles(pathname string) (names []string) {
 	rd, err := ioutil.ReadDir(pathname)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	for _, fi := range rd {
 		if fi.IsDir() {
 			GetAllFiles(pathname + fi.Name() + "/")
@@ -23,7 +23,7 @@ func GetAllFiles(pathname string) (names []string) {
 // 获取当前路径所有文件夹名
 func GetPathFolders(pathname string) (names []string) {
 	rd, err := ioutil.ReadDir(pathname)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	for _, fi := range rd {
 		if fi.IsDir() {
 			names = append(names, fi.Name())
@@ -35,7 +35,7 @@ func GetPathFolders(pathname string) (names []string) {
 // 获取当前路径所有文件夹名
 func GetPathFiles(pathname string) (names []string) {
 	rd, err := ioutil.ReadDir(pathname)
-	errs.CheckCommonErr(err)
+	logs.CheckCommonErr(err)
 	for _, fi := range rd {
 		if !fi.IsDir() {
 			names = append(names, fi.Name())
