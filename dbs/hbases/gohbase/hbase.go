@@ -52,10 +52,6 @@ func (hb *HBaseDbV2Info) ConnectHBase(address string) {
 		errs.CheckFatalErr(err)
 		return
 	}
-	if err = client.Open(); err != nil {
-		errs.CheckFatalErr(err)
-		return
-	}
 	hb.address = address
 	hb._client = client
 }
@@ -63,10 +59,6 @@ func (hb *HBaseDbV2Info) ConnectHBase(address string) {
 func (hb *HBaseDbV2Info) connectHBase(db *config.HBaseDbV2Data) {
 	client, err := goh.NewTcpClient(db.Thrift, goh.TBinaryProtocol, false)
 	if err != nil {
-		errs.CheckFatalErr(err)
-		return
-	}
-	if err = client.Open(); err != nil {
 		errs.CheckFatalErr(err)
 		return
 	}
@@ -78,6 +70,10 @@ func (hb *HBaseDbV2Info) connectHBase(db *config.HBaseDbV2Data) {
 
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
 func (hb *HBaseDbV2Info) GetsByOption(table, rowkey string, columns []string) (map[string]string, error) {
+	if err := hb._client.Open(); err != nil {
+		return nil, err
+	}
+	defer hb._client.Close()
 	if data, err := hb._client.GetRowWithColumns(table, []byte(rowkey), columns, nil); err != nil {
 		return nil, err
 	} else {
@@ -91,6 +87,10 @@ func (hb *HBaseDbV2Info) GetsByOptions(table string, rowkeys []string, columns [
 	for i, k := range rowkeys {
 		rows[i] = []byte(k)
 	}
+	if err := hb._client.Open(); err != nil {
+		return nil, err
+	}
+	defer hb._client.Close()
 	if data, err := hb._client.GetRowsWithColumns(table, rows, columns, nil); err != nil {
 		return nil, err
 	} else {
