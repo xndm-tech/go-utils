@@ -5,11 +5,10 @@ import (
 	"errors"
 	"io"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
-
 	"github.com/tsuna/gohbase"
 	"github.com/tsuna/gohbase/hrpc"
 	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-recommend/go-utils/tools/errs"
 )
 
 type HBaseDbInfo struct {

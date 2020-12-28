@@ -20,6 +20,7 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/samuel/go-zookeeper v0.0.0-20200724154423-2164a8ac840e // indirect
+	github.com/sdming/goh v0.0.0-20130319082738-7071d6d7ab1f
 	github.com/seiflotfy/cuckoofilter v0.0.0-20200511222245-56093a4d3841
 	github.com/silenceper/pool v0.0.0-20200429081406-a659d818d9aa
 	github.com/sirupsen/logrus v1.5.0

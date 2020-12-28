@@ -9,6 +9,12 @@ HBase_db:
   Table_name:
     Item: item
 
+HBase_db2:
+  Thrift_address: "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com:2181"
+  Namespace: "recommend_samh"
+  Table_name:
+    Alg: alg_nrt_als
+
 Comic_data:
   Host: 172.16.1.105
   Port: "3306"

@@ -106,6 +106,11 @@ github.com/pmezard/go-difflib/difflib
 # github.com/samuel/go-zookeeper v0.0.0-20200724154423-2164a8ac840e
 ## explicit
 github.com/samuel/go-zookeeper/zk
+# github.com/sdming/goh v0.0.0-20130319082738-7071d6d7ab1f
+## explicit
+github.com/sdming/goh
+github.com/sdming/goh/Hbase
+github.com/sdming/goh/thrift
 # github.com/seiflotfy/cuckoofilter v0.0.0-20200511222245-56093a4d3841
 ## explicit
 github.com/seiflotfy/cuckoofilter
