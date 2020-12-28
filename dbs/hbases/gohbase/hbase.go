@@ -17,6 +17,41 @@ type HBaseDbV2Info struct {
 	TableName map[string]string
 }
 
+//var ConnPool pool.Pool
+//
+//func init() {
+//	poolConfig := &pool.Config{
+//		InitialCap:  20,
+//		MaxIdle:     100,
+//		MaxCap:      300,
+//		Factory:     createClient,
+//		Close:       closeClient,
+//		Ping:        ping,
+//		IdleTimeout: 90 * time.Second,
+//	}
+//	ConnPool, _ = pool.NewChannelPool(poolConfig)
+//}
+//
+//func ping(client interface{}) error {
+//	if client != nil {
+//		if b := client.(*goh.HClient).Trans.IsOpen(); b {
+//			return nil
+//		}
+//	}
+//	return errors.New("连接为空")
+//}
+//
+//func closeClient(client interface{}) error {
+//	if client != nil {
+//		return client.(MyHbaseClient).Trans.Close()
+//	}
+//	return errors.New("连接为空")
+//}
+//
+//func createClient() (interface{}, error) {
+//	return goh.NewTcpClient(db.Thrift, goh.TBinaryProtocol, false)
+//}
+
 func getOneRow(data []*Hbase.TRowResult) map[string]string {
 	if data == nil {
 		return nil
@@ -52,6 +87,9 @@ func (hb *HBaseDbV2Info) ConnectHBase(address string) {
 		errs.CheckFatalErr(err)
 		return
 	}
+	if err := hb._client.Open(); err != nil {
+		errs.CheckCommonErr(err)
+	}
 	hb.address = address
 	hb._client = client
 }
@@ -62,6 +100,9 @@ func (hb *HBaseDbV2Info) connectHBase(db *config.HBaseDbV2Data) {
 		errs.CheckFatalErr(err)
 		return
 	}
+	if err := hb._client.Open(); err != nil {
+		errs.CheckCommonErr(err)
+	}
 	hb.address = db.Thrift
 	hb._client = client
 	hb.Namespace = db.Namespace
@@ -70,10 +111,6 @@ func (hb *HBaseDbV2Info) connectHBase(db *config.HBaseDbV2Data) {
 
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
 func (hb *HBaseDbV2Info) GetsByOption(table, rowkey string, columns []string) (map[string]string, error) {
-	if err := hb._client.Open(); err != nil {
-		return nil, err
-	}
-	defer hb._client.Close()
 	if data, err := hb._client.GetRowWithColumns(table, []byte(rowkey), columns, nil); err != nil {
 		return nil, err
 	} else {
@@ -87,10 +124,6 @@ func (hb *HBaseDbV2Info) GetsByOptions(table string, rowkeys []string, columns [
 	for i, k := range rowkeys {
 		rows[i] = []byte(k)
 	}
-	if err := hb._client.Open(); err != nil {
-		return nil, err
-	}
-	defer hb._client.Close()
 	if data, err := hb._client.GetRowsWithColumns(table, rows, columns, nil); err != nil {
 		return nil, err
 	} else {

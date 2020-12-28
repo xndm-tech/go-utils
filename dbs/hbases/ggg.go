@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net"
 	"os"
 	"time"
 
@@ -20,29 +21,29 @@ type MyHbaseClient struct {
 	Trans  thrift.TTransport
 }
 
-var connPool pool.Pool
+var ConnPool pool.Pool
 
 func init() {
 	poolConfig := &pool.Config{
 		InitialCap:  20,
 		MaxIdle:     100,
 		MaxCap:      300,
-		Factory:     createClient,
-		Close:       closeClient,
-		Ping:        ping,
+		Factory:     CreateClient,
+		Close:       CloseClient,
+		Ping:        Ping,
 		IdleTimeout: 90 * time.Second,
 	}
-	connPool, _ = pool.NewChannelPool(poolConfig)
+	ConnPool, _ = pool.NewChannelPool(poolConfig)
 }
 
-func closeClient(client interface{}) error {
+func CloseClient(client interface{}) error {
 	if client != nil {
 		return client.(MyHbaseClient).Trans.Close()
 	}
 	return errors.New("连接为空")
 }
 
-func ping(client interface{}) error {
+func Ping(client interface{}) error {
 	if client != nil {
 		_, err := client.(MyHbaseClient).Client.Exists(context.Background(), []byte("item"), hbase.NewTGet())
 		return err
@@ -50,9 +51,11 @@ func ping(client interface{}) error {
 	return errors.New("连接为空")
 }
 
-func createClient() (interface{}, error) {
+func CreateClient() (interface{}, error) {
+	var HOST = "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com"
+	var PORT = "9099"
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
-	trans, err := thrift.NewTHttpClient("http://emr-header-1:16000")
+	trans, err := thrift.NewTSocket(net.JoinHostPort(HOST, PORT))
 	//trans, err := thrift.NewTSocket(net.JoinHostPort("http://emr-header-1", "16000"))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "error resolving address:", err)
@@ -64,10 +67,13 @@ func createClient() (interface{}, error) {
 		_ = seelog.Error(err)
 		return nil, err
 	}
-	// 设置用户名密码
-	httClient := trans.(*thrift.THttpClient)
-	httClient.SetHeader("ACCESSKEYID", "root")
-	httClient.SetHeader("ACCESSSIGNATURE", "root")
-	errs.CheckCommonErr(err)
+	////// 设置用户名密码
+	//httClient := trans.(*thrift.THttpClient)
+	//httClient.SetHeader("ACCESSKEYID", "root")
+	//httClient.SetHeader("ACCESSSIGNATURE", "root")
+	if err := trans.Open(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error opening "+HOST, err)
+		os.Exit(1)
+	}
 	return MyHbaseClient{hbase.NewTHBaseServiceClientFactory(trans, protocolFactory), trans}, nil
 }
