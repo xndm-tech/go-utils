@@ -17,29 +17,29 @@ type HBaseDbV2Info struct {
 	TableName map[string]string
 }
 
-func getOneRow(data []*Hbase.TRowResult) []string {
+func getOneRow(data []*Hbase.TRowResult) map[string]string {
 	if data == nil {
 		return nil
 	}
-	var rowValue = make([]string, consts.ZERO)
+	var rowValue = make(map[string]string)
 	for _, x := range data {
-		for _, v := range x.Columns {
-			rowValue = append(rowValue, string(v.Value))
+		for k, v := range x.Columns {
+			rowValue[k] = string(v.Value)
 		}
 		break
 	}
 	return rowValue
 }
 
-func getRows(data []*Hbase.TRowResult) [][]string {
+func getRows(data []*Hbase.TRowResult) []map[string]string {
 	if data == nil {
 		return nil
 	}
-	var rowsValue = make([][]string, consts.ZERO)
+	var rowsValue = make([]map[string]string, consts.ZERO, len(data))
 	for _, x := range data {
-		var value = make([]string, consts.ZERO)
-		for _, v := range x.Columns {
-			value = append(value, string(v.Value))
+		var value = make(map[string]string)
+		for k, v := range x.Columns {
+			value[k] = string(v.Value)
 		}
 		rowsValue = append(rowsValue, value)
 	}
@@ -49,31 +49,35 @@ func getRows(data []*Hbase.TRowResult) [][]string {
 func (hb *HBaseDbV2Info) ConnectHBase(address string) {
 	client, err := goh.NewTcpClient(address, goh.TBinaryProtocol, false)
 	if err != nil {
-		errs.CheckCommonErr(err)
+		errs.CheckFatalErr(err)
 		return
 	}
-	hb = &HBaseDbV2Info{
-		address: address,
-		_client: client,
+	if err = client.Open(); err != nil {
+		errs.CheckFatalErr(err)
+		return
 	}
+	hb.address = address
+	hb._client = client
 }
 
 func (hb *HBaseDbV2Info) connectHBase(db *config.HBaseDbV2Data) {
 	client, err := goh.NewTcpClient(db.Thrift, goh.TBinaryProtocol, false)
 	if err != nil {
-		errs.CheckCommonErr(err)
+		errs.CheckFatalErr(err)
 		return
 	}
-	hb = &HBaseDbV2Info{
-		address:   db.Thrift,
-		_client:   client,
-		Namespace: db.Namespace,
-		TableName: db.TableName,
+	if err = client.Open(); err != nil {
+		errs.CheckFatalErr(err)
+		return
 	}
+	hb.address = db.Thrift
+	hb._client = client
+	hb.Namespace = db.Namespace
+	hb.TableName = db.TableName
 }
 
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
-func (hb *HBaseDbV2Info) GetsByOption(table, rowkey string, columns []string) ([]string, error) {
+func (hb *HBaseDbV2Info) GetsByOption(table, rowkey string, columns []string) (map[string]string, error) {
 	if data, err := hb._client.GetRowWithColumns(table, []byte(rowkey), columns, nil); err != nil {
 		return nil, err
 	} else {
@@ -82,7 +86,7 @@ func (hb *HBaseDbV2Info) GetsByOption(table, rowkey string, columns []string) ([
 }
 
 //指定表，通过options筛选数据，例如Families函数，或者filter函数
-func (hb *HBaseDbV2Info) GetsByOptions(table string, rowkeys []string, columns []string) ([][]string, error) {
+func (hb *HBaseDbV2Info) GetsByOptions(table string, rowkeys []string, columns []string) ([]map[string]string, error) {
 	var rows = make([][]byte, len(rowkeys))
 	for i, k := range rowkeys {
 		rows[i] = []byte(k)

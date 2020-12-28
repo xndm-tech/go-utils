@@ -10,7 +10,7 @@ HBase_db:
     Item: item
 
 HBase_db2:
-  Thrift_address: "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com:2181"
+  Thrift_address: "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com:9099"
   Namespace: "recommend_samh"
   Table_name:
     Alg: alg_nrt_als
