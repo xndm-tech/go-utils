@@ -4,6 +4,7 @@ type HBaseDbData struct {
 	ZK        string            `yaml:"ZooKeeperQuorum"`
 	User      string            `yaml:"User"`
 	Namespace string            `yaml:"Namespace"`
+	QueueSize int               `yaml:"QueueSize"`
 	TableName map[string]string `yaml:"Table_name"`
 }
 

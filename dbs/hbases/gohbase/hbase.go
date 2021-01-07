@@ -17,41 +17,6 @@ type HBaseDbV2Info struct {
 	TableName map[string]string
 }
 
-//var ConnPool pool.Pool
-//
-//func init() {
-//	poolConfig := &pool.Config{
-//		InitialCap:  20,
-//		MaxIdle:     100,
-//		MaxCap:      300,
-//		Factory:     createClient,
-//		Close:       closeClient,
-//		Ping:        ping,
-//		IdleTimeout: 90 * time.Second,
-//	}
-//	ConnPool, _ = pool.NewChannelPool(poolConfig)
-//}
-//
-//func ping(client interface{}) error {
-//	if client != nil {
-//		if b := client.(*goh.HClient).Trans.IsOpen(); b {
-//			return nil
-//		}
-//	}
-//	return errors.New("连接为空")
-//}
-//
-//func closeClient(client interface{}) error {
-//	if client != nil {
-//		return client.(MyHbaseClient).Trans.Close()
-//	}
-//	return errors.New("连接为空")
-//}
-//
-//func createClient() (interface{}, error) {
-//	return goh.NewTcpClient(db.Thrift, goh.TBinaryProtocol, false)
-//}
-
 func getOneRow(data []*Hbase.TRowResult) map[string]string {
 	if data == nil {
 		return nil

@@ -15,26 +15,21 @@ type HBaseDbInfo struct {
 	Zkquorum  string
 	Option    string
 	Namespace string
+	QueueSize int
 	TableName map[string]string
 	_client   gohbase.Client
 }
 
 func (hb *HBaseDbInfo) ConnectHBase(account string, zkquorum string, options ...gohbase.Option) {
-	//auth := gohbase.Auth("KERBEROS")
-	//user := gohbase.EffectiveUser(account)
-	//options1 := []gohbase.Option{user}
 	hb.Zkquorum = zkquorum
 	hb._client = gohbase.NewClient(zkquorum, options...)
 }
 
 func (hb *HBaseDbInfo) connectHBase(db *config.HBaseDbData) {
-	//auth := gohbase.Auth("KERBEROS")
-	//user := gohbase.EffectiveUser(db.User)
-	//options := []gohbase.Option{auth, user}
 	hb.Zkquorum = db.ZK
 	hb.Namespace = db.Namespace
 	hb.TableName = db.TableName
-	hb._client = gohbase.NewClient(db.ZK)
+	hb._client = gohbase.NewClient(db.ZK, gohbase.RpcQueueSize(db.QueueSize), gohbase.CompressionCodec("snappy"))
 }
 
 //通过hb.PutsByRowkeyVersion(table, rowkey, values, hrpc.Timestamp(timestamp))调用，其中timestamp是time.Time类型，options也可以是其他 func(hrpc.Call)的函数
