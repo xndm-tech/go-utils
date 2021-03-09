@@ -103,6 +103,14 @@ github.com/philhofer/fwd
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
+# github.com/popeyeio/gohbase v0.0.0-20190122030338-468f62dba74e
+## explicit
+github.com/popeyeio/gohbase/balancer
+github.com/popeyeio/gohbase/discovery
+github.com/popeyeio/gohbase/gen/hbase
+github.com/popeyeio/gohbase/instance
+github.com/popeyeio/gohbase/lib/thrift
+github.com/popeyeio/gohbase/pool
 # github.com/samuel/go-zookeeper v0.0.0-20200724154423-2164a8ac840e
 ## explicit
 github.com/samuel/go-zookeeper/zk
@@ -116,7 +124,6 @@ github.com/sdming/goh/thrift
 github.com/seiflotfy/cuckoofilter
 # github.com/silenceper/pool v0.0.0-20200429081406-a659d818d9aa
 ## explicit
-github.com/silenceper/pool
 # github.com/sirupsen/logrus v1.5.0
 ## explicit
 github.com/sirupsen/logrus
@@ -150,6 +157,9 @@ github.com/tsuna/gohbase/region
 github.com/tsuna/gohbase/zk
 # github.com/ugorji/go/codec v1.1.7
 github.com/ugorji/go/codec
+# github.com/valyala/fastrand v1.0.0
+## explicit
+github.com/valyala/fastrand
 # github.com/willf/bitset v1.1.10
 github.com/willf/bitset
 # golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9

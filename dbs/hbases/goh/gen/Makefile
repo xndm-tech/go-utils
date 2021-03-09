@@ -1,1 +1,0 @@
-thrift -r -out . --gen go idl/hbase.thrift

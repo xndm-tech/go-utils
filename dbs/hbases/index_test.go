@@ -5,20 +5,21 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"testing"
 
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/xndm-recommend/go-utils/dbs/hbases/gen-go/hbase"
 )
 
 const (
-	HOST = "http://ld-bp1n9k5e2skw959z5-proxy-hbaseue-pub.hbaseue.rds.aliyuncs.com:9190"
+	HOST = "http://ld-bp17y8n3j6f45p944-proxy-hbaseue.hbaseue.rds.aliyuncs.com:9190"
 	// 用户名
 	USER = "root"
 	// 密码
 	PASSWORD = "root"
 )
 
-func main() {
+func TestHBaseThrift2(t *testing.T) {
 	defaultCtx := context.Background()
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 	trans, err := thrift.NewTHttpClient(HOST)
@@ -35,45 +36,45 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error opening "+HOST, err)
 		os.Exit(1)
 	}
-	// create Namespace
-	err = client.CreateNamespace(defaultCtx, &hbase.TNamespaceDescriptor{Name: "ns"})
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "error CreateNamespace:", err)
-		os.Exit(1)
-	}
+	//// create Namespace
+	//err = client.CreateNamespace(defaultCtx, &hbase.TNamespaceDescriptor{Name: "ns"})
+	//if err != nil {
+	//	fmt.Fprintln(os.Stderr, "error CreateNamespace:", err)
+	//	os.Exit(1)
+	//}
 	// create table
 	tableName := hbase.TTableName{Ns: []byte("ns"), Qualifier: []byte("table1")}
-	err = client.CreateTable(defaultCtx, &hbase.TTableDescriptor{TableName: &tableName, Columns: []*hbase.TColumnFamilyDescriptor{&hbase.TColumnFamilyDescriptor{Name: []byte("f")}}}, nil)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "error CreateTable:", err)
-		os.Exit(1)
-	}
+	//err = client.CreateTable(defaultCtx, &hbase.TTableDescriptor{TableName: &tableName, Columns: []*hbase.TColumnFamilyDescriptor{&hbase.TColumnFamilyDescriptor{Name: []byte("f")}}}, nil)
+	//if err != nil {
+	//	fmt.Fprintln(os.Stderr, "error CreateTable:", err)
+	//	os.Exit(1)
+	//}
 	//做DML操作时，表名参数为bytes，表名的规则是namespace + 冒号 + 表名
-	tableInbytes := []byte("ns:table1")
-	// 插入数据
-	err = client.Put(defaultCtx, tableInbytes, &hbase.TPut{Row: []byte("row1"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
-		Family:    []byte("f"),
-		Qualifier: []byte("q1"),
-		Value:     []byte("value1")}}})
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "error Put:", err)
-		os.Exit(1)
-	}
-	//批量插入数据
-	puts := []*hbase.TPut{&hbase.TPut{Row: []byte("row2"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
-		Family:    []byte("f"),
-		Qualifier: []byte("q1"),
-		Value:     []byte("value2")}}}, &hbase.TPut{Row: []byte("row3"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
-		Family:    []byte("f"),
-		Qualifier: []byte("q1"),
-		Value:     []byte("value3")}}}}
-	err = client.PutMultiple(defaultCtx, tableInbytes, puts)
+	tableInbytes := []byte("recommend_samh:item_base")
+	//// 插入数据
+	//err = client.Put(defaultCtx, tableInbytes, &hbase.TPut{Row: []byte("row1"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
+	//	Family:    []byte("f"),
+	//	Qualifier: []byte("q1"),
+	//	Value:     []byte("value1")}}})
+	//if err != nil {
+	//	fmt.Fprintln(os.Stderr, "error Put:", err)
+	//	os.Exit(1)
+	//}
+	////批量插入数据
+	//puts := []*hbase.TPut{&hbase.TPut{Row: []byte("row2"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
+	//	Family:    []byte("f"),
+	//	Qualifier: []byte("q1"),
+	//	Value:     []byte("value2")}}}, &hbase.TPut{Row: []byte("row3"), ColumnValues: []*hbase.TColumnValue{&hbase.TColumnValue{
+	//	Family:    []byte("f"),
+	//	Qualifier: []byte("q1"),
+	//	Value:     []byte("value3")}}}}
+	//err = client.PutMultiple(defaultCtx, tableInbytes, puts)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "error PutMultiple:", err)
 		os.Exit(1)
 	}
 	// 单行查询数据
-	result, err := client.Get(defaultCtx, tableInbytes, &hbase.TGet{Row: []byte("row1")})
+	result, err := client.Get(defaultCtx, tableInbytes, &hbase.TGet{Row: []byte("10000:booklist")})
 	fmt.Println("Get result:")
 	fmt.Println(result)
 	// 批量单行查询
