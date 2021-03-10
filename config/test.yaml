@@ -11,7 +11,9 @@ HBase_db:
     Item: item
 
 HBase_db2:
-  Thrift_address: "hb-bp1m205ju7p5l24ey-001.hbase.rds.aliyuncs.com:9099"
+  Thrift_address: "http://ld-bp17y8n3j6f45p944-proxy-hbaseue.hbaseue.rds.aliyuncs.com:9190"
+  User: "root"
+  Passwd: "root"
   Namespace: "recommend_samh"
   Table_name:
     Alg: alg_nrt_als

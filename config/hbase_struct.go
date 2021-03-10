@@ -10,6 +10,8 @@ type HBaseDbData struct {
 
 type HBaseDbV2Data struct {
 	Thrift    string            `yaml:"Thrift_address"`
+	User      string            `yaml:"User"`
+	Passwd    string            `yaml:"Passwd"`
 	Namespace string            `yaml:"Namespace"`
 	TableName map[string]string `yaml:"Table_name"`
 }
