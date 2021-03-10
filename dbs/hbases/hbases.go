@@ -76,6 +76,8 @@ func (hb *HBaseThriftAgent) NewTHttpClient(host, user, passwd string) {
 func (this *HBaseThriftAgent) GetDbConnFromConf(c *config.ConfigEngine, name string) {
 	conf := c.GetHBaseV2FromConf(name)
 	this.NewTHttpClient(conf.Thrift, conf.User, conf.Passwd)
+	this.TableName = conf.TableName
+	this.Namespace = conf.Namespace
 }
 
 // Method for getting data from a row.
