@@ -336,7 +336,7 @@ func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table st
 		var err2 error
 		tResults, err2 = client.GetScannerResults(ctx, []byte(table), &hbase.TScan{
 			Columns: cols,
-		}, int32(consts.INT_MAX))
+		}, int32(consts.MaxInt32))
 		return err2
 	})
 	if nil == err {
