@@ -41,3 +41,23 @@ func TestGetRow(t *testing.T) {
 	getRes, _ := db.GetRow(context.Background(), "recommend_samh:alg_nrt_ar_fpgrowth", "5c341a7dda910511:comic", nil)
 	fmt.Println(getRes)
 }
+
+func TestGetMultipleRows(t *testing.T) {
+	db := &hbases.HBaseThriftAgent{}
+	c := config.ConfigEngine{}
+	err := c.Load(Config_path)
+	errs.CheckCommonErr(err)
+	db.GetDbConnFromConf(&c, "HBase_db2")
+	t.Log("db", db)
+	t.Log("db", db.TableName)
+	var tColumns = []*hbase.TColumn{
+		{
+			Family:    []byte("info"),
+			Qualifier: []byte("recs"),
+		},
+	}
+	getRes, _ := db.GetMultipleRows(context.Background(), "recommend_samh:alg_nrt_ar_fpgrowth",
+		[]string{"5c341a7dda910511:comic"},
+		tColumns)
+	fmt.Println(getRes)
+}

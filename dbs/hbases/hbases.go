@@ -201,7 +201,7 @@ func (this *HBaseThriftAgent) GetMultipleRows(ctx context.Context, table string,
 		return err2
 	})
 	if nil == err {
-		var result = make([]map[string]string, len(rowKeys))
+		var result = make([]map[string]string, consts.ZERO, len(rowKeys))
 		for _, tResult := range tResults {
 			var tmp = make(map[string]string)
 			for _, tColumnValue := range tResult.ColumnValues {
