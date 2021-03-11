@@ -328,7 +328,7 @@ func (this *HBaseThriftAgent) GetScannerResults(ctx context.Context, table strin
 //  - Table: the table to get the Scanner for
 //  - Tscan: the scan object to get a Scanner for
 //  - NumRows: number of rows to return
-func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table string, cols []*hbase.TColumn) (r []map[string]string, err error) {
+func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table string, cols []*hbase.TColumn, numRows int32) (r []map[string]string, err error) {
 	var tResults []*hbase.TResult_
 	err = thriftPoolAgent.Do(func(rawClient interface{}) error {
 		client, ok := rawClient.(*hbase.THBaseServiceClient)
@@ -338,7 +338,7 @@ func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table st
 		var err2 error
 		tResults, err2 = client.GetScannerResults(ctx, []byte(table), &hbase.TScan{
 			Columns: cols,
-		}, int32(consts.MaxInt32))
+		}, numRows)
 		return err2
 	})
 	if nil == err {

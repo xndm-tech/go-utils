@@ -61,3 +61,21 @@ func TestGetMultipleRows(t *testing.T) {
 		tColumns)
 	fmt.Println(getRes)
 }
+
+func TestGetScannerResultsAll(t *testing.T) {
+	db := &hbases.HBaseThriftAgent{}
+	c := config.ConfigEngine{}
+	err := c.Load(Config_path)
+	errs.CheckCommonErr(err)
+	db.GetDbConnFromConf(&c, "HBase_db2")
+	t.Log("db", db)
+	t.Log("db", db.TableName)
+	var tColumns = []*hbase.TColumn{
+		{
+			Family:    []byte("info"),
+			Qualifier: []byte("weight"),
+		},
+	}
+	getRes, _ := db.GetScannerResultsAll(context.Background(), "recommend_samh:item_base", tColumns, 2000)
+	fmt.Println(getRes)
+}
