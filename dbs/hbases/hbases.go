@@ -117,7 +117,7 @@ func (this *HBaseThriftAgent) Get(ctx context.Context, table string, tget *hbase
 // Parameters:
 //  - Table: the table to get from
 //  - Tget: the TGet to fetch
-func (this *HBaseThriftAgent) GetRow(ctx context.Context, table, rowKey string, cols []*hbase.TColumn) (map[string]string, error) {
+func (this *HBaseThriftAgent) GetRow(ctx context.Context, table, rowKey string, cols []*hbase.TColumn, hasFamily bool) (map[string]string, error) {
 	var tResult_ *hbase.TResult_
 	err := thriftPoolAgent.Do(func(rawClient interface{}) error {
 		client, ok := rawClient.(*hbase.THBaseServiceClient)
@@ -130,9 +130,16 @@ func (this *HBaseThriftAgent) GetRow(ctx context.Context, table, rowKey string, 
 	})
 	if nil == err {
 		var result = make(map[string]string, len(tResult_.ColumnValues))
-		for _, tColumnValue := range tResult_.ColumnValues {
-			q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
-			result[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+		if hasFamily {
+			for _, tColumnValue := range tResult_.ColumnValues {
+				q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
+				result[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+			}
+		} else {
+			for _, tColumnValue := range tResult_.ColumnValues {
+				q, v := tColumnValue.GetQualifier(), tColumnValue.GetValue()
+				result[string(q)] = string(v)
+			}
 		}
 		return result, err
 	}
@@ -182,7 +189,7 @@ func (this *HBaseThriftAgent) GetMultiple(ctx context.Context, table string, tge
 //  - Tgets: a list of TGets to fetch, the Result list
 // will have the Results at corresponding positions
 // or null if there was an error
-func (this *HBaseThriftAgent) GetMultipleRows(ctx context.Context, table string, rowKeys []string, cols []*hbase.TColumn) ([]map[string]string, error) {
+func (this *HBaseThriftAgent) GetMultipleRows(ctx context.Context, table string, rowKeys []string, cols []*hbase.TColumn, hasFamily bool) ([]map[string]string, error) {
 	var tResults []*hbase.TResult_
 	err := thriftPoolAgent.Do(func(rawClient interface{}) error {
 		client, ok := rawClient.(*hbase.THBaseServiceClient)
@@ -202,13 +209,24 @@ func (this *HBaseThriftAgent) GetMultipleRows(ctx context.Context, table string,
 	})
 	if nil == err {
 		var result = make([]map[string]string, consts.ZERO, len(rowKeys))
-		for _, tResult := range tResults {
-			var tmp = make(map[string]string)
-			for _, tColumnValue := range tResult.ColumnValues {
-				q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
-				tmp[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+		if hasFamily {
+			for _, tResult := range tResults {
+				var tmp = make(map[string]string)
+				for _, tColumnValue := range tResult.ColumnValues {
+					q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
+					tmp[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+				}
+				result = append(result, tmp)
 			}
-			result = append(result, tmp)
+		} else {
+			for _, tResult := range tResults {
+				var tmp = make(map[string]string)
+				for _, tColumnValue := range tResult.ColumnValues {
+					q, v := tColumnValue.GetQualifier(), tColumnValue.GetValue()
+					tmp[string(q)] = string(v)
+				}
+				result = append(result, tmp)
+			}
 		}
 		return result, err
 	}
@@ -328,7 +346,7 @@ func (this *HBaseThriftAgent) GetScannerResults(ctx context.Context, table strin
 //  - Table: the table to get the Scanner for
 //  - Tscan: the scan object to get a Scanner for
 //  - NumRows: number of rows to return
-func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table string, cols []*hbase.TColumn, numRows int32) (r []map[string]string, err error) {
+func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table string, cols []*hbase.TColumn, numRows int32, hasFamily bool) (r []map[string]string, err error) {
 	var tResults []*hbase.TResult_
 	err = thriftPoolAgent.Do(func(rawClient interface{}) error {
 		client, ok := rawClient.(*hbase.THBaseServiceClient)
@@ -343,13 +361,24 @@ func (this *HBaseThriftAgent) GetScannerResultsAll(ctx context.Context, table st
 	})
 	if nil == err {
 		var result = make([]map[string]string, consts.ZERO)
-		for _, tResult := range tResults {
-			var tmp = make(map[string]string)
-			for _, tColumnValue := range tResult.ColumnValues {
-				q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
-				tmp[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+		if hasFamily {
+			for _, tResult := range tResults {
+				var tmp = make(map[string]string)
+				for _, tColumnValue := range tResult.ColumnValues {
+					q, f, v := tColumnValue.GetQualifier(), tColumnValue.GetFamily(), tColumnValue.GetValue()
+					tmp[fmt.Sprintf("%s:%s", string(f), string(q))] = string(v)
+				}
+				result = append(result, tmp)
 			}
-			result = append(result, tmp)
+		} else {
+			for _, tResult := range tResults {
+				var tmp = make(map[string]string)
+				for _, tColumnValue := range tResult.ColumnValues {
+					q, v := tColumnValue.GetQualifier(), tColumnValue.GetValue()
+					tmp[string(q)] = string(v)
+				}
+				result = append(result, tmp)
+			}
 		}
 		return result, err
 	}

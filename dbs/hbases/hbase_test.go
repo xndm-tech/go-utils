@@ -38,7 +38,7 @@ func TestGetRow(t *testing.T) {
 	db.GetDbConnFromConf(&c, "HBase_db2")
 	t.Log("db", db)
 	t.Log("db", db.TableName)
-	getRes, _ := db.GetRow(context.Background(), "recommend_samh:alg_nrt_ar_fpgrowth", "5c341a7dda910511:comic", nil)
+	getRes, _ := db.GetRow(context.Background(), "recommend_samh:alg_nrt_ar_fpgrowth", "5c341a7dda910511:comic", nil, true)
 	fmt.Println(getRes)
 }
 
@@ -58,7 +58,7 @@ func TestGetMultipleRows(t *testing.T) {
 	}
 	getRes, _ := db.GetMultipleRows(context.Background(), "recommend_samh:alg_nrt_ar_fpgrowth",
 		[]string{"5c341a7dda910511:comic"},
-		tColumns)
+		tColumns, true)
 	fmt.Println(getRes)
 }
 
@@ -76,6 +76,6 @@ func TestGetScannerResultsAll(t *testing.T) {
 			Qualifier: []byte("weight"),
 		},
 	}
-	getRes, _ := db.GetScannerResultsAll(context.Background(), "recommend_samh:item_base", tColumns, 2000)
+	getRes, _ := db.GetScannerResultsAll(context.Background(), "recommend_samh:item_base", tColumns, 1000000, true)
 	fmt.Println(getRes)
 }
