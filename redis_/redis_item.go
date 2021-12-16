@@ -141,9 +141,17 @@ func (r *RedisItem) ItemIncrExpire(redisClient redis.Cmdable, keys ...string) (i
 // ZAdd
 func (r *RedisItem) ItemZAdd(redisClient redis.Cmdable, values []string, keys ...string) error {
 	key := r.ItemGetKey(keys...)
-	zmembers := make([]*redis.Z, 0, len(values))
+	/*
+		zmembers := make([]*redis.Z, 0, len(values))
+		for _, id := range values {
+			zmembers = append(zmembers, &redis.Z{Score: float64(time.Now().UnixNano()), Member: id})
+		}
+		p := redisClient.Pipeline()
+		err := p.ZAdd(key, zmembers...).Err()
+	*/
+	zmembers := make([]redis.Z, 0, len(values))
 	for _, id := range values {
-		zmembers = append(zmembers, &redis.Z{Score: float64(time.Now().UnixNano()), Member: id})
+		zmembers = append(zmembers, redis.Z{Score: float64(time.Now().UnixNano()), Member: id})
 	}
 	p := redisClient.Pipeline()
 	err := p.ZAdd(key, zmembers...).Err()
