@@ -3,7 +3,7 @@ package field
 import (
 	"io/ioutil"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 )
 
 // 获取当前路径下所有文件名

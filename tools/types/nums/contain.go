@@ -1,6 +1,6 @@
 package nums
 
-import "github.com/xndm-recommend/go-utils/common/consts"
+import "github.com/xndm-tech/go-utils/common/consts"
 
 func IsContainInt(s []int, item int) bool {
 	if consts.ZERO == len(s) {

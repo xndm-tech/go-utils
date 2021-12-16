@@ -4,10 +4,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
 	"github.com/go-redis/redis"
-	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-tech/go-utils/config"
 )
 
 type RedisItemMethod interface {

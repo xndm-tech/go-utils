@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/tools/types/nums"
+	"github.com/xndm-tech/go-utils/tools/types/nums"
 
-	"github.com/xndm-recommend/go-utils/tools/maths"
+	"github.com/xndm-tech/go-utils/tools/maths"
 )
 
 func intsToStrs(a []int) []string {

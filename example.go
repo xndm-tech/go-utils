@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
-	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/dbs/rediss"
+	"github.com/xndm-tech/go-utils/config"
+	"github.com/xndm-tech/go-utils/dbs/rediss"
 )
 
 const (

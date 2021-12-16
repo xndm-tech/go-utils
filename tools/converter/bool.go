@@ -1,6 +1,6 @@
 package converter
 
-import "github.com/xndm-recommend/go-utils/common/consts"
+import "github.com/xndm-tech/go-utils/common/consts"
 
 /**
 int 转换

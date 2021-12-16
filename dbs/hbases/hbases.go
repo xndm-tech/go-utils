@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/common/consts"
+	"github.com/xndm-tech/go-utils/common/consts"
 
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/dbs/hbases/gen-go/hbase"
+	"github.com/xndm-tech/go-utils/config"
+	"github.com/xndm-tech/go-utils/dbs/hbases/gen-go/hbase"
 )
 
 var (

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
-	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-tech/go-utils/config"
 )
 
 const (

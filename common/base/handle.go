@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
 	"github.com/gin-gonic/gin"
 )
