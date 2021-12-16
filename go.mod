@@ -1,4 +1,4 @@
-module github.com/xndm-recommend/go-utils
+module github.com/xndm-tech/go-utils
 
 go 1.14
 
