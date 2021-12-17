@@ -3,10 +3,10 @@ package mysqls_test
 import (
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
-	"github.com/xndm-recommend/go-utils/config"
-	. "github.com/xndm-recommend/go-utils/dbs/mysqls"
+	"github.com/xndm-tech/go-utils/config"
+	. "github.com/xndm-tech/go-utils/dbs/mysqls"
 )
 
 const (

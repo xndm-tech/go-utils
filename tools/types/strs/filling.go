@@ -3,7 +3,7 @@ package strs
 import (
 	"bytes"
 
-	"github.com/xndm-recommend/go-utils/common/consts"
+	"github.com/xndm-tech/go-utils/common/consts"
 )
 
 // 空字符串填充

@@ -6,12 +6,12 @@ import (
 	_ "net/http/pprof"
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/dbs/hbases/gen-go/hbase"
+	"github.com/xndm-tech/go-utils/dbs/hbases/gen-go/hbase"
 
-	"github.com/xndm-recommend/go-utils/dbs/hbases"
+	"github.com/xndm-tech/go-utils/dbs/hbases"
 
-	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/config"
+	"github.com/xndm-tech/go-utils/tools/errs"
 )
 
 const (

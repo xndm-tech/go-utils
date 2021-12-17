@@ -3,7 +3,7 @@ package bitmap
 import (
 	"testing"
 
-	"github.com/xndm-recommend/go-utils/tools/maths"
+	"github.com/xndm-tech/go-utils/tools/maths"
 )
 
 /**

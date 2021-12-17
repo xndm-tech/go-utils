@@ -7,8 +7,8 @@ import (
 
 	"github.com/tsuna/gohbase"
 	"github.com/tsuna/gohbase/hrpc"
-	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/config"
+	"github.com/xndm-tech/go-utils/tools/errs"
 )
 
 type HBaseDbInfo struct {

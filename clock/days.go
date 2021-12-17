@@ -3,7 +3,7 @@ package clock
 import (
 	"time"
 
-	"github.com/xndm-recommend/go-utils/common/consts"
+	"github.com/xndm-tech/go-utils/common/consts"
 )
 
 //获取某一天的0点时间

@@ -11,8 +11,8 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/cihub/seelog"
-	"github.com/xndm-recommend/go-utils/dbs/hbases/gen-go/hbase"
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/dbs/hbases/gen-go/hbase"
+	"github.com/xndm-tech/go-utils/tools/errs"
 )
 
 type MyHbaseClient struct {

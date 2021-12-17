@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
-	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-tech/go-utils/config"
 )
 
 type HttpInfo struct {

@@ -6,10 +6,10 @@ import (
 
 	"github.com/getsentry/raven-go"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
-	"github.com/xndm-recommend/go-utils/config"
-	"github.com/xndm-recommend/go-utils/tools/logs"
+	"github.com/xndm-tech/go-utils/config"
+	"github.com/xndm-tech/go-utils/tools/logs"
 )
 
 const (

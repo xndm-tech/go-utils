@@ -1,6 +1,6 @@
 package nums
 
-import "github.com/xndm-recommend/go-utils/common/consts"
+import "github.com/xndm-tech/go-utils/common/consts"
 
 var PerfThrDiff = 100
 

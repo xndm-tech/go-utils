@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xndm-recommend/go-utils/tools/errs"
+	"github.com/xndm-tech/go-utils/tools/errs"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/xndm-recommend/go-utils/common/consts"
-	"github.com/xndm-recommend/go-utils/config"
+	"github.com/xndm-tech/go-utils/common/consts"
+	"github.com/xndm-tech/go-utils/config"
 )
 
 type MysqlMethod interface {
